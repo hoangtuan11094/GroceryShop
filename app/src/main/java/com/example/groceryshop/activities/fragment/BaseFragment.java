@@ -62,11 +62,7 @@ public abstract class BaseFragment extends Fragment {
         if(activity == null)
             activity = (ActMain) getActivity();
 
-        if(!isMenu() && getCurrentFragment() != -1)
-            activity.setCurrentScreen(getCurrentFragment());
     }
-    public void onPermissionsGranted(){}
-    public void onPermissionsDenied(){}
 
     @Override
     public void onDestroy() {

@@ -82,28 +82,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             indicator.addView(dot);
         }
 
-        vpHeaderHome.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                for (int i = 0; i < intsImg.length; i++) {
-                    // Duyệt qua từng "chấm" trong indicator
-                    // Nếu i == position, tức i đang là vị trí hiện tại của ViewPager,
-                    // ta sẽ đổi màu "chấm" thành COLOR_ACTIVE, nếu không
-                    // thì sẽ đổi thành màu COLOR_INACTIVE
-                    indicator.getChildAt(i).getBackground().mutate().setTint(color(i == position ? Color.YELLOW : Color.WHITE));
-                }
-            }
 
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         super.onViewCreated(view, savedInstanceState);
     }
 
