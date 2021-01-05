@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.fragment.FrmLogin">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <ImageView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/padding_10"
                 android:background="@drawable/bg_btn_white"
                 android:layout_marginTop="@dimen/mtImgLogoWelcome"
                 android:id="@+id/clEdtEmail"
@@ -58,19 +64,19 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_envelope"/>
                 <EditText
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="@dimen/margin_5"
                     android:gravity="center_vertical"
                     android:id="@+id/edtEmailLogin"
                     android:background="@null"
                     android:textSize="@dimen/tsEdtLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Email*"
+                    android:hint="@string/lbl_hin_email"
                     android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/padding_10"
                 android:background="@drawable/bg_btn_white"
                 android:layout_marginTop="@dimen/mtEdtLogin"
                 android:id="@+id/clEdtPass"
@@ -87,14 +93,14 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_lock"/>
                 <EditText
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="@dimen/margin_5"
                     android:gravity="center_vertical"
                     android:id="@+id/edtPassLogin"
                     android:background="@null"
                     android:textSize="@dimen/tsEdtLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Password*"
+                    android:hint="@string/lbl_hin_password"
                     android:textStyle="bold"/>
             </LinearLayout>
 
@@ -111,14 +117,15 @@
                 android:gravity="center"
                 >
                 <ImageView
+                    android:id="@+id/icKey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_key_white"/>
                 <TextView
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="@dimen/margin_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Login"
+                    android:text="@string/lbl_login"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
             </LinearLayout>
@@ -134,7 +141,7 @@
                     android:id="@+id/ckbRemember"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Remember Password"/>
+                    android:text="@string/lbl_RememberPassword"/>
 
                 <TextView
                     android:textSize="@dimen/tsEdtLogin"
@@ -143,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
-                    android:text="Forgot Password?"/>
+                    android:text="@string/lbl_ForgotPassword"/>
             </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -161,7 +168,7 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:textSize="@dimen/tsEdtLogin"
-           android:text="Don’t have any account yet?"/>
+           android:text="@string/lbl_DontAccount"/>
        <TextView
            android:id="@+id/tvSignUp"
            android:textColor="@color/colorYellow"
@@ -169,7 +176,10 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:textSize="@dimen/tsEdtLogin"
-           android:text="Sign up"/>
+           android:text="@string/lbl_SignUp"/>
 
    </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

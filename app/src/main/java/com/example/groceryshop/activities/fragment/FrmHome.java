@@ -27,7 +27,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
 
     private int[] intsImg = {R.drawable.img_viewpage1, R.drawable.img_viewpage2, R.drawable.img_viewpage3};
     private ViewPager vpHeaderHome;
-    LinearLayout indicator;
+    private LinearLayout indicator;
     @Override
     protected int getLayoutResId() {
         return R.layout.frm_home;
@@ -64,6 +64,21 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         View clViewPage = view.findViewById(R.id.clViewPage);
         clViewPage.getLayoutParams().height = activity.getSizeWithScale(171);
 
+        View clFood = view.findViewById(R.id.clFood);
+        clFood.getLayoutParams().height = activity.getSizeWithScale(60);
+
+        View clFruits = view.findViewById(R.id.clFruits);
+        clFruits.getLayoutParams().width = activity.getSizeWithScale(98);
+        clFruits.getLayoutParams().height = activity.getSizeWithScale(34);
+
+        View clBreakfast = view.findViewById(R.id.clBreakfast);
+        clBreakfast.getLayoutParams().width = activity.getSizeWithScale(98);
+        clBreakfast.getLayoutParams().height = activity.getSizeWithScale(34);
+
+        View clBeverages = view.findViewById(R.id.clBeverages);
+        clBeverages.getLayoutParams().width = activity.getSizeWithScale(98);
+        clBeverages.getLayoutParams().height = activity.getSizeWithScale(34);
+
         indicator = view.findViewById(R.id.indicator);
         vpHeaderHome = view.findViewById(R.id.vpHeaderHome);
 
@@ -76,13 +91,29 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         SlideHomeAdapter slideHomeAdapter = new SlideHomeAdapter(intsImg);
         vpHeaderHome.setAdapter(slideHomeAdapter);
 
-        // Indicator:
         for (int i = 0; i < intsImg.length; i++) {
             View dot = createDot(indicator.getContext(), i == 0 ? Color.YELLOW : Color.WHITE);
             indicator.addView(dot);
         }
 
+        vpHeaderHome.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                for (int i = 0; i < intsImg.length; i++) {
+                    indicator.getChildAt(i).getBackground().mutate().setTint(i == position ? Color.YELLOW : Color.WHITE);
+                }
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
     }
 

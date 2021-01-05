@@ -56,6 +56,10 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
         btnLogin.getLayoutParams().width = activity.getSizeWithScale(284);
         btnLogin.getLayoutParams().height = activity.getSizeWithScale(37);
 
+        View icKey = view.findViewById(R.id.icKey);
+        icKey.getLayoutParams().height = activity.getSizeWithScale(11);
+        icKey.getLayoutParams().width = activity.getSizeWithScale(11);
+
         view.findViewById(R.id.tvSignUp).setOnClickListener(this);
     }
 

@@ -62,6 +62,14 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
         btnRegistrationWelCome.getLayoutParams().height = activity.getSizeWithScale(37);
         btnRegistrationWelCome.getLayoutParams().width = activity.getSizeWithScale(284);
 
+        View icKey = view.findViewById(R.id.icKey);
+        icKey.getLayoutParams().height = activity.getSizeWithScale(11);
+        icKey.getLayoutParams().width = activity.getSizeWithScale(11);
+
+        View icUser = view.findViewById(R.id.icUser);
+        icUser.getLayoutParams().height = activity.getSizeWithScale(11);
+        icUser.getLayoutParams().width = activity.getSizeWithScale(14);
+
         btnLoginWelCome.setOnClickListener(this);
 
     }

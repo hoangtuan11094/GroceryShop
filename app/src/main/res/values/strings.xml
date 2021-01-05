@@ -2,4 +2,22 @@
     <string name="app_name">GroceryShop</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lbl_hin_email">Email*</string>
+    <string name="lbl_SendLink">Send Link</string>
+    <string name="lbl_DontAccount">Don’t have any account yet?</string>
+    <string name="lbl_SignUp">Sign up</string>
+    <string name="lbl_hin_password">Password*</string>
+    <string name="lbl_login">Login</string>
+    <string name="lbl_RememberPassword">Remember Password</string>
+    <string name="lbl_ForgotPassword">Forgot Password?</string>
+    <string name="lbl_hin_new_pass">New Password*</string>
+    <string name="lbl_hin_rePass">Re-type Password*</string>
+    <string name="lbl_Submit">Submit</string>
+    <string name="lbl_hin_name">Full Name*</string>
+    <string name="lbl_AlreadyAccount">Already have an account?</string>
+    <string name="lbl_SinUpWith" >Or/nSin up with</string>
+    <string name="lbl_Registration">Registration</string>
+    <string name="lbl_Categories">Categories</string>
+    <string name="lbl_ViewAll">View all</string>
+    <string name="lbl_Vegetable">Vegetable</string>
 </resources>

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.fragment.FrmHome;
 import com.example.groceryshop.activities.fragment.FrmLogin;
+import com.example.groceryshop.activities.fragment.FrmResetPassword;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
 
@@ -39,7 +40,7 @@ public class ActMain extends BaseActivity {
     }
 
     private void navigationApp() {
-        addFragment(new FrmWelcome());
+        addFragment(new FrmHome());
     }
 
 

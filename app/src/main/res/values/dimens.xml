@@ -4,4 +4,7 @@
     <dimen name="mtImgLogoWelcome">20dp</dimen>
     <dimen name="mtEdtLogin">13dp</dimen>
     <dimen name="tsEdtLogin">12sp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
 </resources>

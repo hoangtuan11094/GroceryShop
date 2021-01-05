@@ -34,9 +34,6 @@ public abstract class BaseFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    public boolean isMenu(){
-        return false;
-    }
     private boolean mIsClickAble = true;
     private Handler mHandlerClick = new Handler();
     private Runnable changeStateClickAble = new Runnable() {
