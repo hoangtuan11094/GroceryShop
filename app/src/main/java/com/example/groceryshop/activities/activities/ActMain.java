@@ -8,27 +8,29 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.fragment.FrmCategory;
 import com.example.groceryshop.activities.fragment.FrmHome;
 import com.example.groceryshop.activities.fragment.FrmLogin;
 import com.example.groceryshop.activities.fragment.FrmResetPassword;
+import com.example.groceryshop.activities.fragment.FrmSearchProduct;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
 
 public class ActMain extends BaseActivity {
     private final String TAG = "ActMain";
 
-
-
-    public void addFragment(Fragment f){
+    public void addFragment(Fragment f) {
         try {
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment currentFragment = fragmentManager.findFragmentById(R.id.frameMenuContainer);
-            if(currentFragment != null){
+            if (currentFragment != null) {
                 fragmentManager.beginTransaction()
                         .remove(currentFragment)
                         .commitAllowingStateLoss();
             }
-        }catch (Throwable e){e.printStackTrace();}
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         addOrReplaceFragment(R.id.frameParent, f);
     }
 
@@ -40,21 +42,18 @@ public class ActMain extends BaseActivity {
     }
 
     private void navigationApp() {
-        addFragment(new FrmHome());
+        addFragment(new FrmSearchProduct());
     }
-
 
 
     //TODO show Fragment
-    public void showFrmLogin(){
+    public void showFrmLogin() {
         addFragment(new FrmLogin());
     }
-    public void showFrmSignUp(){
+
+    public void showFrmSignUp() {
         addFragment(new FrmSignUp());
     }
-
-
-
 
 
     //TODO size manager
@@ -66,7 +65,6 @@ public class ActMain extends BaseActivity {
             displayMetrics = getResources().getDisplayMetrics();
         return displayMetrics;
     }
-
 
 
     private int screenWidth = 0;

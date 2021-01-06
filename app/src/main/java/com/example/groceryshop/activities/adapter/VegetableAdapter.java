@@ -1,11 +1,6 @@
 package com.example.groceryshop.activities.adapter;
 
 import android.content.Context;
-import android.hardware.display.DisplayManager;
-import android.media.tv.TvContentRating;
-import android.provider.ContactsContract;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +18,25 @@ import java.util.ArrayList;
 public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.HolderVegetableEtity> {
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private Context context;
+    private int wclItem;
+    private int hclItem;
+    private int wImgProduct;
+    private int hImgProduct;
 
-    public VegetableAdapter(ArrayList<VegetableEntity> vegetableEntityArrayList, Context context) {
+    public VegetableAdapter(ArrayList<VegetableEntity> vegetableEntityArrayList, Context context, int wclItem, int hclItem, int wImgProduct, int hImgProduct) {
         this.vegetableEntityArrayList = vegetableEntityArrayList;
         this.context = context;
+        this.wclItem = wclItem;
+        this.hclItem = hclItem;
+        this.wImgProduct = wImgProduct;
+        this.hImgProduct = hImgProduct;
     }
 
     @NonNull
     @Override
     public VegetableAdapter.HolderVegetableEtity onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vegetable, parent, false);
-        return new HolderVegetableEtity(view);
+        return new HolderVegetableEtity(view, wclItem, hclItem, wImgProduct, hImgProduct);
     }
 
     @Override
@@ -42,14 +45,7 @@ public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.Hold
         holder.imgProduct.setImageResource(vegetableEntityArrayList.get(position).getImgProduct());
         holder.tvNameProduct.setText(vegetableEntityArrayList.get(position).getProductName());
         holder.tvWeight.setText(String.valueOf(vegetableEntityArrayList.get(position).getProductWeight() + " gm"));
-        holder.tvPrice.setText(String.valueOf( "$"+vegetableEntityArrayList.get(position).getProductPrice()));
-
-        holder.clItemVegetable.getLayoutParams().width = getSizeScale(146);
-        holder.clItemVegetable.getLayoutParams().height = getSizeScale(167);
-        holder.imgProduct.getLayoutParams().width = getSizeScale(134);
-        holder.imgProduct.getLayoutParams().height = getSizeScale(78);
-        holder.imgBtnAdd.getLayoutParams().width = getSizeScale(89);
-        holder.imgBtnAdd.getLayoutParams().height = getSizeScale(26);
+        holder.tvPrice.setText(String.valueOf("$" + vegetableEntityArrayList.get(position).getProductPrice()));
     }
 
     @Override
@@ -65,7 +61,7 @@ public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.Hold
         private ImageView imgBtnAdd;
         private View clItemVegetable;
 
-        public HolderVegetableEtity(@NonNull View itemView) {
+        public HolderVegetableEtity(@NonNull View itemView, int wclItem, int hclItem, int wImgProduct, int hImgProduct) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgItem);
             tvNameProduct = itemView.findViewById(R.id.tvName);
@@ -73,32 +69,12 @@ public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.Hold
             tvPrice = itemView.findViewById(R.id.tvPrice);
             imgBtnAdd = itemView.findViewById(R.id.btnAdd);
             clItemVegetable = itemView.findViewById(R.id.clItemVegetable);
+
+            clItemVegetable.getLayoutParams().width = wclItem;
+            clItemVegetable.getLayoutParams().height = hclItem;
+            imgProduct.getLayoutParams().width = wImgProduct;
+            imgProduct.getLayoutParams().height = hImgProduct;
         }
     }
 
-    //size
-    private float scaleValue = 0;
-    private DisplayMetrics displayMetrics;
-
-    private DisplayMetrics getDisplayMetrics(){
-        if (displayMetrics == null)
-            displayMetrics = context.getResources().getDisplayMetrics();
-        return displayMetrics;
-    }
-
-    private int screenWidth = 0;
-
-    protected int getScreenWidth(){
-        if (screenWidth == 0)
-            screenWidth = getDisplayMetrics().widthPixels;
-        return screenWidth;
-    }
-    private float getScaleValue(){
-        if (scaleValue == 0)
-            scaleValue = getScreenWidth() * 1f / 375;
-        return scaleValue;
-    }
-    protected  int getSizeScale(double sizeDesign){
-        return (int) (sizeDesign * getScaleValue());
-    }
 }

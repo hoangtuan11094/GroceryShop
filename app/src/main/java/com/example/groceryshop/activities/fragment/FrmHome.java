@@ -37,6 +37,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private RecyclerView rcVegetable;
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private VegetableAdapter vegetableAdapter;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.frm_home;
@@ -73,8 +74,8 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         View clViewPage = view.findViewById(R.id.clViewPage);
         clViewPage.getLayoutParams().height = activity.getSizeWithScale(171);
 
-        View clFood = view.findViewById(R.id.clFood);
-        clFood.getLayoutParams().height = activity.getSizeWithScale(60);
+        View clFooter = view.findViewById(R.id.clFooter);
+        clFooter.getLayoutParams().height = activity.getSizeWithScale(60);
 
         View clFruits = view.findViewById(R.id.clFruits);
         clFruits.getLayoutParams().width = activity.getSizeWithScale(98);
@@ -145,23 +146,24 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         return dot;
     }
 
-    private void showDataVegetable(){
+    private void showDataVegetable() {
         vegetableEntityArrayList = new ArrayList<>();
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image2,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image3,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image4,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image5,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image2,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image3,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image4,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image5,"Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image2, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image3, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image4, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image5, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image2, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image3, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image4, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image5, "Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1, "Yellow Capsicum (Fresh)", 250, 35));
 
-        vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList,getContext());
+        vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
+                activity.getSizeWithScale(167),activity.getSizeWithScale(134), activity.getSizeWithScale(78));
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
 //       LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcVegetable.setAdapter(vegetableAdapter);
