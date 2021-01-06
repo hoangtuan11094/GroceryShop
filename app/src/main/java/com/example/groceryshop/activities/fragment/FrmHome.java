@@ -11,6 +11,9 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -20,7 +23,10 @@ import android.widget.LinearLayout;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.SlideHomeAdapter;
+import com.example.groceryshop.activities.adapter.VegetableAdapter;
+import com.example.groceryshop.activities.entity.VegetableEntity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class FrmHome extends BaseFragment implements View.OnClickListener {
@@ -28,6 +34,9 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private int[] intsImg = {R.drawable.img_viewpage1, R.drawable.img_viewpage2, R.drawable.img_viewpage3};
     private ViewPager vpHeaderHome;
     private LinearLayout indicator;
+    private RecyclerView rcVegetable;
+    private ArrayList<VegetableEntity> vegetableEntityArrayList;
+    private VegetableAdapter vegetableAdapter;
     @Override
     protected int getLayoutResId() {
         return R.layout.frm_home;
@@ -79,6 +88,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         clBeverages.getLayoutParams().width = activity.getSizeWithScale(98);
         clBeverages.getLayoutParams().height = activity.getSizeWithScale(34);
 
+        rcVegetable = view.findViewById(R.id.rcVegetable);
         indicator = view.findViewById(R.id.indicator);
         vpHeaderHome = view.findViewById(R.id.vpHeaderHome);
 
@@ -88,6 +98,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        showDataVegetable();
         SlideHomeAdapter slideHomeAdapter = new SlideHomeAdapter(intsImg);
         vpHeaderHome.setAdapter(slideHomeAdapter);
 
@@ -132,5 +143,28 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         drawable.setTint(color);
         dot.setBackground(drawable);
         return dot;
+    }
+
+    private void showDataVegetable(){
+        vegetableEntityArrayList = new ArrayList<>();
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image2,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image3,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image4,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image5,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image2,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image3,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image4,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image5,"Yellow Capsicum (Fresh)", 250, 35));
+        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1,"Yellow Capsicum (Fresh)", 250, 35));
+
+        vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList,getContext());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+//       LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        rcVegetable.setAdapter(vegetableAdapter);
+        rcVegetable.setLayoutManager(gridLayoutManager);
     }
 }

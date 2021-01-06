@@ -3,7 +3,15 @@ package com.example.groceryshop.activities.fragment;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.adapter.VegetableAdapter;
+import com.example.groceryshop.activities.entity.VegetableEntity;
+
+import java.util.ArrayList;
 
 
 public class FrmLogin extends BaseFragment implements View.OnClickListener {
@@ -60,8 +68,11 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
         icKey.getLayoutParams().height = activity.getSizeWithScale(11);
         icKey.getLayoutParams().width = activity.getSizeWithScale(11);
 
+
         view.findViewById(R.id.tvSignUp).setOnClickListener(this);
     }
+
+
 
     @Override
     public void onClick(View v) {

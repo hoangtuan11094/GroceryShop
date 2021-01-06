@@ -2,12 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.fragment.FrmHome">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingHorizontal="30dp"
+        android:paddingHorizontal="@dimen/padding_30"
         android:background="@color/white"
         android:id="@+id/clHeader"
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             android:id="@+id/imgMenu"
             android:src="@drawable/ic_bars"/>
         <ImageView
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="@dimen/margin_20"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imgCart"
@@ -103,7 +104,7 @@
         app:layout_constraintEnd_toStartOf="@+id/gl09">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@drawable/bg_item_categories"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="@dimen/margin_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/clFruits"
@@ -115,7 +116,7 @@
                 android:layout_height="match_parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.cardview.widget.CardView
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="@dimen/margin_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/clBreakfast"
@@ -128,7 +129,7 @@
 
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="@dimen/margin_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/clBeverages"
@@ -143,12 +144,23 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvVegetable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lbl_Vegetable"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/gl01"
         app:layout_constraintTop_toBottomOf="@+id/clCategories"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="@dimen/margin_10"
+        android:id="@+id/rcVegetable"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/clFood"
+        app:layout_constraintEnd_toStartOf="@+id/gl09"
+        app:layout_constraintStart_toEndOf="@+id/gl01"
+        app:layout_constraintTop_toBottomOf="@+id/tvVegetable" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

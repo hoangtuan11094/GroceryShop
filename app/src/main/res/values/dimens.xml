@@ -7,4 +7,8 @@
     <dimen name="padding_10">10dp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="padding_30">30dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="ts_10">10sp</dimen>
 </resources>
