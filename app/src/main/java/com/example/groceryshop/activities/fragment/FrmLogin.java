@@ -9,19 +9,28 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.VegetableAdapter;
+import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.entity.VegetableEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class FrmLogin extends BaseFragment implements View.OnClickListener {
 
     private EditText edtEmailLogin;
     private EditText edtPassLogin;
+    private DatabaseHelper databaseHelper;
+    private List<String> emailList;
+    private List<String> passwordList;
+
+    private List<UserEntity> userEntityList;
 
     public static FrmLogin getInstance() {
         return new FrmLogin();
     }
+
     @Override
     protected int getLayoutResId() {
         return R.layout.frm_login;
@@ -68,18 +77,40 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
         icKey.getLayoutParams().height = activity.getSizeWithScale(11);
         icKey.getLayoutParams().width = activity.getSizeWithScale(11);
 
+        edtEmailLogin = view.findViewById(R.id.edtEmailLogin);
+        edtPassLogin = view.findViewById(R.id.edtPassLogin);
 
         view.findViewById(R.id.tvSignUp).setOnClickListener(this);
+        btnLogin.setOnClickListener(this);
     }
-
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tvSignUp:
                 activity.showFrmSignUp();
                 break;
+            case R.id.btnLogin:
+                loginUser();
+                break;
+        }
+    }
+
+    private void loginUser() {
+        databaseHelper = new DatabaseHelper(getContext());
+        databaseHelper.createDataBase();
+        databaseHelper.getAllUser();
+        userEntityList = new ArrayList<>();
+        userEntityList.addAll(databaseHelper.getAllUser());
+//        emailList.addAll(databaseHelper.getEmailList());
+//        passwordList.addAll(databaseHelper.getPasswordList());
+        String email = edtEmailLogin.getText().toString().trim();
+        String pass = edtPassLogin.getText().toString().trim();
+        if (email.isEmpty() || pass.isEmpty()) {
+            showToast(R.string.lblMustNotBeLeftBlank);
+        } else {
+
         }
     }
 }

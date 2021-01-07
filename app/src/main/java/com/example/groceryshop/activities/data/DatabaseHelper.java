@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.groceryshop.R;
+import com.example.groceryshop.activities.activities.ActMain;
 import com.example.groceryshop.activities.entity.CategoryEntity;
 import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.entity.VegetableEntity;
@@ -18,10 +21,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static String DB_NAME = "groceryshop.db";
+    public static String DB_NAME = "grocery_shop.db";
     public static String PATH_DB;
     private SQLiteDatabase sqLiteDatabase;
     public Context context;
@@ -32,9 +36,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String WEIGTH_PRODUCT = "productWeigth";
     private String PRICE_PRODUCT = "productPrice";
     private String ID_CATEGORY_PRODUCT = "productIdCategory";
+    private List<String> emailList;
+    private List<String> passwordList;
+
 
     public DatabaseHelper(Context context) {
-        super(context, DB_NAME, null, 3);
+        super(context, DB_NAME, null, 4);
         if (Build.VERSION.SDK_INT >= 17) {
             PATH_DB = context.getApplicationInfo().dataDir + "/databases/";
         } else {
@@ -120,34 +127,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categoryEntityList;
     }
 
+
+    //singup
     public long insertUser(UserEntity userEntity) {
         sqLiteDatabase = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
-        ContentValues values = new ContentValues();
-        values.put("idUser", userEntity.idUser);
-        values.put("password", userEntity.passwordUser);
-        values.put("fullName", userEntity.fullName);
-        long newRow = sqLiteDatabase.insert("user", null, values);
-        Log.e("TAG", "insertUser: " + newRow);
+        long newRow = 0;
+            ContentValues values = new ContentValues();
+            values.put("email", userEntity.email);
+            values.put("password", userEntity.passwordUser);
+            values.put("name", userEntity.fullName);
+            Toast.makeText(context, R.string.lbl_SignUpSuccess, Toast.LENGTH_SHORT).show();
+            newRow = sqLiteDatabase.insert("user", null, values);
+
         return newRow;
     }
 
-    public void getAllUser() {
+    public List<UserEntity> getAllUser() {
         SQLiteDatabase dbUser = getReadableDatabase();
+        List<UserEntity> userEntityList = new ArrayList<>();
+        emailList = new ArrayList<>();
+        passwordList = new ArrayList<>();
         Cursor cursor = dbUser.rawQuery("SELECT * from user", null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                String id = cursor.getString(0);
-                String pass = cursor.getString(1);
-                String name = cursor.getString(2);
-                Log.e("TAG", "getAllUser: " + id);
-                Log.e("TAG", "getAllUser: " + pass);
-                Log.e("TAG", "getAllUser: " + name);
+                UserEntity userEntity = new UserEntity();
+                userEntity.idUser = cursor.getInt(0);
+                userEntity.email = cursor.getString(1);
+                userEntity.passwordUser = cursor.getString(2);
+                userEntity.fullName = cursor.getString(3);
+                emailList.add(userEntity.email);
+                passwordList.add(userEntity.passwordUser);
+                userEntityList.add(userEntity);
                 cursor.moveToNext();
             }
+            setEmailList(emailList);
+            setPasswordList(passwordList);
             cursor.close();
         }
+
+        return userEntityList;
     }
+
+    public List<String> getEmailList() {
+
+        return emailList;
+    }
+
+    public void setEmailList(List<String> emailList) {
+        this.emailList = emailList;
+    }
+
+    public List<String> getPasswordList() {
+        return passwordList;
+    }
+
+    public void setPasswordList(List<String> passwordList) {
+        this.passwordList = passwordList;
+    }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {

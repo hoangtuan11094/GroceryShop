@@ -1,18 +1,27 @@
 package com.example.groceryshop.activities.entity;
 
 public class UserEntity {
-    public String idUser;
+    public int idUser;
     public String fullName;
+    public String email;
     public String passwordUser;
 
     public UserEntity() {
     }
 
-    public String getIdUser() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(String idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 

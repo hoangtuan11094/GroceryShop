@@ -21,4 +21,9 @@
     <string name="lbl_ViewAll">View all</string>
     <string name="lbl_Vegetable">Vegetable</string>
     <string name="lbl_hin_search">Search Product</string>
+    <string name="lbl_EmailAlreadyExists">Email already exists</string>
+    <string name="lbl_SignUpSuccess">Sign Up Success</string>
+    <string name="lblMustNotBeLeftBlank">Must not be left blank</string>
+    <string name="lblLoggedInSuccessfully">Logged in successfully</string>
+    <string name="lvlEmailOrPasswordIsIncorrect">Email or password is incorrect</string>
 </resources>

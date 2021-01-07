@@ -42,7 +42,7 @@ public class ActMain extends BaseActivity {
     }
 
     private void navigationApp() {
-        addFragment(new FrmSignUp());
+        addFragment(new FrmLogin());
     }
 
 
@@ -57,6 +57,10 @@ public class ActMain extends BaseActivity {
 
     public void showFrmCategory(){
         addFragment(new FrmCategory());
+    }
+
+    public void showFrmHome(){
+        addFragment(new FrmHome());
     }
 
 

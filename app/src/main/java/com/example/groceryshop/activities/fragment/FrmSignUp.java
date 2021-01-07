@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,16 @@ import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.fragment.BaseFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class FrmSignUp extends BaseFragment implements View.OnClickListener {
 
     private EditText edtName;
     private EditText edtEmail;
     private EditText edtPass;
+    private List<String> emailList;
 
     private DatabaseHelper databaseHelper;
 
@@ -79,6 +84,7 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
 
 
@@ -94,12 +100,27 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
 
     private void insertUser(){
         databaseHelper = new DatabaseHelper(getContext());
+        databaseHelper.createDataBase();
+        databaseHelper.getAllUser();
+        emailList = new ArrayList<>();
+        emailList.addAll(databaseHelper.getEmailList());
+        Log.e(TAG, "insertUser: "+emailList.size() );
         UserEntity userEntity = new UserEntity();
-        userEntity.idUser = edtEmail.getText().toString().trim();
+        userEntity.email = edtEmail.getText().toString().trim();
         userEntity.passwordUser = edtPass.getText().toString().trim();
         userEntity.fullName = edtName.getText().toString().trim();
-
+        if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()){
+            showToast(R.string.lblMustNotBeLeftBlank);
+        }else if (emailList.contains(userEntity.email)){
+            showToast(R.string.lbl_EmailAlreadyExists);
+        }
+        else {
         databaseHelper.insertUser(userEntity);
-        databaseHelper.getAllUser();
+        showToast(R.string.lbl_SignUpSuccess);
+        activity.showFrmLogin();
+        edtEmail.setText("");
+        edtName.setText("");
+        edtPass.setText("");
+        }
     }
 }
