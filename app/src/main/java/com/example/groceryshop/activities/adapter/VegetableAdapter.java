@@ -42,7 +42,7 @@ public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.Hold
     @Override
     public void onBindViewHolder(@NonNull VegetableAdapter.HolderVegetableEtity holder, int position) {
 
-        holder.imgProduct.setImageResource(vegetableEntityArrayList.get(position).getImgProduct());
+        holder.imgProduct.setText(vegetableEntityArrayList.get(position).getImgProduct());
         holder.tvNameProduct.setText(vegetableEntityArrayList.get(position).getProductName());
         holder.tvWeight.setText(String.valueOf(vegetableEntityArrayList.get(position).getProductWeight() + " gm"));
         holder.tvPrice.setText(String.valueOf("$" + vegetableEntityArrayList.get(position).getProductPrice()));
@@ -50,11 +50,11 @@ public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.Hold
 
     @Override
     public int getItemCount() {
-        return vegetableEntityArrayList.size();
+        return vegetableEntityArrayList == null ? 0 :  vegetableEntityArrayList.size();
     }
 
     public class HolderVegetableEtity extends RecyclerView.ViewHolder {
-        private ImageView imgProduct;
+        private TextView imgProduct;
         private TextView tvNameProduct;
         private TextView tvWeight;
         private TextView tvPrice;

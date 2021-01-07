@@ -20,4 +20,5 @@
     <string name="lbl_Categories">Categories</string>
     <string name="lbl_ViewAll">View all</string>
     <string name="lbl_Vegetable">Vegetable</string>
+    <string name="lbl_hin_search">Search Product</string>
 </resources>

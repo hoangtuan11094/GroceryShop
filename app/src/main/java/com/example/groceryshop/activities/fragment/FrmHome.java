@@ -10,13 +10,11 @@ import android.os.Bundle;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -24,10 +22,10 @@ import android.widget.LinearLayout;
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.SlideHomeAdapter;
 import com.example.groceryshop.activities.adapter.VegetableAdapter;
+import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.VegetableEntity;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class FrmHome extends BaseFragment implements View.OnClickListener {
 
@@ -37,6 +35,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private RecyclerView rcVegetable;
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private VegetableAdapter vegetableAdapter;
+    private DatabaseHelper databaseHelper ;
 
     @Override
     protected int getLayoutResId() {
@@ -93,12 +92,16 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         indicator = view.findViewById(R.id.indicator);
         vpHeaderHome = view.findViewById(R.id.vpHeaderHome);
 
-
+        view.findViewById(R.id.tvViewAllCategories).setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        databaseHelper = new DatabaseHelper(getContext());
+        databaseHelper.createDataBase();
+        databaseHelper.getAllProducts();
+        databaseHelper.getAllCategory();
         showDataVegetable();
         SlideHomeAdapter slideHomeAdapter = new SlideHomeAdapter(intsImg);
         vpHeaderHome.setAdapter(slideHomeAdapter);
@@ -131,7 +134,11 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.tvViewAllCategories:
+                activity.showFrmCategory();
+                break;
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -147,21 +154,14 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     }
 
     private void showDataVegetable() {
-        vegetableEntityArrayList = new ArrayList<>();
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image2, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image3, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image4, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image5, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image2, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image3, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image4, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image5, "Yellow Capsicum (Fresh)", 250, 35));
-        vegetableEntityArrayList.add(new VegetableEntity(R.drawable.item_image1, "Yellow Capsicum (Fresh)", 250, 35));
 
+        vegetableEntityArrayList = new ArrayList<>();
+
+        vegetableEntityArrayList.addAll(databaseHelper.getAllProducts());
+        Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size() );
+        for (int i = 0; i < vegetableEntityArrayList.size(); i++) {
+            Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct() );
+        }
         vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
                 activity.getSizeWithScale(167),activity.getSizeWithScale(134), activity.getSizeWithScale(78));
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);

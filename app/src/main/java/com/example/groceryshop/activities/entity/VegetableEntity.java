@@ -2,23 +2,28 @@ package com.example.groceryshop.activities.entity;
 
 
 public class VegetableEntity {
-    private int imgProduct;
+    private int idProduct;
+    private String imgProduct;
     private String productName;
     private float productWeight;
     private int productPrice;
+    private int productIdCategory;
 
-    public VegetableEntity(int imgProduct, String productName, float productWeight, int productPrice) {
+    public VegetableEntity() {
+    }
+
+    public VegetableEntity(String imgProduct, String productName, float productWeight, int productPrice) {
         this.imgProduct = imgProduct;
         this.productName = productName;
         this.productWeight = productWeight;
         this.productPrice = productPrice;
     }
 
-    public int getImgProduct() {
+    public String getImgProduct() {
         return imgProduct;
     }
 
-    public void setImgProduct(int imgProduct) {
+    public void setImgProduct(String imgProduct) {
         this.imgProduct = imgProduct;
     }
 
@@ -44,5 +49,21 @@ public class VegetableEntity {
 
     public void setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+    }
+
+    public int getIdProduct() {
+        return idProduct;
+    }
+
+    public void setIdProduct(int idProduct) {
+        this.idProduct = idProduct;
+    }
+
+    public int getProductIdCategory() {
+        return productIdCategory;
+    }
+
+    public void setProductIdCategory(int productIdCategory) {
+        this.productIdCategory = productIdCategory;
     }
 }

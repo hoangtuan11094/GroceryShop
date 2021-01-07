@@ -5,20 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.entity.CategoryEntity;
+
+import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.HolderCategory> {
-    private int[] intImg;
+    private List<CategoryEntity> categoryEntities;
     private Context context;
     private int wImgItem;
     private int hImgItem;
 
-    public CategoryAdapter(int[] intImg, Context context, int wImgItem, int hImgItem) {
-        this.intImg = intImg;
+    public CategoryAdapter(List<CategoryEntity> categoryEntities, Context context, int wImgItem, int hImgItem) {
+        this.categoryEntities = categoryEntities;
         this.context = context;
         this.wImgItem = wImgItem;
         this.hImgItem = hImgItem;
@@ -34,20 +38,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
 
     @Override
     public void onBindViewHolder(@NonNull HolderCategory holder, int position) {
-        holder.imgItemCategory.setImageResource(intImg[position]);
+        holder.imgItemCategory.setText(categoryEntities.get(position).getImgCategory());
+        holder.tvNameCategory.setText(categoryEntities.get(position).getNameCategory());
     }
 
     @Override
     public int getItemCount() {
-        return intImg.length;
+
+        return categoryEntities == null ? 0 : categoryEntities.size();
     }
 
     public class HolderCategory extends RecyclerView.ViewHolder {
-        private ImageView imgItemCategory;
+        private TextView imgItemCategory;
+        private TextView tvNameCategory;
 
         public HolderCategory(@NonNull View itemView , int wItemImg, int hItemImg) {
             super(itemView);
             imgItemCategory = itemView.findViewById(R.id.itemCategory);
+            tvNameCategory = itemView.findViewById(R.id.tvNameCategory);
             imgItemCategory.getLayoutParams().width = wItemImg;
             imgItemCategory.getLayoutParams().height = hItemImg;
         }

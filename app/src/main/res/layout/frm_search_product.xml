@@ -26,16 +26,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imgSearch"
+            <LinearLayout
+                android:id="@+id/clSearch"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_20"
-                android:src="@drawable/ic_search"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imgCart"
-                app:layout_constraintTop_toTopOf="parent" />
-
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search"/>
+                <EditText
+                    android:textSize="@dimen/tsEdtLogin"
+                    android:hint="@string/lbl_hin_search"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
             <ImageView
                 android:id="@+id/imgCart"
                 android:layout_width="wrap_content"

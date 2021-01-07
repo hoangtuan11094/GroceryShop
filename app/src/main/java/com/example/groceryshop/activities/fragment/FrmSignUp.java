@@ -2,6 +2,7 @@ package com.example.groceryshop.activities.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.fragment.BaseFragment;
 
 
@@ -19,6 +22,7 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
     private EditText edtEmail;
     private EditText edtPass;
 
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected int getLayoutResId() {
@@ -65,10 +69,36 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
         clEdtPass.getLayoutParams().width = activity.getSizeWithScale(284);
         clEdtPass.getLayoutParams().height = activity.getSizeWithScale(37);
 
+        edtName = view.findViewById(R.id.edtName);
+        edtEmail = view.findViewById(R.id.edtEmail);
+        edtPass = view.findViewById(R.id.edtPass);
+
+        view.findViewById(R.id.btnSignUp).setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnSignUp:
+                insertUser();
+                break;
+        }
+    }
+
+    private void insertUser(){
+        databaseHelper = new DatabaseHelper(getContext());
+        UserEntity userEntity = new UserEntity();
+        userEntity.idUser = edtEmail.getText().toString().trim();
+        userEntity.passwordUser = edtPass.getText().toString().trim();
+        userEntity.fullName = edtName.getText().toString().trim();
+
+        databaseHelper.insertUser(userEntity);
     }
 }

@@ -42,15 +42,15 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
         imgMenu.getLayoutParams().width = activity.getSizeWithScale(20);
         imgMenu.getLayoutParams().height = activity.getSizeWithScale(18);
 
-        View imgSearch = view.findViewById(R.id.imgSearch);
-        imgSearch.getLayoutParams().width = activity.getSizeWithScale(19);
-        imgSearch.getLayoutParams().height = activity.getSizeWithScale(19);
-
         View imgCart = view.findViewById(R.id.imgCart);
         imgCart.getLayoutParams().width = activity.getSizeWithScale(24);
         imgCart.getLayoutParams().height = activity.getSizeWithScale(24);
 
         View clFooter = view.findViewById(R.id.clFooter);
         clFooter.getLayoutParams().height = activity.getSizeWithScale(60);
+
+        View clSearch = view.findViewById(R.id.clSearch);
+        clSearch.getLayoutParams().width = activity.getSizeWithScale(209);
+        clSearch.getLayoutParams().height = activity.getSizeWithScale(29);
     }
 }
