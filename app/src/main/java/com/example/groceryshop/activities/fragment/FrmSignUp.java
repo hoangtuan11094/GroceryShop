@@ -100,5 +100,6 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
         userEntity.fullName = edtName.getText().toString().trim();
 
         databaseHelper.insertUser(userEntity);
+        databaseHelper.getAllUser();
     }
 }

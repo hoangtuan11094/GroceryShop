@@ -42,7 +42,7 @@ public class ActMain extends BaseActivity {
     }
 
     private void navigationApp() {
-        addFragment(new FrmHome());
+        addFragment(new FrmSignUp());
     }
 
 

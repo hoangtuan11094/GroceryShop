@@ -120,26 +120,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categoryEntityList;
     }
 
-    public long insertUser(UserEntity userEntity){
-        sqLiteDatabase = context.openOrCreateDatabase(DB_NAME ,Context.MODE_PRIVATE, null);
-        ContentValues  values = new ContentValues();
+    public long insertUser(UserEntity userEntity) {
+        sqLiteDatabase = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
+        ContentValues values = new ContentValues();
         values.put("idUser", userEntity.idUser);
         values.put("password", userEntity.passwordUser);
         values.put("fullName", userEntity.fullName);
         long newRow = sqLiteDatabase.insert("user", null, values);
-        Log.e("TAG", "insertUser: " + newRow );
+        Log.e("TAG", "insertUser: " + newRow);
         return newRow;
     }
-    public void getAllUser(){
+
+    public void getAllUser() {
         SQLiteDatabase dbUser = getReadableDatabase();
         Cursor cursor = dbUser.rawQuery("SELECT * from user", null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                CategoryEntity category = new CategoryEntity();
-                category.setIdCategory(cursor.getInt(0));
-                category.setImgCategory(cursor.getString(1));
-                category.setNameCategory(cursor.getString(2));
+                String id = cursor.getString(0);
+                String pass = cursor.getString(1);
+                String name = cursor.getString(2);
+                Log.e("TAG", "getAllUser: " + id);
+                Log.e("TAG", "getAllUser: " + pass);
+                Log.e("TAG", "getAllUser: " + name);
                 cursor.moveToNext();
             }
             cursor.close();
