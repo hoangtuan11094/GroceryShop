@@ -9,6 +9,12 @@ public class UserEntity {
     public UserEntity() {
     }
 
+    public UserEntity( String fullName, String email, String passwordUser) {
+        this.fullName = fullName;
+        this.email = email;
+        this.passwordUser = passwordUser;
+    }
+
     public String getEmail() {
         return email;
     }

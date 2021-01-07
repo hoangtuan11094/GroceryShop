@@ -132,19 +132,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long insertUser(UserEntity userEntity) {
         sqLiteDatabase = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
         long newRow = 0;
-            ContentValues values = new ContentValues();
-            values.put("email", userEntity.email);
-            values.put("password", userEntity.passwordUser);
-            values.put("name", userEntity.fullName);
-            Toast.makeText(context, R.string.lbl_SignUpSuccess, Toast.LENGTH_SHORT).show();
-            newRow = sqLiteDatabase.insert("user", null, values);
+        ContentValues values = new ContentValues();
+        values.put("email", userEntity.email);
+        values.put("password", userEntity.passwordUser);
+        values.put("name", userEntity.fullName);
+        Toast.makeText(context, R.string.lbl_SignUpSuccess, Toast.LENGTH_SHORT).show();
+        newRow = sqLiteDatabase.insert("user", null, values);
 
         return newRow;
     }
 
-    public List<UserEntity> getAllUser() {
+    public void getAllUser() {
         SQLiteDatabase dbUser = getReadableDatabase();
-        List<UserEntity> userEntityList = new ArrayList<>();
         emailList = new ArrayList<>();
         passwordList = new ArrayList<>();
         Cursor cursor = dbUser.rawQuery("SELECT * from user", null);
@@ -158,15 +157,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 userEntity.fullName = cursor.getString(3);
                 emailList.add(userEntity.email);
                 passwordList.add(userEntity.passwordUser);
-                userEntityList.add(userEntity);
                 cursor.moveToNext();
             }
             setEmailList(emailList);
             setPasswordList(passwordList);
             cursor.close();
         }
-
-        return userEntityList;
     }
 
     public List<String> getEmailList() {
@@ -186,6 +182,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.passwordList = passwordList;
     }
 
+    public UserEntity Login(UserEntity userEntity) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query("user",
+                new String[]{"id", "email", "password", "name"},
+                "email" + "=?",
+                new String[]{userEntity.email},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            UserEntity userEntity1 = new UserEntity();
+            userEntity1.idUser = cursor.getInt(0);
+            userEntity1.email = cursor.getString(1);
+            userEntity1.passwordUser = cursor.getString(2);
+            userEntity1.fullName = cursor.getString(3);
+            if (userEntity.passwordUser.equalsIgnoreCase(userEntity1.passwordUser)) {
+                return userEntity1;
+            }
+        }
+        return null;
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {

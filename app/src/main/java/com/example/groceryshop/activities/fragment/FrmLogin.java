@@ -100,17 +100,18 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
     private void loginUser() {
         databaseHelper = new DatabaseHelper(getContext());
         databaseHelper.createDataBase();
-        databaseHelper.getAllUser();
-        userEntityList = new ArrayList<>();
-        userEntityList.addAll(databaseHelper.getAllUser());
-//        emailList.addAll(databaseHelper.getEmailList());
-//        passwordList.addAll(databaseHelper.getPasswordList());
         String email = edtEmailLogin.getText().toString().trim();
         String pass = edtPassLogin.getText().toString().trim();
         if (email.isEmpty() || pass.isEmpty()) {
             showToast(R.string.lblMustNotBeLeftBlank);
         } else {
-
+            UserEntity userEntity = databaseHelper.Login(new UserEntity(null, email, pass));
+            if (userEntity != null) {
+                showToast(R.string.lblLoggedInSuccessfully);
+                activity.showFrmHome();
+            } else {
+                showToast(R.string.lvlEmailOrPasswordIsIncorrect);
+            }
         }
     }
 }
