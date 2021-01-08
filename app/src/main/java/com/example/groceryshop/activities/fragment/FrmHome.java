@@ -35,7 +35,6 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private RecyclerView rcVegetable;
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private VegetableAdapter vegetableAdapter;
-    private DatabaseHelper databaseHelper ;
 
     @Override
     protected int getLayoutResId() {
@@ -98,10 +97,6 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        databaseHelper = new DatabaseHelper(getContext());
-        databaseHelper.createDataBase();
-        databaseHelper.getAllProducts();
-        databaseHelper.getAllCategory();
         showDataVegetable();
         SlideHomeAdapter slideHomeAdapter = new SlideHomeAdapter(intsImg);
         vpHeaderHome.setAdapter(slideHomeAdapter);
@@ -157,7 +152,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
 
         vegetableEntityArrayList = new ArrayList<>();
 
-        vegetableEntityArrayList.addAll(databaseHelper.getAllProducts());
+        vegetableEntityArrayList.addAll(activity.databaseHelper.getAllProducts());
         Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size() );
         for (int i = 0; i < vegetableEntityArrayList.size(); i++) {
             Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct() );

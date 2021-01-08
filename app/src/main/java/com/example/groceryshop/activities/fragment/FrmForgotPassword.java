@@ -1,18 +1,26 @@
 package com.example.groceryshop.activities.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.activities.ActMain;
+import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.UserEntity;
 
 
 public class FrmForgotPassword extends BaseFragment implements View.OnClickListener {
-
+    private FragmentInterface listener;
+    private EditText edtEmail;
     @Override
     protected int getLayoutResId() {
         return R.layout.frm_forgot_password;
@@ -49,10 +57,43 @@ public class FrmForgotPassword extends BaseFragment implements View.OnClickListe
         View btnSendLink = view.findViewById(R.id.btnSendLink);
         btnSendLink.getLayoutParams().width = activity.getSizeWithScale(284);
         btnSendLink.getLayoutParams().height = activity.getSizeWithScale(37);
+
+        edtEmail = view.findViewById(R.id.edtEmail);
+        btnSendLink.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnSendLink:
+                sendLinkEmail();
+                break;
+        }
+    }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ActMain)
+            this.listener = (FragmentInterface) context;
+    }
+    private void sendLinkEmail(){
+        DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
+        databaseHelper.createDataBase();
+        String email = edtEmail.getText().toString().trim();
+        UserEntity userEntity = databaseHelper.sendLinkEmail(new UserEntity(email, null));
+        if (userEntity != null){
+            Log.e(TAG, "loginUser: "+ userEntity.idUser + ", " + userEntity.passwordUser +", "+ userEntity.email + ", " + userEntity.fullName);
+            listener.sendIdUser(userEntity.idUser);
+            activity.showFrmResetPassword();
+        }else {
+            showToast(R.string.lblEmailIsIncorrect);
+        }
     }
 }

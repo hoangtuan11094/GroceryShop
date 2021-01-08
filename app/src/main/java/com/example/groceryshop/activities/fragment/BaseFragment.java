@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.groceryshop.activities.activities.ActMain;
+import com.example.groceryshop.activities.data.DatabaseHelper;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -65,7 +66,6 @@ public abstract class BaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if(activity == null)
             activity = (ActMain) getActivity();
-
     }
 
     @Override

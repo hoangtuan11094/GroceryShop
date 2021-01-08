@@ -1,7 +1,9 @@
 package com.example.groceryshop.activities.fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,11 +23,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
 
     private EditText edtEmailLogin;
     private EditText edtPassLogin;
-    private DatabaseHelper databaseHelper;
-    private List<String> emailList;
-    private List<String> passwordList;
-
-    private List<UserEntity> userEntityList;
+    private TextView tvForgotPass;
 
     public static FrmLogin getInstance() {
         return new FrmLogin();
@@ -81,6 +79,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
         edtPassLogin = view.findViewById(R.id.edtPassLogin);
 
         view.findViewById(R.id.tvSignUp).setOnClickListener(this);
+        view.findViewById(R.id.tvForgotPass).setOnClickListener(this);
         btnLogin.setOnClickListener(this);
     }
 
@@ -94,24 +93,27 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
             case R.id.btnLogin:
                 loginUser();
                 break;
+            case R.id.tvForgotPass:
+                activity.showFrmForgotPassword();
+                break;
         }
     }
 
     private void loginUser() {
-        databaseHelper = new DatabaseHelper(getContext());
-        databaseHelper.createDataBase();
         String email = edtEmailLogin.getText().toString().trim();
         String pass = edtPassLogin.getText().toString().trim();
         if (email.isEmpty() || pass.isEmpty()) {
             showToast(R.string.lblMustNotBeLeftBlank);
         } else {
-            UserEntity userEntity = databaseHelper.Login(new UserEntity(null, email, pass));
+            UserEntity userEntity = activity.databaseHelper.Login(new UserEntity( email, pass));
             if (userEntity != null) {
                 showToast(R.string.lblLoggedInSuccessfully);
                 activity.showFrmHome();
+                Log.e(TAG, "loginUser: "+ userEntity.idUser + ", " + userEntity.passwordUser +", "+ userEntity.email + ", " + userEntity.fullName  );
             } else {
                 showToast(R.string.lvlEmailOrPasswordIsIncorrect);
             }
+
         }
     }
 }

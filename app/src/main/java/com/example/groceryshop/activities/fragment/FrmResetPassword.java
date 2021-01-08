@@ -2,8 +2,10 @@ package com.example.groceryshop.activities.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import com.example.groceryshop.R;
 
 public class FrmResetPassword extends BaseFragment implements View.OnClickListener {
 
+
+    private int idUser;
 
     @Override
     protected int getLayoutResId() {
@@ -57,7 +61,13 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
     public void onClick(View v) {
 
     }
+
 }

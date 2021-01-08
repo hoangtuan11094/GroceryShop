@@ -69,7 +69,7 @@
                     android:id="@+id/edtEmailLogin"
                     android:background="@null"
                     android:textSize="@dimen/tsEdtLogin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/lbl_hin_email"
                     android:textStyle="bold"/>
@@ -98,7 +98,7 @@
                     android:id="@+id/edtPassLogin"
                     android:background="@null"
                     android:textSize="@dimen/tsEdtLogin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/lbl_hin_password"
                     android:textStyle="bold"/>

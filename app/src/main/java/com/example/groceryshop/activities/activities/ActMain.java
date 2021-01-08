@@ -2,13 +2,18 @@ package com.example.groceryshop.activities.activities;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.fragment.FragmentInterface;
 import com.example.groceryshop.activities.fragment.FrmCategory;
+import com.example.groceryshop.activities.fragment.FrmForgotPassword;
 import com.example.groceryshop.activities.fragment.FrmHome;
 import com.example.groceryshop.activities.fragment.FrmLogin;
 import com.example.groceryshop.activities.fragment.FrmResetPassword;
@@ -16,13 +21,15 @@ import com.example.groceryshop.activities.fragment.FrmSearchProduct;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
 
-public class ActMain extends BaseActivity {
+public class ActMain extends BaseActivity implements FragmentInterface {
     private final String TAG = "ActMain";
-
+    public static DatabaseHelper databaseHelper;
+    private Fragment currentFragment;
+    public static int idUser;
     public void addFragment(Fragment f) {
         try {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            Fragment currentFragment = fragmentManager.findFragmentById(R.id.frameMenuContainer);
+            currentFragment = fragmentManager.findFragmentById(R.id.frameMenuContainer);
             if (currentFragment != null) {
                 fragmentManager.beginTransaction()
                         .remove(currentFragment)
@@ -39,6 +46,11 @@ public class ActMain extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navigationApp();
+        if (databaseHelper == null){
+            databaseHelper = new DatabaseHelper(this);
+            databaseHelper.createDataBase();
+        }
+
     }
 
     private void navigationApp() {
@@ -61,6 +73,14 @@ public class ActMain extends BaseActivity {
 
     public void showFrmHome(){
         addFragment(new FrmHome());
+    }
+
+    public void showFrmForgotPassword(){
+        addFragment(new FrmForgotPassword());
+    }
+
+    public void showFrmResetPassword(){
+        addFragment(new FrmResetPassword());
     }
 
 
@@ -91,5 +111,10 @@ public class ActMain extends BaseActivity {
 
     public int getSizeWithScale(double sizeDesign) {
         return (int) (sizeDesign * getScaleValue());
+    }
+
+    @Override
+    public void sendIdUser(int id) {
+        idUser = id;
     }
 }

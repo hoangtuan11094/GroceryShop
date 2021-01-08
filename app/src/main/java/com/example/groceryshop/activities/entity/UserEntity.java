@@ -9,8 +9,7 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity( String fullName, String email, String passwordUser) {
-        this.fullName = fullName;
+    public UserEntity(  String email, String passwordUser) {
         this.email = email;
         this.passwordUser = passwordUser;
     }

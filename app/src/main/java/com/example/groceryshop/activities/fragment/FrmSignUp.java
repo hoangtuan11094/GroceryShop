@@ -27,8 +27,6 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
     private EditText edtPass;
     private List<String> emailList;
 
-    private DatabaseHelper databaseHelper;
-
     @Override
     protected int getLayoutResId() {
         return R.layout.frm_signup;
@@ -99,11 +97,9 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
     }
 
     private void insertUser(){
-        databaseHelper = new DatabaseHelper(getContext());
-        databaseHelper.createDataBase();
-        databaseHelper.getAllUser();
+        activity.databaseHelper.getAllUser();
         emailList = new ArrayList<>();
-        emailList.addAll(databaseHelper.getEmailList());
+        emailList.addAll(activity.databaseHelper.getEmailList());
         Log.e(TAG, "insertUser: "+emailList.size() );
         UserEntity userEntity = new UserEntity();
         userEntity.email = edtEmail.getText().toString().trim();
@@ -115,7 +111,7 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
             showToast(R.string.lbl_EmailAlreadyExists);
         }
         else {
-        databaseHelper.insertUser(userEntity);
+        activity.databaseHelper.insertUser(userEntity);
         showToast(R.string.lbl_SignUpSuccess);
         activity.showFrmLogin();
         edtEmail.setText("");

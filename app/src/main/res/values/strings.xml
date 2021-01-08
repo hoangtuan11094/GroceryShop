@@ -26,4 +26,5 @@
     <string name="lblMustNotBeLeftBlank">Must not be left blank</string>
     <string name="lblLoggedInSuccessfully">Logged in successfully</string>
     <string name="lvlEmailOrPasswordIsIncorrect">Email or password is incorrect</string>
+    <string name="lblEmailIsIncorrect">Email is incorrect</string>
 </resources>

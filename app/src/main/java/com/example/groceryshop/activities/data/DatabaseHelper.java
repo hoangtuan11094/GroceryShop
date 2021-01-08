@@ -203,6 +203,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    public UserEntity sendLinkEmail(UserEntity userEntity){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query("user",
+                new String[]{"id", "email", "password", "name"},
+                "email" + "=?",
+                new String[]{userEntity.email},
+                null, null, null);
+        UserEntity userEntity1 = new UserEntity();
+        if (cursor != null && cursor.moveToNext()){
+            userEntity1.idUser = cursor.getInt(0);
+            userEntity1.email = cursor.getString(1);
+            userEntity1.passwordUser = cursor.getString(2);
+            userEntity1.fullName = cursor.getString(3);
+            if (userEntity.email.equalsIgnoreCase(userEntity1.email)) {
+                return userEntity1;
+            }
+        }
+        return null;
+    }
+
+    public void resetPassword(int id, String pass){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", pass);
+
+        db.update("user", values, "id" + " = ?", new String[] { String.valueOf(id) });
+        db.close();
+    }
     @Override
     public void onCreate(SQLiteDatabase db) {
 

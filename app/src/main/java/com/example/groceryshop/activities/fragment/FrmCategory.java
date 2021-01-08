@@ -26,7 +26,6 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
 //    private int[] intImg = {R.drawable.item_category1, R.drawable.item_category2, R.drawable.item_category3, R.drawable.item_category4, R.drawable.item_category5, R.drawable.item_category6,
 //            R.drawable.item_category7, R.drawable.item_category8, R.drawable.item_category9,R.drawable.item_category10 };
     private List<CategoryEntity> categoryEntityList;
-    private DatabaseHelper databaseHelper;
     private RecyclerView rcCategory;
     private CategoryAdapter categoryAdapter;
 
@@ -68,15 +67,12 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        databaseHelper = new DatabaseHelper(getContext());
-        databaseHelper.createDataBase();
-        databaseHelper.getAllCategory();
         setImgItemCategory();
     }
 
     private void setImgItemCategory(){
         categoryEntityList = new ArrayList<>();
-        categoryEntityList.addAll(databaseHelper.getAllCategory());
+        categoryEntityList.addAll(activity.databaseHelper.getAllCategory());
         for (int i = 0; i < categoryEntityList.size(); i++) {
             Log.e(TAG, "setImgItemCategory: " + categoryEntityList.get(i).getNameCategory());
         }
