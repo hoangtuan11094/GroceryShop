@@ -27,4 +27,7 @@
     <string name="lblLoggedInSuccessfully">Logged in successfully</string>
     <string name="lvlEmailOrPasswordIsIncorrect">Email or password is incorrect</string>
     <string name="lblEmailIsIncorrect">Email is incorrect</string>
+    <string name="lblPasswordsAreNotTheSame">Passwords are not the same</string>
+    <string name="lblPasswordWasSuccessfullyChanged">Password was successfully changed</string>
+    <string name="lblEmailFormatIsIncorrect">Email format is incorrect</string>
 </resources>

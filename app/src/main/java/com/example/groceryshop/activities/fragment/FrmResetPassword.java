@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.groceryshop.R;
 
@@ -16,7 +18,9 @@ import com.example.groceryshop.R;
 public class FrmResetPassword extends BaseFragment implements View.OnClickListener {
 
 
-    private int idUser;
+    private String email;
+    private EditText edtNewPass;
+    private EditText edtReNewPass;
 
     @Override
     protected int getLayoutResId() {
@@ -58,16 +62,50 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
         View btnSubmit = view.findViewById(R.id.btnSubmit);
         btnSubmit.getLayoutParams().width = activity.getSizeWithScale(284);
         btnSubmit.getLayoutParams().height = activity.getSizeWithScale(37);
+
+        edtNewPass = view.findViewById(R.id.edtNewPass);
+        edtReNewPass = view.findViewById(R.id.edtReNewPass);
+
+        btnSubmit.setOnClickListener(this);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null){
+        email = bundle.getString("email");
+        Log.e(TAG, "onViewCreated: " + email );
+        }
     }
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.btnSubmit:
+                resetPass();
+                break;
+        }
     }
 
+    private void resetPass(){
+        String newPass = edtNewPass.getText().toString().trim();
+        String reNewPass = edtReNewPass.getText().toString().trim();
+
+        if (newPass.isEmpty() || newPass.isEmpty()){
+            showToast(R.string.lblMustNotBeLeftBlank);
+        }else if (!newPass.equals(reNewPass)){
+            showToast(R.string.lblPasswordsAreNotTheSame);
+        }else {
+            int count = activity.databaseHelper.resetPassword(email, newPass);
+            if (count > 0){
+                showToast(R.string.lblPasswordWasSuccessfullyChanged);
+                edtReNewPass.setText("");
+                edtNewPass.setText("");
+                Log.e(TAG, "resetPass: " + count );
+                activity.showFrmLogin();
+            }
+
+        }
+    }
 }

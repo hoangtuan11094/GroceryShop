@@ -107,7 +107,10 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
         userEntity.fullName = edtName.getText().toString().trim();
         if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()){
             showToast(R.string.lblMustNotBeLeftBlank);
-        }else if (emailList.contains(userEntity.email)){
+        }else if (!isValidEmail(userEntity.email)){
+            showToast(R.string.lblEmailFormatIsIncorrect);
+        }
+        else if (emailList.contains(userEntity.email)){
             showToast(R.string.lbl_EmailAlreadyExists);
         }
         else {
@@ -118,5 +121,10 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
         edtName.setText("");
         edtPass.setText("");
         }
+    }
+
+    static boolean isValidEmail(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
     }
 }

@@ -160,7 +160,6 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
                 activity.getSizeWithScale(167),activity.getSizeWithScale(134), activity.getSizeWithScale(78));
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-//       LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcVegetable.setAdapter(vegetableAdapter);
         rcVegetable.setLayoutManager(gridLayoutManager);
     }

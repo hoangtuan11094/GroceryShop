@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -93,12 +94,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 VegetableEntity products = new VegetableEntity();
-                products.setIdProduct(cursor.getInt(0));
-                products.setImgProduct(cursor.getString(1));
-                products.setProductName(cursor.getString(2));
-                products.setProductWeight(cursor.getInt(3));
-                products.setProductPrice(cursor.getInt(4));
-                products.setProductIdCategory(cursor.getInt(5));
+                products.setIdProduct(cursor.getInt(cursor.getColumnIndex(ID)));
+                products.setImgProduct(cursor.getString(cursor.getColumnIndex(IMG_PRODUCT)));
+                products.setProductName(cursor.getString(cursor.getColumnIndex(NAME_PRODUCT)));
+                products.setProductWeight(cursor.getInt(cursor.getColumnIndex(WEIGTH_PRODUCT)));
+                products.setProductPrice(cursor.getInt(cursor.getColumnIndex(PRICE_PRODUCT)));
+                products.setProductIdCategory(cursor.getInt(cursor.getColumnIndex(ID_CATEGORY_PRODUCT)));
 
                 productList.add(products);
                 cursor.moveToNext();
@@ -116,9 +117,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 CategoryEntity category = new CategoryEntity();
-                category.setIdCategory(cursor.getInt(0));
-                category.setImgCategory(cursor.getString(1));
-                category.setNameCategory(cursor.getString(2));
+                category.setIdCategory(cursor.getInt(cursor.getColumnIndex("idCategory")));
+                category.setImgCategory(cursor.getString(cursor.getColumnIndex("imgCategory")));
+                category.setNameCategory(cursor.getString(cursor.getColumnIndex("nameCategory")));
                 categoryEntityList.add(category);
                 cursor.moveToNext();
             }
@@ -127,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categoryEntityList;
     }
 
-
+//GET USER
     //singup
     public long insertUser(UserEntity userEntity) {
         sqLiteDatabase = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
@@ -151,10 +152,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 UserEntity userEntity = new UserEntity();
-                userEntity.idUser = cursor.getInt(0);
-                userEntity.email = cursor.getString(1);
-                userEntity.passwordUser = cursor.getString(2);
-                userEntity.fullName = cursor.getString(3);
+                userEntity = dataUser(cursor);
                 emailList.add(userEntity.email);
                 passwordList.add(userEntity.passwordUser);
                 cursor.moveToNext();
@@ -163,6 +161,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             setPasswordList(passwordList);
             cursor.close();
         }
+    }
+
+    private UserEntity dataUser( Cursor cursor){
+        UserEntity userEntity1 = new UserEntity();
+        userEntity1.idUser = cursor.getInt(cursor.getColumnIndex("id"));
+        userEntity1.email = cursor.getString(cursor.getColumnIndex("email"));
+        userEntity1.passwordUser = cursor.getString(cursor.getColumnIndex("password"));
+        userEntity1.fullName = cursor.getString(cursor.getColumnIndex("name"));
+
+        return userEntity1;
     }
 
     public List<String> getEmailList() {
@@ -190,12 +198,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{userEntity.email},
                 null, null, null);
 
+        UserEntity userEntity1 = new UserEntity();
         if (cursor != null && cursor.moveToFirst()) {
-            UserEntity userEntity1 = new UserEntity();
-            userEntity1.idUser = cursor.getInt(0);
-            userEntity1.email = cursor.getString(1);
-            userEntity1.passwordUser = cursor.getString(2);
-            userEntity1.fullName = cursor.getString(3);
+            userEntity1 = dataUser(cursor);
             if (userEntity.passwordUser.equalsIgnoreCase(userEntity1.passwordUser)) {
                 return userEntity1;
             }
@@ -212,10 +217,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null, null, null);
         UserEntity userEntity1 = new UserEntity();
         if (cursor != null && cursor.moveToNext()){
-            userEntity1.idUser = cursor.getInt(0);
-            userEntity1.email = cursor.getString(1);
-            userEntity1.passwordUser = cursor.getString(2);
-            userEntity1.fullName = cursor.getString(3);
+            userEntity1 = dataUser(cursor);
             if (userEntity.email.equalsIgnoreCase(userEntity1.email)) {
                 return userEntity1;
             }
@@ -223,13 +225,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public void resetPassword(int id, String pass){
+    public int resetPassword(String email, String pass){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("password", pass);
 
-        db.update("user", values, "id" + " = ?", new String[] { String.valueOf(id) });
+        int count = db.update("user", values, "email" + " = ?", new String[] { String.valueOf(email) });
         db.close();
+        return count;
     }
     @Override
     public void onCreate(SQLiteDatabase db) {

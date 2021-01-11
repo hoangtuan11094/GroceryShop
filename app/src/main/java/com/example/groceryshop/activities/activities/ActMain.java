@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.data.DatabaseHelper;
@@ -21,7 +22,7 @@ import com.example.groceryshop.activities.fragment.FrmSearchProduct;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
 
-public class ActMain extends BaseActivity implements FragmentInterface {
+public class ActMain extends BaseActivity {
     private final String TAG = "ActMain";
     public static DatabaseHelper databaseHelper;
     private Fragment currentFragment;
@@ -79,8 +80,16 @@ public class ActMain extends BaseActivity implements FragmentInterface {
         addFragment(new FrmForgotPassword());
     }
 
-    public void showFrmResetPassword(){
-        addFragment(new FrmResetPassword());
+    public void showFrmResetPassword( String email){
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        FrmResetPassword frmResetPassword = new FrmResetPassword();
+        frmResetPassword.setArguments(bundle);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft_add = fm.beginTransaction();
+        ft_add.add(R.id.frameParent, frmResetPassword);
+        ft_add.commit();
+
     }
 
 
@@ -113,8 +122,4 @@ public class ActMain extends BaseActivity implements FragmentInterface {
         return (int) (sizeDesign * getScaleValue());
     }
 
-    @Override
-    public void sendIdUser(int id) {
-        idUser = id;
-    }
 }

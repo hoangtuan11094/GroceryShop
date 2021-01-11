@@ -21,6 +21,7 @@ import com.example.groceryshop.activities.entity.UserEntity;
 public class FrmForgotPassword extends BaseFragment implements View.OnClickListener {
     private FragmentInterface listener;
     private EditText edtEmail;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.frm_forgot_password;
@@ -70,30 +71,27 @@ public class FrmForgotPassword extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnSendLink:
                 sendLinkEmail();
                 break;
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof ActMain)
-            this.listener = (FragmentInterface) context;
-    }
-    private void sendLinkEmail(){
+    private void sendLinkEmail() {
         DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
         databaseHelper.createDataBase();
         String email = edtEmail.getText().toString().trim();
-        UserEntity userEntity = databaseHelper.sendLinkEmail(new UserEntity(email, null));
-        if (userEntity != null){
-            Log.e(TAG, "loginUser: "+ userEntity.idUser + ", " + userEntity.passwordUser +", "+ userEntity.email + ", " + userEntity.fullName);
-            listener.sendIdUser(userEntity.idUser);
-            activity.showFrmResetPassword();
-        }else {
-            showToast(R.string.lblEmailIsIncorrect);
+        if (email.isEmpty()) {
+            showToast(R.string.lblMustNotBeLeftBlank);
+        } else {
+            UserEntity userEntity = databaseHelper.sendLinkEmail(new UserEntity(email, null));
+            if (userEntity != null) {
+                Log.e(TAG, "loginUser: " + userEntity.idUser + ", " + userEntity.passwordUser + ", " + userEntity.email + ", " + userEntity.fullName);
+                activity.showFrmResetPassword(userEntity.email);
+            } else {
+                showToast(R.string.lblEmailIsIncorrect);
+            }
         }
     }
 }
