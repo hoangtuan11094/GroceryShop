@@ -71,7 +71,7 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
         icUser.getLayoutParams().width = activity.getSizeWithScale(14);
 
         btnLoginWelCome.setOnClickListener(this);
-
+        btnRegistrationWelCome.setOnClickListener(this);
     }
 
 
@@ -86,6 +86,9 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btnLoginWelCome:
                 activity.showFrmLogin();
+                break;
+            case R.id .btnRegistrationWelCome:
+                activity.showFrmSignUp();
                 break;
         }
     }

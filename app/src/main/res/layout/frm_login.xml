@@ -93,6 +93,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_lock"/>
                 <EditText
+                    android:inputType="textPassword"
                     android:layout_marginStart="@dimen/margin_5"
                     android:gravity="center_vertical"
                     android:id="@+id/edtPassLogin"

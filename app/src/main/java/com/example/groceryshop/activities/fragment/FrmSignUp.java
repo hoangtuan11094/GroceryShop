@@ -25,7 +25,6 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
     private EditText edtName;
     private EditText edtEmail;
     private EditText edtPass;
-    private List<String> emailList;
 
     @Override
     protected int getLayoutResId() {
@@ -77,6 +76,7 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
         edtPass = view.findViewById(R.id.edtPass);
 
         view.findViewById(R.id.btnSignUp).setOnClickListener(this);
+        view.findViewById(R.id.tvSignIn).setOnClickListener(this);
     }
 
     @Override
@@ -93,24 +93,25 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
             case R.id.btnSignUp:
                 insertUser();
                 break;
+            case R.id.tvSignIn:
+                activity.showFrmLogin();
+                break;
         }
     }
 
     private void insertUser(){
         activity.databaseHelper.getAllUser();
-        emailList = new ArrayList<>();
-        emailList.addAll(activity.databaseHelper.getEmailList());
-        Log.e(TAG, "insertUser: "+emailList.size() );
         UserEntity userEntity = new UserEntity();
         userEntity.email = edtEmail.getText().toString().trim();
         userEntity.passwordUser = edtPass.getText().toString().trim();
         userEntity.fullName = edtName.getText().toString().trim();
+        String checkEmail = activity.databaseHelper.checkEmail(userEntity.email);
         if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()){
             showToast(R.string.lblMustNotBeLeftBlank);
         }else if (!isValidEmail(userEntity.email)){
             showToast(R.string.lblEmailFormatIsIncorrect);
         }
-        else if (emailList.contains(userEntity.email)){
+        else if (checkEmail != null){
             showToast(R.string.lbl_EmailAlreadyExists);
         }
         else {

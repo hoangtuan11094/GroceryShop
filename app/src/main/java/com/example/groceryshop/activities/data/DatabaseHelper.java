@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final String TAG = "DatabaseHelper";
     public static String DB_NAME = "grocery_shop.db";
     public static String PATH_DB;
     private SQLiteDatabase sqLiteDatabase;
@@ -37,8 +38,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String WEIGTH_PRODUCT = "productWeigth";
     private String PRICE_PRODUCT = "productPrice";
     private String ID_CATEGORY_PRODUCT = "productIdCategory";
-    private List<String> emailList;
-    private List<String> passwordList;
 
 
     public DatabaseHelper(Context context) {
@@ -145,20 +144,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void getAllUser() {
         SQLiteDatabase dbUser = getReadableDatabase();
-        emailList = new ArrayList<>();
-        passwordList = new ArrayList<>();
         Cursor cursor = dbUser.rawQuery("SELECT * from user", null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 UserEntity userEntity = new UserEntity();
                 userEntity = dataUser(cursor);
-                emailList.add(userEntity.email);
-                passwordList.add(userEntity.passwordUser);
                 cursor.moveToNext();
             }
-            setEmailList(emailList);
-            setPasswordList(passwordList);
             cursor.close();
         }
     }
@@ -173,21 +166,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userEntity1;
     }
 
-    public List<String> getEmailList() {
 
-        return emailList;
-    }
-
-    public void setEmailList(List<String> emailList) {
-        this.emailList = emailList;
-    }
-
-    public List<String> getPasswordList() {
-        return passwordList;
-    }
-
-    public void setPasswordList(List<String> passwordList) {
-        this.passwordList = passwordList;
+    public String checkEmail(String email1){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(" SELECT email from user WHERE email IN "+"("  +"\""+ email1 + "\"" + ")  ", null);
+        if (cursor != null & cursor.moveToFirst()){
+            String email2 = cursor.getString(cursor.getColumnIndex("email"));
+            if (email2.equals(email1)){
+                return email1;
+            }
+        }
+        return null;
     }
 
     public UserEntity Login(UserEntity userEntity) {

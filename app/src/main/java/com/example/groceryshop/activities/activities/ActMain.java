@@ -26,7 +26,6 @@ public class ActMain extends BaseActivity {
     private final String TAG = "ActMain";
     public static DatabaseHelper databaseHelper;
     private Fragment currentFragment;
-    public static int idUser;
     public void addFragment(Fragment f) {
         try {
             FragmentManager fragmentManager = getSupportFragmentManager();
