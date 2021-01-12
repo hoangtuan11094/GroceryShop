@@ -101,7 +101,6 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
     }
 
     //TODO dummy API
-    private DummyApi dummyApi;
     private UserEntity userEntity;
     private ListenerAPI listenerAPI = new ListenerAPI() {
         @Override
@@ -134,8 +133,7 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
         } else if (checkEmail) {
             showToast(R.string.lbl_EmailAlreadyExists);
         } else {
-          if (dummyApi == null) dummyApi = new DummyApi();
-          dummyApi.onStart(listenerAPI);
+          DummyApi.getDummyApi().onStart(listenerAPI);
         }
     }
 

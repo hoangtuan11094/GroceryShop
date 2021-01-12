@@ -9,6 +9,18 @@ import java.util.Random;
 public class DummyApi {
     private ListenerAPI mListenerAPI;
     private Handler handler;
+    private static DummyApi dummyApi = new DummyApi();
+
+    private DummyApi() {
+    }
+
+    public static DummyApi getDummyApi() {
+        if (dummyApi == null){
+            dummyApi = new DummyApi();
+        }
+        return dummyApi;
+    }
+
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -24,7 +36,7 @@ public class DummyApi {
         if (mListenerAPI != null) {
             mListenerAPI.onStarts();
         }
-            handler.postDelayed(runnable, 3000L);
+        handler.postDelayed(runnable, 3000L);
     }
 
     private boolean getRandomBoolean() {

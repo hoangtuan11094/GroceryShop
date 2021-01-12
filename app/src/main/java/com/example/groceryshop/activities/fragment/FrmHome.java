@@ -131,7 +131,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tvViewAllCategories:
                 activity.showFrmCategory();
                 break;
@@ -150,7 +150,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         return dot;
     }
 
-    private DummyApi dummyApi;
+    //TODO Dummy API
     private ListenerAPI listenerAPI = new ListenerAPI() {
         @Override
         public void onStarts() {
@@ -162,20 +162,20 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             vegetableEntityArrayList = new ArrayList<>();
 
             vegetableEntityArrayList.addAll(activity.databaseHelper.getAllProducts());
-            Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size() );
+            Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size());
             for (int i = 0; i < vegetableEntityArrayList.size(); i++) {
-                Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct() );
+                Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct());
             }
             vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
-                    activity.getSizeWithScale(167),activity.getSizeWithScale(134), activity.getSizeWithScale(78));
+                    activity.getSizeWithScale(167), activity.getSizeWithScale(134), activity.getSizeWithScale(78));
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
             rcVegetable.setAdapter(vegetableAdapter);
             rcVegetable.setLayoutManager(gridLayoutManager);
             activity.dismissDialog();
         }
     };
+
     private void showDataVegetable() {
-        if (dummyApi == null) dummyApi = new DummyApi();
-        dummyApi.onStart(listenerAPI);
+        DummyApi.getDummyApi().onStart(listenerAPI);
     }
 }

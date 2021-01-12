@@ -92,7 +92,7 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private DummyApi dummyApi;
+    //TODO dummy API
     private ListenerAPI listenerAPI = new ListenerAPI() {
         @Override
         public void onStarts() {
@@ -113,6 +113,7 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
             activity.dismissDialog();
         }
     };
+
     private void resetPass() {
         newPass = edtNewPass.getText().toString().trim();
         reNewPass = edtReNewPass.getText().toString().trim();
@@ -122,8 +123,7 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
         } else if (!newPass.equals(reNewPass)) {
             showToast(R.string.lblPasswordsAreNotTheSame);
         } else {
-           if (dummyApi == null) dummyApi = new DummyApi();
-               dummyApi.onStart(listenerAPI);
+            DummyApi.getDummyApi().onStart(listenerAPI);
         }
     }
 }

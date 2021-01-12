@@ -83,7 +83,6 @@ public class FrmForgotPassword extends BaseFragment implements View.OnClickListe
     }
 
     //TODO dummy API
-    private DummyApi dummyApi;
     private ListenerAPI listenerAPI = new ListenerAPI() {
         @Override
         public void onStarts() {
@@ -109,8 +108,7 @@ public class FrmForgotPassword extends BaseFragment implements View.OnClickListe
         if (email.isEmpty()) {
             showToast(R.string.lblMustNotBeLeftBlank);
         } else {
-            if (dummyApi == null) dummyApi = new DummyApi();
-            dummyApi.onStart(listenerAPI);
+           DummyApi.getDummyApi().onStart(listenerAPI);
         }
     }
 }

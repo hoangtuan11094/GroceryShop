@@ -23,6 +23,8 @@ import com.example.groceryshop.activities.network.DummyApi;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.groceryshop.activities.network.DummyApi.getDummyApi;
+
 
 public class FrmCategory extends BaseFragment implements View.OnClickListener {
 
@@ -74,7 +76,6 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
     }
 
     //TODO dummy API
-    private DummyApi dummyApi;
     private ListenerAPI listenerAPI = new ListenerAPI() {
         @Override
         public void onStarts() {
@@ -98,8 +99,7 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
     };
 
     private void setImgItemCategory() {
-        if (dummyApi == null) dummyApi = new DummyApi();
-        dummyApi.onStart(listenerAPI);
+        getDummyApi().onStart(listenerAPI);
     }
 
     @Override

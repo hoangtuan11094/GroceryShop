@@ -26,6 +26,8 @@ import com.example.groceryshop.activities.network.DummyApi;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.groceryshop.activities.network.DummyApi.getDummyApi;
+
 
 public class FrmLogin extends BaseFragment implements View.OnClickListener {
 
@@ -129,7 +131,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    private DummyApi dummyApi;
+    //TODO Dummy API
     private ListenerAPI listenerAPI = new ListenerAPI() {
         @Override
         public void onStarts() {
@@ -152,7 +154,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
                     editor.commit();
                     showToast(R.string.lblLoggedInSuccessfully);
                     activity.showFrmHome();
-                    Log.e(TAG, "loginUser: " + userEntity.idUser + ", " + userEntity.passwordUser + ", " + userEntity.email + ", " + userEntity.fullName);
+//                    Log.e(TAG, "loginUser: " + userEntity.idUser + ", " + userEntity.passwordUser + ", " + userEntity.email + ", " + userEntity.fullName);
                 } else {
                     showToast(R.string.lvlEmailOrPasswordIsIncorrect);
                 }
@@ -161,16 +163,13 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
     };
 
     private void loginUser() {
-        if (dummyApi == null) {
-            dummyApi = new DummyApi();
-        }
 
         email = edtEmailLogin.getText().toString().trim();
         pass = edtPassLogin.getText().toString().trim();
         if (email.isEmpty() || pass.isEmpty()) {
             showToast(R.string.lblMustNotBeLeftBlank);
         } else {
-            dummyApi.onStart(listenerAPI);
+            getDummyApi().onStart( listenerAPI);
         }
 
 
