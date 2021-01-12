@@ -22,7 +22,7 @@ import com.example.groceryshop.activities.fragment.FrmSearchProduct;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
 
-public class ActMain extends BaseActivity {
+public class ActMain extends BaseActivity  {
     private final String TAG = "ActMain";
     public static DatabaseHelper databaseHelper;
     private Fragment currentFragment;
@@ -46,6 +46,7 @@ public class ActMain extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navigationApp();
+        initDialogLoading();
         if (databaseHelper == null){
             databaseHelper = new DatabaseHelper(this);
             databaseHelper.createDataBase();

@@ -129,6 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 //GET USER
     //singup
+
     public long insertUser(UserEntity userEntity) {
         sqLiteDatabase = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
         long newRow = 0;
@@ -167,16 +168,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public String checkEmail(String email1){
+    public boolean checkEmail(String email1){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(" SELECT email from user WHERE email IN "+"("  +"\""+ email1 + "\"" + ")  ", null);
+        Cursor cursor = db.rawQuery(" SELECT email from user WHERE email= '" +  email1 +"'",null);
         if (cursor != null & cursor.moveToFirst()){
             String email2 = cursor.getString(cursor.getColumnIndex("email"));
+            Log.e(TAG, "checkEmail: " +email2 );
             if (email2.equals(email1)){
-                return email1;
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     public UserEntity Login(UserEntity userEntity) {

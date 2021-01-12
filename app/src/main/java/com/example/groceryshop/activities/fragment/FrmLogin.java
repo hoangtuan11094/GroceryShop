@@ -3,6 +3,7 @@ package com.example.groceryshop.activities.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -19,6 +20,7 @@ import com.example.groceryshop.activities.adapter.VegetableAdapter;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.entity.VegetableEntity;
+import com.example.groceryshop.activities.listener.ListenerAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,27 +129,46 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
     }
 
     private void loginUser() {
-        email = edtEmailLogin.getText().toString().trim();
-        pass = edtPassLogin.getText().toString().trim();
-        if (email.isEmpty() || pass.isEmpty()) {
-            showToast(R.string.lblMustNotBeLeftBlank);
-        } else {
-            UserEntity userEntity = activity.databaseHelper.Login(new UserEntity(email, pass));
-            if (userEntity != null) {
-                SharedPreferences sharedPreferences = getContext().getSharedPreferences("saveUserPassword", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("email", email);
-                editor.putString("password", pass);
-                editor.putBoolean("check", ckbRemember.isChecked());
-                editor.commit();
-                showToast(R.string.lblLoggedInSuccessfully);
-                activity.showFrmHome();
-                Log.e(TAG, "loginUser: " + userEntity.idUser + ", " + userEntity.passwordUser + ", " + userEntity.email + ", " + userEntity.fullName);
-            } else {
-                showToast(R.string.lvlEmailOrPasswordIsIncorrect);
+
+        ListenerAPI listenerAPI = new ListenerAPI() {
+
+            @Override
+            public void onStarts() {
+                email = edtEmailLogin.getText().toString().trim();
+                pass = edtPassLogin.getText().toString().trim();
+                if (email.isEmpty() || pass.isEmpty()) {
+                    showToast(R.string.lblMustNotBeLeftBlank);
+                } else {
+                    activity.showDialogLoading();
+                    onResult();
+                }
             }
 
-        }
-    }
+            @Override
+            public void onResult() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.dismissDialog();
+                        UserEntity userEntity = activity.databaseHelper.Login(new UserEntity(email, pass));
+                        if (userEntity != null) {
+                            SharedPreferences sharedPreferences = getContext().getSharedPreferences("saveUserPassword", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", email);
+                            editor.putString("password", pass);
+                            editor.putBoolean("check", ckbRemember.isChecked());
+                            editor.commit();
+                            showToast(R.string.lblLoggedInSuccessfully);
+                            activity.showFrmHome();
+                            Log.e(TAG, "loginUser: " + userEntity.idUser + ", " + userEntity.passwordUser + ", " + userEntity.email + ", " + userEntity.fullName);
+                        } else {
+                            showToast(R.string.lvlEmailOrPasswordIsIncorrect);
+                        }
+                    }
+                }, 3000);
+            }
+        };
 
+        listenerAPI.onStarts();
+    }
 }

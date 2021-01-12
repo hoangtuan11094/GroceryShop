@@ -1,6 +1,8 @@
 package com.example.groceryshop.activities.fragment;
 
+import android.accounts.NetworkErrorException;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +13,11 @@ import androidx.annotation.Nullable;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.activities.ActMain;
+import com.example.groceryshop.activities.listener.ListenerAPI;
 
 
 public class FrmWelcome extends BaseFragment implements View.OnClickListener {
+
     public static FrmWelcome getInstance() {
         return new FrmWelcome();
     }
@@ -74,8 +78,6 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
         btnRegistrationWelCome.setOnClickListener(this);
     }
 
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -85,11 +87,14 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnLoginWelCome:
-                activity.showFrmLogin();
+               activity.showFrmLogin();
                 break;
             case R.id .btnRegistrationWelCome:
                 activity.showFrmSignUp();
                 break;
         }
     }
+
+
+
 }
