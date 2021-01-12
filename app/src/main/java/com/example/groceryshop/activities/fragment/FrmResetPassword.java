@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.listener.ListenerAPI;
+import com.example.groceryshop.activities.network.DummyApi;
 
 
 public class FrmResetPassword extends BaseFragment implements View.OnClickListener {
@@ -21,10 +23,12 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
     private String email;
     private EditText edtNewPass;
     private EditText edtReNewPass;
+    private String newPass;
+    private String reNewPass;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.frm_reset_password ;
+        return R.layout.frm_reset_password;
     }
 
     @Override
@@ -73,39 +77,53 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
-        if (bundle != null){
-        email = bundle.getString("email");
-        Log.e(TAG, "onViewCreated: " + email );
+        if (bundle != null) {
+            email = bundle.getString("email");
+            Log.e(TAG, "onViewCreated: " + email);
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnSubmit:
                 resetPass();
                 break;
         }
     }
 
-    private void resetPass(){
-        String newPass = edtNewPass.getText().toString().trim();
-        String reNewPass = edtReNewPass.getText().toString().trim();
+    private DummyApi dummyApi;
+    private ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onStarts() {
+            activity.showDialogLoading();
+        }
 
-        if (newPass.isEmpty() || newPass.isEmpty()){
-            showToast(R.string.lblMustNotBeLeftBlank);
-        }else if (!newPass.equals(reNewPass)){
-            showToast(R.string.lblPasswordsAreNotTheSame);
-        }else {
+        @Override
+        public void onResult(boolean isSuccess) {
             int count = activity.databaseHelper.resetPassword(email, newPass);
-            if (count > 0){
+            if (count > 0) {
                 showToast(R.string.lblPasswordWasSuccessfullyChanged);
                 edtReNewPass.setText("");
                 edtNewPass.setText("");
-                Log.e(TAG, "resetPass: " + count );
+                Log.e(TAG, "resetPass: " + count);
                 activity.showFrmLogin();
             }
 
+            activity.dismissDialog();
+        }
+    };
+    private void resetPass() {
+        newPass = edtNewPass.getText().toString().trim();
+        reNewPass = edtReNewPass.getText().toString().trim();
+
+        if (newPass.isEmpty() || newPass.isEmpty()) {
+            showToast(R.string.lblMustNotBeLeftBlank);
+        } else if (!newPass.equals(reNewPass)) {
+            showToast(R.string.lblPasswordsAreNotTheSame);
+        } else {
+           if (dummyApi == null) dummyApi = new DummyApi();
+               dummyApi.onStart(listenerAPI);
         }
     }
 }

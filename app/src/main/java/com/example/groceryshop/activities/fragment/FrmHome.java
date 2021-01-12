@@ -24,6 +24,8 @@ import com.example.groceryshop.activities.adapter.SlideHomeAdapter;
 import com.example.groceryshop.activities.adapter.VegetableAdapter;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.VegetableEntity;
+import com.example.groceryshop.activities.listener.ListenerAPI;
+import com.example.groceryshop.activities.network.DummyApi;
 
 import java.util.ArrayList;
 
@@ -148,19 +150,32 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         return dot;
     }
 
-    private void showDataVegetable() {
-
-        vegetableEntityArrayList = new ArrayList<>();
-
-        vegetableEntityArrayList.addAll(activity.databaseHelper.getAllProducts());
-        Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size() );
-        for (int i = 0; i < vegetableEntityArrayList.size(); i++) {
-            Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct() );
+    private DummyApi dummyApi;
+    private ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onStarts() {
+            activity.showDialogLoading();
         }
-        vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
-                activity.getSizeWithScale(167),activity.getSizeWithScale(134), activity.getSizeWithScale(78));
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        rcVegetable.setAdapter(vegetableAdapter);
-        rcVegetable.setLayoutManager(gridLayoutManager);
+
+        @Override
+        public void onResult(boolean isSuccess) {
+            vegetableEntityArrayList = new ArrayList<>();
+
+            vegetableEntityArrayList.addAll(activity.databaseHelper.getAllProducts());
+            Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size() );
+            for (int i = 0; i < vegetableEntityArrayList.size(); i++) {
+                Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct() );
+            }
+            vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
+                    activity.getSizeWithScale(167),activity.getSizeWithScale(134), activity.getSizeWithScale(78));
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+            rcVegetable.setAdapter(vegetableAdapter);
+            rcVegetable.setLayoutManager(gridLayoutManager);
+            activity.dismissDialog();
+        }
+    };
+    private void showDataVegetable() {
+        if (dummyApi == null) dummyApi = new DummyApi();
+        dummyApi.onStart(listenerAPI);
     }
 }

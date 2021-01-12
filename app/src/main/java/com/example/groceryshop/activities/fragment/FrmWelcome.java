@@ -21,6 +21,7 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
     public static FrmWelcome getInstance() {
         return new FrmWelcome();
     }
+
     @Override
     protected int getLayoutResId() {
         return R.layout.frm_welcome;
@@ -35,6 +36,7 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
     protected void finish() {
 
     }
+
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -85,16 +87,15 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnLoginWelCome:
-               activity.showFrmLogin();
+                activity.showFrmLogin();
                 break;
-            case R.id .btnRegistrationWelCome:
+            case R.id.btnRegistrationWelCome:
                 activity.showFrmSignUp();
                 break;
         }
     }
-
 
 
 }

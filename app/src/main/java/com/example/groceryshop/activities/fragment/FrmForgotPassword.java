@@ -16,11 +16,14 @@ import com.example.groceryshop.R;
 import com.example.groceryshop.activities.activities.ActMain;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.UserEntity;
+import com.example.groceryshop.activities.listener.ListenerAPI;
+import com.example.groceryshop.activities.network.DummyApi;
 
 
 public class FrmForgotPassword extends BaseFragment implements View.OnClickListener {
     private FragmentInterface listener;
     private EditText edtEmail;
+    private String email;
 
     @Override
     protected int getLayoutResId() {
@@ -59,6 +62,7 @@ public class FrmForgotPassword extends BaseFragment implements View.OnClickListe
         btnSendLink.getLayoutParams().width = activity.getSizeWithScale(284);
         btnSendLink.getLayoutParams().height = activity.getSizeWithScale(37);
 
+
         edtEmail = view.findViewById(R.id.edtEmail);
         btnSendLink.setOnClickListener(this);
 
@@ -78,20 +82,35 @@ public class FrmForgotPassword extends BaseFragment implements View.OnClickListe
         }
     }
 
-    private void sendLinkEmail() {
-        DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
-        databaseHelper.createDataBase();
-        String email = edtEmail.getText().toString().trim();
-        if (email.isEmpty()) {
-            showToast(R.string.lblMustNotBeLeftBlank);
-        } else {
-            UserEntity userEntity = databaseHelper.sendLinkEmail(new UserEntity(email, null));
+    //TODO dummy API
+    private DummyApi dummyApi;
+    private ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onStarts() {
+            activity.showDialogLoading();
+        }
+
+        @Override
+        public void onResult(boolean isSuccess) {
+            UserEntity userEntity = activity.databaseHelper.sendLinkEmail(new UserEntity(email, null));
             if (userEntity != null) {
                 Log.e(TAG, "loginUser: " + userEntity.idUser + ", " + userEntity.passwordUser + ", " + userEntity.email + ", " + userEntity.fullName);
                 activity.showFrmResetPassword(userEntity.email);
             } else {
                 showToast(R.string.lblEmailIsIncorrect);
             }
+
+            activity.dismissDialog();
+        }
+    };
+
+    private void sendLinkEmail() {
+        email = edtEmail.getText().toString().trim();
+        if (email.isEmpty()) {
+            showToast(R.string.lblMustNotBeLeftBlank);
+        } else {
+            if (dummyApi == null) dummyApi = new DummyApi();
+            dummyApi.onStart(listenerAPI);
         }
     }
 }

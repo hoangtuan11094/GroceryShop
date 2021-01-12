@@ -22,10 +22,11 @@ import com.example.groceryshop.activities.fragment.FrmSearchProduct;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
 
-public class ActMain extends BaseActivity  {
+public class ActMain extends BaseActivity {
     private final String TAG = "ActMain";
     public static DatabaseHelper databaseHelper;
     private Fragment currentFragment;
+
     public void addFragment(Fragment f) {
         try {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -47,7 +48,7 @@ public class ActMain extends BaseActivity  {
         setContentView(R.layout.activity_main);
         navigationApp();
         initDialogLoading();
-        if (databaseHelper == null){
+        if (databaseHelper == null) {
             databaseHelper = new DatabaseHelper(this);
             databaseHelper.createDataBase();
         }
@@ -68,19 +69,19 @@ public class ActMain extends BaseActivity  {
         addFragment(new FrmSignUp());
     }
 
-    public void showFrmCategory(){
+    public void showFrmCategory() {
         addFragment(new FrmCategory());
     }
 
-    public void showFrmHome(){
+    public void showFrmHome() {
         addFragment(new FrmHome());
     }
 
-    public void showFrmForgotPassword(){
+    public void showFrmForgotPassword() {
         addFragment(new FrmForgotPassword());
     }
 
-    public void showFrmResetPassword( String email){
+    public void showFrmResetPassword(String email) {
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
         FrmResetPassword frmResetPassword = new FrmResetPassword();

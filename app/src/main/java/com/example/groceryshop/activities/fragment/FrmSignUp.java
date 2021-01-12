@@ -15,6 +15,8 @@ import com.example.groceryshop.R;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.fragment.BaseFragment;
+import com.example.groceryshop.activities.listener.ListenerAPI;
+import com.example.groceryshop.activities.network.DummyApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,10 +88,9 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
     }
 
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnSignUp:
                 insertUser();
                 break;
@@ -99,28 +100,42 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    private void insertUser(){
-        activity.databaseHelper.getAllUser();
-        UserEntity userEntity = new UserEntity();
+    //TODO dummy API
+    private DummyApi dummyApi;
+    private UserEntity userEntity;
+    private ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onStarts() {
+            activity.showDialogLoading();
+        }
+
+        @Override
+        public void onResult(boolean isSuccess) {
+            activity.databaseHelper.insertUser(userEntity);
+            showToast(R.string.lbl_SignUpSuccess);
+            activity.showFrmLogin();
+            edtEmail.setText("");
+            edtName.setText("");
+            edtPass.setText("");
+            activity.dismissDialog();
+        }
+    };
+
+    private void insertUser() {
+        if (userEntity == null) userEntity = new UserEntity();
         userEntity.email = edtEmail.getText().toString().trim();
         userEntity.passwordUser = edtPass.getText().toString().trim();
         userEntity.fullName = edtName.getText().toString().trim();
         boolean checkEmail = activity.databaseHelper.checkEmail(userEntity.email);
-        if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()){
+        if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()) {
             showToast(R.string.lblMustNotBeLeftBlank);
-        }else if (!isValidEmail(userEntity.email)){
+        } else if (!isValidEmail(userEntity.email)) {
             showToast(R.string.lblEmailFormatIsIncorrect);
-        }
-        else if (checkEmail){
+        } else if (checkEmail) {
             showToast(R.string.lbl_EmailAlreadyExists);
-        }
-        else {
-        activity.databaseHelper.insertUser(userEntity);
-        showToast(R.string.lbl_SignUpSuccess);
-        activity.showFrmLogin();
-        edtEmail.setText("");
-        edtName.setText("");
-        edtPass.setText("");
+        } else {
+          if (dummyApi == null) dummyApi = new DummyApi();
+          dummyApi.onStart(listenerAPI);
         }
     }
 

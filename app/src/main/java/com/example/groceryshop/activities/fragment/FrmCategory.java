@@ -1,5 +1,6 @@
 package com.example.groceryshop.activities.fragment;
 
+import android.media.MediaDrm;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,8 @@ import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.CategoryAdapter;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.CategoryEntity;
+import com.example.groceryshop.activities.listener.ListenerAPI;
+import com.example.groceryshop.activities.network.DummyApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,7 @@ import java.util.List;
 
 public class FrmCategory extends BaseFragment implements View.OnClickListener {
 
-//    private int[] intImg = {R.drawable.item_category1, R.drawable.item_category2, R.drawable.item_category3, R.drawable.item_category4, R.drawable.item_category5, R.drawable.item_category6,
+    //    private int[] intImg = {R.drawable.item_category1, R.drawable.item_category2, R.drawable.item_category3, R.drawable.item_category4, R.drawable.item_category5, R.drawable.item_category6,
 //            R.drawable.item_category7, R.drawable.item_category8, R.drawable.item_category9,R.drawable.item_category10 };
     private List<CategoryEntity> categoryEntityList;
     private RecyclerView rcCategory;
@@ -70,16 +73,33 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
         setImgItemCategory();
     }
 
-    private void setImgItemCategory(){
-        categoryEntityList = new ArrayList<>();
-        categoryEntityList.addAll(activity.databaseHelper.getAllCategory());
-        for (int i = 0; i < categoryEntityList.size(); i++) {
-            Log.e(TAG, "setImgItemCategory: " + categoryEntityList.get(i).getNameCategory());
+    //TODO dummy API
+    private DummyApi dummyApi;
+    private ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onStarts() {
+            activity.showDialogLoading();
         }
-        categoryAdapter = new CategoryAdapter(categoryEntityList, getContext(), activity.getSizeWithScale(269), activity.getSizeWithScale(43));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rcCategory.setLayoutManager(linearLayoutManager);
-        rcCategory.setAdapter(categoryAdapter);
+
+        @Override
+        public void onResult(boolean isSuccess) {
+            if (categoryEntityList == null){
+                categoryEntityList = new ArrayList<>();
+                categoryEntityList.addAll(activity.databaseHelper.getAllCategory());
+            }
+            if (categoryAdapter == null){
+                categoryAdapter = new CategoryAdapter(categoryEntityList, getContext(), activity.getSizeWithScale(269), activity.getSizeWithScale(43));
+            }
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+            rcCategory.setLayoutManager(linearLayoutManager);
+            rcCategory.setAdapter(categoryAdapter);
+            activity.dismissDialog();
+        }
+    };
+
+    private void setImgItemCategory() {
+        if (dummyApi == null) dummyApi = new DummyApi();
+        dummyApi.onStart(listenerAPI);
     }
 
     @Override

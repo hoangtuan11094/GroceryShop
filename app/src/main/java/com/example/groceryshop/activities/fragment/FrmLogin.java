@@ -21,6 +21,7 @@ import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.entity.VegetableEntity;
 import com.example.groceryshop.activities.listener.ListenerAPI;
+import com.example.groceryshop.activities.network.DummyApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,47 +129,50 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    private void loginUser() {
+    private DummyApi dummyApi;
+    private ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onStarts() {
+            activity.showDialogLoading();
+        }
 
-        ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onResult(boolean isSuccess) {
+            activity.dismissDialog();
 
-            @Override
-            public void onStarts() {
-                email = edtEmailLogin.getText().toString().trim();
-                pass = edtPassLogin.getText().toString().trim();
-                if (email.isEmpty() || pass.isEmpty()) {
-                    showToast(R.string.lblMustNotBeLeftBlank);
+            if (isSuccess) {
+                Log.e(TAG, "onResult: " + isSuccess );
+                UserEntity userEntity = activity.databaseHelper.Login(new UserEntity(email, pass));
+                if (userEntity != null) {
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences("saveUserPassword", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", email);
+                    editor.putString("password", pass);
+                    editor.putBoolean("check", ckbRemember.isChecked());
+                    editor.commit();
+                    showToast(R.string.lblLoggedInSuccessfully);
+                    activity.showFrmHome();
+                    Log.e(TAG, "loginUser: " + userEntity.idUser + ", " + userEntity.passwordUser + ", " + userEntity.email + ", " + userEntity.fullName);
                 } else {
-                    activity.showDialogLoading();
-                    onResult();
+                    showToast(R.string.lvlEmailOrPasswordIsIncorrect);
                 }
-            }
+            }else Log.e(TAG, "onResult: " + isSuccess );
+        }
+    };
 
-            @Override
-            public void onResult() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity.dismissDialog();
-                        UserEntity userEntity = activity.databaseHelper.Login(new UserEntity(email, pass));
-                        if (userEntity != null) {
-                            SharedPreferences sharedPreferences = getContext().getSharedPreferences("saveUserPassword", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("email", email);
-                            editor.putString("password", pass);
-                            editor.putBoolean("check", ckbRemember.isChecked());
-                            editor.commit();
-                            showToast(R.string.lblLoggedInSuccessfully);
-                            activity.showFrmHome();
-                            Log.e(TAG, "loginUser: " + userEntity.idUser + ", " + userEntity.passwordUser + ", " + userEntity.email + ", " + userEntity.fullName);
-                        } else {
-                            showToast(R.string.lvlEmailOrPasswordIsIncorrect);
-                        }
-                    }
-                }, 3000);
-            }
-        };
+    private void loginUser() {
+        if (dummyApi == null) {
+            dummyApi = new DummyApi();
+        }
 
-        listenerAPI.onStarts();
+        email = edtEmailLogin.getText().toString().trim();
+        pass = edtPassLogin.getText().toString().trim();
+        if (email.isEmpty() || pass.isEmpty()) {
+            showToast(R.string.lblMustNotBeLeftBlank);
+        } else {
+            dummyApi.onStart(listenerAPI);
+        }
+
+
     }
 }
