@@ -30,7 +30,7 @@ public class DummyApi {
         }
     };
 
-    public void onStart(ListenerAPI listenerAPI) {
+    public void start(ListenerAPI listenerAPI) {
         this.mListenerAPI = listenerAPI;
         if (handler == null) handler = new Handler();
         if (mListenerAPI != null) {

@@ -1,5 +1,7 @@
 package com.example.groceryshop.activities.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -21,11 +23,14 @@ import com.example.groceryshop.activities.fragment.FrmResetPassword;
 import com.example.groceryshop.activities.fragment.FrmSearchProduct;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
+import com.example.groceryshop.activities.listener.ListenerAPI;
+import com.example.groceryshop.activities.network.DummyApi;
 
 public class ActMain extends BaseActivity {
     private final String TAG = "ActMain";
     public static DatabaseHelper databaseHelper;
     private Fragment currentFragment;
+    private boolean checkLogin;
 
     public void addFragment(Fragment f) {
         try {
@@ -46,17 +51,27 @@ public class ActMain extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        navigationApp();
         initDialogLoading();
         if (databaseHelper == null) {
             databaseHelper = new DatabaseHelper(this);
             databaseHelper.createDataBase();
         }
 
+        SharedPreferences sharedPreferences = this.getSharedPreferences("saveUserPassword", Context.MODE_PRIVATE);
+        checkLogin = sharedPreferences.getBoolean("checkLogin", false);
+        if (sharedPreferences != null) {
+            Log.e(TAG, "onCreate: " + checkLogin);
+        }
+        navigationApp();
+
+
     }
 
     private void navigationApp() {
-        addFragment(new FrmWelcome());
+        if (checkLogin){
+            addFragment(new FrmHome());
+        }else
+            addFragment(new FrmWelcome());
     }
 
 
@@ -93,6 +108,26 @@ public class ActMain extends BaseActivity {
 
     }
 
+    public void logout() {
+        DummyApi.getDummyApi().start(listenerAPI);
+    }
+
+    ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onStarts() {
+            showDialogLoading();
+        }
+
+        @Override
+        public void onResult(boolean isSuccess) {
+            SharedPreferences sharedPreferences = getSharedPreferences("saveUserPassword", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("checkLogin", false);
+            editor.commit();
+            showFrmLogin();
+            dismissDialog();
+        }
+    };
 
     //TODO size manager
     private float scaleValue = 0;

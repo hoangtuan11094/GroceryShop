@@ -30,4 +30,5 @@
     <string name="lblPasswordsAreNotTheSame">Passwords are not the same</string>
     <string name="lblPasswordWasSuccessfullyChanged">Password was successfully changed</string>
     <string name="lblEmailFormatIsIncorrect">Email format is incorrect</string>
+    <string name="lbl_LogOut">Log out</string>
 </resources>

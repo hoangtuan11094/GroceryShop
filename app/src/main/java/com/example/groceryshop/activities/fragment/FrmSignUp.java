@@ -110,31 +110,41 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
 
         @Override
         public void onResult(boolean isSuccess) {
-            activity.databaseHelper.insertUser(userEntity);
-            showToast(R.string.lbl_SignUpSuccess);
-            activity.showFrmLogin();
-            edtEmail.setText("");
-            edtName.setText("");
-            edtPass.setText("");
-            activity.dismissDialog();
+            try {
+                activity.databaseHelper.insertUser(userEntity);
+                showToast(R.string.lbl_SignUpSuccess);
+                activity.showFrmLogin();
+                edtEmail.setText("");
+                edtName.setText("");
+                edtPass.setText("");
+                activity.dismissDialog();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     };
 
     private void insertUser() {
-        if (userEntity == null) userEntity = new UserEntity();
-        userEntity.email = edtEmail.getText().toString().trim();
-        userEntity.passwordUser = edtPass.getText().toString().trim();
-        userEntity.fullName = edtName.getText().toString().trim();
-        boolean checkEmail = activity.databaseHelper.checkEmail(userEntity.email);
-        if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()) {
-            showToast(R.string.lblMustNotBeLeftBlank);
-        } else if (!isValidEmail(userEntity.email)) {
-            showToast(R.string.lblEmailFormatIsIncorrect);
-        } else if (checkEmail) {
-            showToast(R.string.lbl_EmailAlreadyExists);
-        } else {
-          DummyApi.getDummyApi().onStart(listenerAPI);
+        try {
+            if (userEntity == null) userEntity = new UserEntity();
+            userEntity.email = edtEmail.getText().toString().trim();
+            userEntity.passwordUser = edtPass.getText().toString().trim();
+            userEntity.fullName = edtName.getText().toString().trim();
+            boolean checkEmail = activity.databaseHelper.checkEmail(userEntity.email);
+            if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()) {
+                showToast(R.string.lblMustNotBeLeftBlank);
+            } else if (!isValidEmail(userEntity.email)) {
+                showToast(R.string.lblEmailFormatIsIncorrect);
+            } else if (checkEmail) {
+                showToast(R.string.lbl_EmailAlreadyExists);
+            } else {
+                DummyApi.getDummyApi().start(listenerAPI);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     static boolean isValidEmail(String email) {

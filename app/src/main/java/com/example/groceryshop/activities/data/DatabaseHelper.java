@@ -157,7 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private UserEntity dataUser( Cursor cursor){
+    private UserEntity dataUser(Cursor cursor) {
         UserEntity userEntity1 = new UserEntity();
         userEntity1.idUser = cursor.getInt(cursor.getColumnIndex("id"));
         userEntity1.email = cursor.getString(cursor.getColumnIndex("email"));
@@ -168,13 +168,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean checkEmail(String email1){
+    public boolean checkEmail(String email1) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(" SELECT email from user WHERE email= '" +  email1 +"'",null);
-        if (cursor != null & cursor.moveToFirst()){
+        Cursor cursor = db.rawQuery(" SELECT email from user WHERE email= '" + email1 + "'", null);
+        if (cursor != null & cursor.moveToFirst()) {
             String email2 = cursor.getString(cursor.getColumnIndex("email"));
-            Log.e(TAG, "checkEmail: " +email2 );
-            if (email2.equals(email1)){
+            Log.e(TAG, "checkEmail: " + email2);
+            if (email2.equals(email1)) {
                 return true;
             }
         }
@@ -199,7 +199,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public UserEntity sendLinkEmail(UserEntity userEntity){
+    public UserEntity sendLinkEmail(UserEntity userEntity) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query("user",
                 new String[]{"id", "email", "password", "name"},
@@ -207,7 +207,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{userEntity.email},
                 null, null, null);
         UserEntity userEntity1 = new UserEntity();
-        if (cursor != null && cursor.moveToNext()){
+        if (cursor != null && cursor.moveToNext()) {
             userEntity1 = dataUser(cursor);
             if (userEntity.email.equalsIgnoreCase(userEntity1.email)) {
                 return userEntity1;
@@ -216,15 +216,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public int resetPassword(String email, String pass){
+    public int resetPassword(String email, String pass) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("password", pass);
 
-        int count = db.update("user", values, "email" + " = ?", new String[] { String.valueOf(email) });
+        int count = db.update("user", values, "email" + " = ?", new String[]{String.valueOf(email)});
         db.close();
         return count;
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 

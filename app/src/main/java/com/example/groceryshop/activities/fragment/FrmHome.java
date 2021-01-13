@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.SlideHomeAdapter;
@@ -37,6 +38,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private RecyclerView rcVegetable;
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private VegetableAdapter vegetableAdapter;
+    private TextView tvLogout;
 
     @Override
     protected int getLayoutResId() {
@@ -92,6 +94,8 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         rcVegetable = view.findViewById(R.id.rcVegetable);
         indicator = view.findViewById(R.id.indicator);
         vpHeaderHome = view.findViewById(R.id.vpHeaderHome);
+        tvLogout = view.findViewById(R.id.tvLogout);
+        tvLogout.setOnClickListener(this);
 
         view.findViewById(R.id.tvViewAllCategories).setOnClickListener(this);
     }
@@ -135,6 +139,9 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             case R.id.tvViewAllCategories:
                 activity.showFrmCategory();
                 break;
+            case R.id.tvLogout:
+                activity.logout();
+                break;
         }
     }
 
@@ -176,6 +183,6 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     };
 
     private void showDataVegetable() {
-        DummyApi.getDummyApi().onStart(listenerAPI);
+        DummyApi.getDummyApi().start(listenerAPI);
     }
 }

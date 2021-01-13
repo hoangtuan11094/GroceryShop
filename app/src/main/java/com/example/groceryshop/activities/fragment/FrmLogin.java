@@ -151,6 +151,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
                     editor.putString("email", email);
                     editor.putString("password", pass);
                     editor.putBoolean("check", ckbRemember.isChecked());
+                    editor.putBoolean("checkLogin", true);
                     editor.commit();
                     showToast(R.string.lblLoggedInSuccessfully);
                     activity.showFrmHome();
@@ -169,7 +170,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
         if (email.isEmpty() || pass.isEmpty()) {
             showToast(R.string.lblMustNotBeLeftBlank);
         } else {
-            getDummyApi().onStart( listenerAPI);
+            getDummyApi().start( listenerAPI);
         }
 
 

@@ -108,7 +108,7 @@ public class FrmForgotPassword extends BaseFragment implements View.OnClickListe
         if (email.isEmpty()) {
             showToast(R.string.lblMustNotBeLeftBlank);
         } else {
-           DummyApi.getDummyApi().onStart(listenerAPI);
+           DummyApi.getDummyApi().start(listenerAPI);
         }
     }
 }
