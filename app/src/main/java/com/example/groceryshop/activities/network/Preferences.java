@@ -5,18 +5,18 @@ import android.content.SharedPreferences;
 
 import com.example.groceryshop.activities.conetant.PrefConstants;
 
-public class PrefNetword {
+public class Preferences {
     private SharedPreferences sharedPreferences;
-    private static PrefNetword prefNetword;
+    private static Preferences preferences;
 
-    private PrefNetword() {
+    private Preferences() {
     }
 
-    public static PrefNetword getPrefNetword() {
-        if (prefNetword == null) {
-            prefNetword = new PrefNetword();
+    public static Preferences getPreferences() {
+        if (preferences == null) {
+            preferences = new Preferences();
         }
-        return prefNetword;
+        return preferences;
     }
     public SharedPreferences newSharedPreferences (Context context){
         if (sharedPreferences == null){

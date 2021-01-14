@@ -96,6 +96,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         vpHeaderHome = view.findViewById(R.id.vpHeaderHome);
         tvLogout = view.findViewById(R.id.tvLogout);
         tvLogout.setOnClickListener(this);
+        imgMenu.setOnClickListener(this);
 
         view.findViewById(R.id.tvViewAllCategories).setOnClickListener(this);
     }
@@ -141,6 +142,9 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.tvLogout:
                 activity.logout();
+                break;
+            case R.id.imgMenu:
+                activity.showMenu();
                 break;
         }
     }

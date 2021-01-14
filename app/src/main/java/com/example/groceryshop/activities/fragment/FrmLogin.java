@@ -1,9 +1,7 @@
 package com.example.groceryshop.activities.fragment;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -11,22 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.groceryshop.R;
-import com.example.groceryshop.activities.adapter.VegetableAdapter;
 import com.example.groceryshop.activities.conetant.PrefConstants;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.UserEntity;
-import com.example.groceryshop.activities.entity.VegetableEntity;
 import com.example.groceryshop.activities.listener.ListenerAPI;
-import com.example.groceryshop.activities.network.DummyApi;
-import com.example.groceryshop.activities.network.PrefNetword;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.groceryshop.activities.network.Preferences;
 
 import static com.example.groceryshop.activities.network.DummyApi.getDummyApi;
 
@@ -103,12 +92,12 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        sharedPreferences = PrefNetword.getPrefNetword().newSharedPreferences(getContext());
-        boolean check = sharedPreferences.getBoolean(PrefConstants.CHECK_SAVE_USER, false);
+        sharedPreferences = Preferences.getPreferences().newSharedPreferences(getContext());
+        boolean check = sharedPreferences.getBoolean(PrefConstants.PREF_CHECK_SAVE_USER, false);
         if (check) {
             if (sharedPreferences != null) {
-                edtEmailLogin.setText(sharedPreferences.getString(PrefConstants.EMAIL_SAVE_USER, ""));
-                edtPassLogin.setText(sharedPreferences.getString(PrefConstants.PASSWORD_SAVE_USER, ""));
+                edtEmailLogin.setText(sharedPreferences.getString(PrefConstants.PREF_EMAIL_SAVE_USER, ""));
+                edtPassLogin.setText(sharedPreferences.getString(PrefConstants.PREF_PASSWORD_SAVE_USER, ""));
                 ckbRemember.setChecked(check);
             }
         } else {
@@ -150,10 +139,10 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
                 UserEntity userEntity = DatabaseHelper.getDatabaseHelper(getContext()).Login(new UserEntity(email, pass));
                 if (userEntity != null) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(PrefConstants.EMAIL_SAVE_USER, email);
-                    editor.putString(PrefConstants.PASSWORD_SAVE_USER, pass);
-                    editor.putBoolean(PrefConstants.CHECK_SAVE_USER, ckbRemember.isChecked());
-                    editor.putBoolean(PrefConstants.CHECK_LOGIN, true);
+                    editor.putString(PrefConstants.PREF_EMAIL_SAVE_USER, email);
+                    editor.putString(PrefConstants.PREF_PASSWORD_SAVE_USER, pass);
+                    editor.putBoolean(PrefConstants.PREF_CHECK_SAVE_USER, ckbRemember.isChecked());
+                    editor.putBoolean(PrefConstants.PREF_CHECK_LOGIN, true);
                     editor.commit();
                     showToast(R.string.lblLoggedInSuccessfully);
                     activity.showFrmHome();

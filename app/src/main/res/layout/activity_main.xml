@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:id="@+id/layoutMenuBar"
             layout="@layout/layout_menu_bar"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
         </include>

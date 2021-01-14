@@ -67,6 +67,7 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
         clFooter.getLayoutParams().height = activity.getSizeWithScale(60);
 
         rcCategory = view.findViewById(R.id.rcCategory);
+        imgMenu.setOnClickListener(this);
     }
 
     @Override
@@ -104,6 +105,10 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.imgMenu:
+                activity.showMenu();
+                break;
+        }
     }
 }

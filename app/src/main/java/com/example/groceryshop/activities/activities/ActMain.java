@@ -1,39 +1,43 @@
 package com.example.groceryshop.activities.activities;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.adapter.MenuAdapter;
 import com.example.groceryshop.activities.conetant.PrefConstants;
 import com.example.groceryshop.activities.data.DatabaseHelper;
-import com.example.groceryshop.activities.fragment.FragmentInterface;
+import com.example.groceryshop.activities.entity.MenuEntity;
 import com.example.groceryshop.activities.fragment.FrmCategory;
 import com.example.groceryshop.activities.fragment.FrmForgotPassword;
 import com.example.groceryshop.activities.fragment.FrmHome;
 import com.example.groceryshop.activities.fragment.FrmLogin;
 import com.example.groceryshop.activities.fragment.FrmResetPassword;
-import com.example.groceryshop.activities.fragment.FrmSearchProduct;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
 import com.example.groceryshop.activities.listener.ListenerAPI;
 import com.example.groceryshop.activities.network.DummyApi;
-import com.example.groceryshop.activities.network.PrefNetword;
+import com.example.groceryshop.activities.network.Preferences;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActMain extends BaseActivity {
     private final String TAG = "ActMain";
     private Fragment currentFragment;
     private boolean checkLogin;
     private SharedPreferences sharedPreferences;
+    private View layoutMenuBar;
+    private View bgMenu;
 
     public void addFragment(Fragment f) {
         try {
@@ -56,8 +60,8 @@ public class ActMain extends BaseActivity {
         setContentView(R.layout.activity_main);
         initDialogLoading();
         DatabaseHelper.getDatabaseHelper(this).createDataBase();
-        sharedPreferences = PrefNetword.getPrefNetword().newSharedPreferences(this);
-        checkLogin = sharedPreferences.getBoolean(PrefConstants.CHECK_LOGIN, false);
+        sharedPreferences = Preferences.getPreferences().newSharedPreferences(this);
+        checkLogin = sharedPreferences.getBoolean(PrefConstants.PREF_CHECK_LOGIN, false);
         navigationApp();
         customMenu();
     }
@@ -116,7 +120,7 @@ public class ActMain extends BaseActivity {
         @Override
         public void onResult(boolean isSuccess) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(PrefConstants.CHECK_LOGIN, false);
+            editor.putBoolean(PrefConstants.PREF_CHECK_LOGIN, false);
             editor.commit();
             showFrmLogin();
             dismissDialog();
@@ -125,6 +129,7 @@ public class ActMain extends BaseActivity {
 
     //TODO menu bar
     private void customMenu() {
+        layoutMenuBar = findViewById(R.id.layoutMenuBar);
         View clMenuBar = findViewById(R.id.clMenuBar);
         clMenuBar.getLayoutParams().width = getSizeWithScale(318);
         View imgBgMenuBar = findViewById(R.id.imgBgMenuBar);
@@ -135,8 +140,48 @@ public class ActMain extends BaseActivity {
         imgAvatar.getLayoutParams().width = getSizeWithScale(126);
         imgAvatar.getLayoutParams().height = getSizeWithScale(126);
 
+        bgMenu = findViewById(R.id.imgMenu);
+
+        RecyclerView rcMenuBar;
+        rcMenuBar = findViewById(R.id.rcMenu);
+        List<MenuEntity> menuEntityList = new ArrayList<>();
+        menuEntityList.add(new MenuEntity(R.drawable.ic_home_white, R.drawable.ic_home_yellow, "Home"));
+        menuEntityList.add(new MenuEntity(R.drawable.ic_my_order_white, R.drawable.ic_my_order_yellow, "My Order"));
+        menuEntityList.add(new MenuEntity(R.drawable.ic_profile_white, R.drawable.ic_profile_yellow, "Profile"));
+        menuEntityList.add(new MenuEntity(R.drawable.ic_faq_white, R.drawable.ic_faq_yellow, "FAQ"));
+        menuEntityList.add(new MenuEntity(R.drawable.ic_policy_white, R.drawable.ic_policy_yellow, "Privacy Policy"));
+        menuEntityList.add(new MenuEntity(R.drawable.ic_setting_white, R.drawable.ic_setting_yellow, "Settings"));
+        menuEntityList.add(new MenuEntity(R.drawable.ic_contuct_us_white, R.drawable.ic_contuct_us_yellow, "Contact us"));
+
+        MenuAdapter menuAdapter = new MenuAdapter(menuEntityList, this, getSizeWithScale(245), getSizeWithScale(27), getSizeWithScale(14),
+                getSizeWithScale(14), getSizeWithScale(7), getSizeWithScale(11), new MenuAdapter.OnClickItemListener() {
+            @Override
+            public void onClicked(int position) {
+                showFragmentMenu(position);
+            }
+        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rcMenuBar.setAdapter(menuAdapter);
+        rcMenuBar.setLayoutManager(linearLayoutManager);
     }
 
+    private void showFragmentMenu(int position){
+        switch (position){
+            case 0:
+                showFrmHome();
+                layoutMenuBar.setVisibility(View.GONE);
+                break;
+            case 1:
+                showFrmCategory();
+                layoutMenuBar.setVisibility(View.GONE);
+                break;
+        }
+    }
+
+    public void showMenu(){
+        layoutMenuBar.setVisibility(View.VISIBLE);
+
+    }
     //TODO size manager
     private float scaleValue = 0;
     private DisplayMetrics displayMetrics;
