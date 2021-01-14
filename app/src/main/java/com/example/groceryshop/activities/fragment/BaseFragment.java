@@ -39,9 +39,10 @@ public abstract class BaseFragment extends Fragment {
     protected void showToast(int msg){
         try {
             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }}
+        }
+    }
     private boolean mIsClickAble = true;
     private Handler mHandlerClick = new Handler();
     private Runnable changeStateClickAble = new Runnable() {

@@ -91,7 +91,7 @@ public class FrmForgotPassword extends BaseFragment implements View.OnClickListe
 
         @Override
         public void onResult(boolean isSuccess) {
-            UserEntity userEntity = activity.databaseHelper.sendLinkEmail(new UserEntity(email, null));
+            UserEntity userEntity = DatabaseHelper.getDatabaseHelper(getContext()).sendLinkEmail(new UserEntity(email, null));
             if (userEntity != null) {
                 Log.e(TAG, "loginUser: " + userEntity.idUser + ", " + userEntity.passwordUser + ", " + userEntity.email + ", " + userEntity.fullName);
                 activity.showFrmResetPassword(userEntity.email);

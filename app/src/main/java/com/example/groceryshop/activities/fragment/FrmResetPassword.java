@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.listener.ListenerAPI;
 import com.example.groceryshop.activities.network.DummyApi;
 
@@ -101,7 +102,7 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
 
         @Override
         public void onResult(boolean isSuccess) {
-            int count = activity.databaseHelper.resetPassword(email, newPass);
+            int count = DatabaseHelper.getDatabaseHelper(getContext()).resetPassword(email, newPass);
             if (count > 0) {
                 showToast(R.string.lblPasswordWasSuccessfullyChanged);
                 edtReNewPass.setText("");

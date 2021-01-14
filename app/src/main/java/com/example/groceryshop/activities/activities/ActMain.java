@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.conetant.PrefConstants;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.fragment.FragmentInterface;
 import com.example.groceryshop.activities.fragment.FrmCategory;
@@ -25,12 +27,13 @@ import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
 import com.example.groceryshop.activities.listener.ListenerAPI;
 import com.example.groceryshop.activities.network.DummyApi;
+import com.example.groceryshop.activities.network.PrefNetword;
 
 public class ActMain extends BaseActivity {
     private final String TAG = "ActMain";
-    public static DatabaseHelper databaseHelper;
     private Fragment currentFragment;
     private boolean checkLogin;
+    private SharedPreferences sharedPreferences;
 
     public void addFragment(Fragment f) {
         try {
@@ -52,25 +55,17 @@ public class ActMain extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initDialogLoading();
-        if (databaseHelper == null) {
-            databaseHelper = new DatabaseHelper(this);
-            databaseHelper.createDataBase();
-        }
-
-        SharedPreferences sharedPreferences = this.getSharedPreferences("saveUserPassword", Context.MODE_PRIVATE);
-        checkLogin = sharedPreferences.getBoolean("checkLogin", false);
-        if (sharedPreferences != null) {
-            Log.e(TAG, "onCreate: " + checkLogin);
-        }
+        DatabaseHelper.getDatabaseHelper(this).createDataBase();
+        sharedPreferences = PrefNetword.getPrefNetword().newSharedPreferences(this);
+        checkLogin = sharedPreferences.getBoolean(PrefConstants.CHECK_LOGIN, false);
         navigationApp();
-
-
+        customMenu();
     }
 
     private void navigationApp() {
-        if (checkLogin){
+        if (checkLogin) {
             addFragment(new FrmHome());
-        }else
+        } else
             addFragment(new FrmWelcome());
     }
 
@@ -120,14 +115,27 @@ public class ActMain extends BaseActivity {
 
         @Override
         public void onResult(boolean isSuccess) {
-            SharedPreferences sharedPreferences = getSharedPreferences("saveUserPassword", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("checkLogin", false);
+            editor.putBoolean(PrefConstants.CHECK_LOGIN, false);
             editor.commit();
             showFrmLogin();
             dismissDialog();
         }
     };
+
+    //TODO menu bar
+    private void customMenu() {
+        View clMenuBar = findViewById(R.id.clMenuBar);
+        clMenuBar.getLayoutParams().width = getSizeWithScale(318);
+        View imgBgMenuBar = findViewById(R.id.imgBgMenuBar);
+        imgBgMenuBar.getLayoutParams().width = getSizeWithScale(318);
+        imgBgMenuBar.getLayoutParams().height = getSizeWithScale(667);
+
+        View imgAvatar = findViewById(R.id.imgAvatar);
+        imgAvatar.getLayoutParams().width = getSizeWithScale(126);
+        imgAvatar.getLayoutParams().height = getSizeWithScale(126);
+
+    }
 
     //TODO size manager
     private float scaleValue = 0;

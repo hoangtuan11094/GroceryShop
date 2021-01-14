@@ -86,7 +86,7 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
         public void onResult(boolean isSuccess) {
             if (categoryEntityList == null){
                 categoryEntityList = new ArrayList<>();
-                categoryEntityList.addAll(activity.databaseHelper.getAllCategory());
+                categoryEntityList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllCategory());
             }
             if (categoryAdapter == null){
                 categoryAdapter = new CategoryAdapter(categoryEntityList, getContext(), activity.getSizeWithScale(269), activity.getSizeWithScale(43));

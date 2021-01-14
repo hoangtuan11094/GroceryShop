@@ -38,9 +38,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String WEIGTH_PRODUCT = "productWeigth";
     private String PRICE_PRODUCT = "productPrice";
     private String ID_CATEGORY_PRODUCT = "productIdCategory";
+    private static DatabaseHelper databaseHelper;
 
+    public static DatabaseHelper getDatabaseHelper(Context context) {
+        if (databaseHelper == null) {
+            synchronized (DatabaseHelper.class) {
+                if (databaseHelper == null) {
+                    databaseHelper = new DatabaseHelper(context);
+                }
+            }
+        }
+        return databaseHelper;
+    }
 
-    public DatabaseHelper(Context context) {
+    private DatabaseHelper(Context context) {
         super(context, DB_NAME, null, 4);
         if (Build.VERSION.SDK_INT >= 17) {
             PATH_DB = context.getApplicationInfo().dataDir + "/databases/";

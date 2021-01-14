@@ -111,12 +111,9 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
         @Override
         public void onResult(boolean isSuccess) {
             try {
-                activity.databaseHelper.insertUser(userEntity);
+                DatabaseHelper.getDatabaseHelper(getContext()).insertUser(userEntity);
                 showToast(R.string.lbl_SignUpSuccess);
                 activity.showFrmLogin();
-                edtEmail.setText("");
-                edtName.setText("");
-                edtPass.setText("");
                 activity.dismissDialog();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -131,11 +128,11 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
             userEntity.email = edtEmail.getText().toString().trim();
             userEntity.passwordUser = edtPass.getText().toString().trim();
             userEntity.fullName = edtName.getText().toString().trim();
-            boolean checkEmail = activity.databaseHelper.checkEmail(userEntity.email);
+            boolean checkEmail = DatabaseHelper.getDatabaseHelper(getContext()).checkEmail(userEntity.email);
             if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()) {
                 showToast(R.string.lblMustNotBeLeftBlank);
             } else if (!isValidEmail(userEntity.email)) {
-                showToast(R.string.lblEmailFormatIsIncorrect);
+                showToast(getActivity().getResources().getString(R.string.lblEmailFormatIsIncorrect));
             } else if (checkEmail) {
                 showToast(R.string.lbl_EmailAlreadyExists);
             } else {

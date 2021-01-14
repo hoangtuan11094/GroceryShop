@@ -168,7 +168,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         public void onResult(boolean isSuccess) {
             vegetableEntityArrayList = new ArrayList<>();
 
-            vegetableEntityArrayList.addAll(activity.databaseHelper.getAllProducts());
+            vegetableEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllProducts());
             Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size());
             for (int i = 0; i < vegetableEntityArrayList.size(); i++) {
                 Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct());
