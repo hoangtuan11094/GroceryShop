@@ -38,7 +38,6 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private RecyclerView rcVegetable;
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private VegetableAdapter vegetableAdapter;
-    private TextView tvLogout;
 
     @Override
     protected int getLayoutResId() {
@@ -94,9 +93,8 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         rcVegetable = view.findViewById(R.id.rcVegetable);
         indicator = view.findViewById(R.id.indicator);
         vpHeaderHome = view.findViewById(R.id.vpHeaderHome);
-        tvLogout = view.findViewById(R.id.tvLogout);
-        tvLogout.setOnClickListener(this);
         imgMenu.setOnClickListener(this);
+        imgSearch.setOnClickListener(this);
 
         view.findViewById(R.id.tvViewAllCategories).setOnClickListener(this);
     }
@@ -140,11 +138,11 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             case R.id.tvViewAllCategories:
                 activity.showFrmCategory();
                 break;
-            case R.id.tvLogout:
-                activity.logout();
-                break;
             case R.id.imgMenu:
                 activity.showMenu();
+                break;
+            case  R.id.imgSearch:
+                activity.showFrmSearch();
                 break;
         }
     }

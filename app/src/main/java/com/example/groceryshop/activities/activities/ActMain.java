@@ -22,6 +22,7 @@ import com.example.groceryshop.activities.fragment.FrmForgotPassword;
 import com.example.groceryshop.activities.fragment.FrmHome;
 import com.example.groceryshop.activities.fragment.FrmLogin;
 import com.example.groceryshop.activities.fragment.FrmResetPassword;
+import com.example.groceryshop.activities.fragment.FrmSearchProduct;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
 import com.example.groceryshop.activities.fragment.FrmWelcome;
 import com.example.groceryshop.activities.listener.ListenerAPI;
@@ -90,6 +91,9 @@ public class ActMain extends BaseActivity {
     public void showFrmHome() {
         addFragment(new FrmHome());
     }
+    public void showFrmSearch() {
+        addFragment(new FrmSearchProduct());
+    }
 
     public void showFrmForgotPassword() {
         addFragment(new FrmForgotPassword());
@@ -141,6 +145,14 @@ public class ActMain extends BaseActivity {
         imgAvatar.getLayoutParams().height = getSizeWithScale(126);
 
         bgMenu = findViewById(R.id.imgMenu);
+        View clLogout = findViewById(R.id.clLogout);
+        clLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+                layoutMenuBar.setVisibility(View.GONE);
+            }
+        });
 
         RecyclerView rcMenuBar;
         rcMenuBar = findViewById(R.id.rcMenu);

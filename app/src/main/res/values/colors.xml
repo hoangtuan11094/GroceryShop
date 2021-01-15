@@ -11,4 +11,5 @@
     <color name="colorBlack">#000000</color>
     <color name="colorBtnWhite">#707070</color>
     <color name="colorBgMenuBar">#B3000000</color>
+    <color name="colorBgSearch">#FFF0D0</color>
 </resources>

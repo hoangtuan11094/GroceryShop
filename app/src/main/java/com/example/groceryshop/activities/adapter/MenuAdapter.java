@@ -26,7 +26,6 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int hIcon;
     private int wArrow;
     private int hArrow;
-    private int positionSelect;
 
     public interface OnClickItemListener {
         void onClicked(int position);
@@ -71,7 +70,7 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     onClickItemListener.onClicked(position);
             }
         });
-        if (menuEntityList != null) {
+        if (menuEntityList   != null) {
             ((HolderItemNoSelect) holder).tvTitle.setText(menuEntityList.get(position).tvTitle);
             if (menuEntityList.get(position).isSelected) {
                 ((HolderItemNoSelect) holder).imgIcon.setImageResource(menuEntityList.get(position).imgIconYellow);
