@@ -42,7 +42,6 @@
             app:layout_constraintTop_toBottomOf="@+id/imgAvatar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Cường Kiên"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="@dimen/ts_16"/>
@@ -56,8 +55,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textSize="@dimen/ts_12"
             android:id="@+id/tvEmail"
-            android:textColor="@color/white"
-            android:text="cuongnguyen05092000@gmail.com"/>
+            android:textColor="@color/white"/>
 
         <androidx.recyclerview.widget.RecyclerView
             app:layout_constraintBottom_toTopOf="@+id/glH86"

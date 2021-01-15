@@ -98,6 +98,15 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
                 searchAdapter.getFilter().filter(tvSearch);
             }
         });
+
+        vegetableEntityArrayList = new ArrayList<>();
+
+        Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size());
+        searchAdapter = new SearchAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(302),
+                activity.getSizeWithScale(72), activity.getSizeWithScale(89), activity.getSizeWithScale(26));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        rcSearch.setAdapter(searchAdapter);
+        rcSearch.setLayoutManager(linearLayoutManager);
     }
 
     private ListenerAPI listenerAPI = new ListenerAPI() {
@@ -108,17 +117,11 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
 
         @Override
         public void onResult(boolean isSuccess) {
-            vegetableEntityArrayList = new ArrayList<>();
-
+            if (vegetableEntityArrayList != null) vegetableEntityArrayList.clear();
+            else vegetableEntityArrayList = new ArrayList<>();
             vegetableEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllProducts());
-            Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size());
-            searchAdapter = new SearchAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(302),
-                    activity.getSizeWithScale(72), activity.getSizeWithScale(89), activity.getSizeWithScale(26));
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-            rcSearch.setAdapter(searchAdapter);
-            rcSearch.setLayoutManager(linearLayoutManager);
+            searchAdapter.notifyDataSetChanged();
             activity.dismissDialog();
-
 
         }
     };

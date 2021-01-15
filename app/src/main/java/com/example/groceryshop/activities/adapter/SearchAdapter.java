@@ -1,8 +1,6 @@
 package com.example.groceryshop.activities.adapter;
 
 import android.content.Context;
-import android.media.tv.TvContentRating;
-import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.entity.VegetableEntity;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable{
+public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
     private ArrayList<VegetableEntity> vegetableEntityList;
     private ArrayList<VegetableEntity> vegetableEntityListFilter;
     private Context context;
@@ -54,7 +50,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((HolderSearchItem) holder).imgProduct.setText(vegetableEntity.getImgProduct());
             ((HolderSearchItem) holder).tvNameProduct.setText(vegetableEntity.getProductName());
             ((HolderSearchItem) holder).tvWeight.setText(String.valueOf(vegetableEntity.getProductWeight() + " gm"));
-            ((HolderSearchItem) holder).tvPrice.setText(String.valueOf("$" +vegetableEntity.getProductPrice()));
+            ((HolderSearchItem) holder).tvPrice.setText(String.valueOf("$" + vegetableEntity.getProductPrice()));
         }
     }
 
@@ -62,8 +58,6 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemCount() {
         return vegetableEntityListFilter == null ? 0 : vegetableEntityListFilter.size();
     }
-
-
 
     public class HolderSearchItem extends RecyclerView.ViewHolder {
         private TextView imgProduct;
@@ -95,12 +89,12 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String charString = constraint.toString();
-                if (charString.isEmpty()){
+                if (charString.isEmpty()) {
                     vegetableEntityListFilter = vegetableEntityList;
-                }else {
+                } else {
                     ArrayList<VegetableEntity> vegetableEntities = new ArrayList<>();
-                    for (VegetableEntity row : vegetableEntityList){
-                        if (row.getProductName().toLowerCase().contains(charString.toLowerCase())){
+                    for (VegetableEntity row : vegetableEntityList) {
+                        if (row.getProductName().toLowerCase().contains(charString.toLowerCase())) {
                             vegetableEntities.add(row);
                         }
                     }
@@ -117,8 +111,5 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 notifyDataSetChanged();
             }
         };
-    }
-    public interface VegetableAdapterListener {
-        void onVegetableSelected(VegetableEntity vegetableEntity);
     }
 }

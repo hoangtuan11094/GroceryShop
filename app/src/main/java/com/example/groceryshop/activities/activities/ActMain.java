@@ -3,7 +3,9 @@ package com.example.groceryshop.activities.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,10 +19,12 @@ import com.example.groceryshop.activities.adapter.MenuAdapter;
 import com.example.groceryshop.activities.conetant.PrefConstants;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.MenuEntity;
+import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.fragment.FrmCategory;
 import com.example.groceryshop.activities.fragment.FrmForgotPassword;
 import com.example.groceryshop.activities.fragment.FrmHome;
 import com.example.groceryshop.activities.fragment.FrmLogin;
+import com.example.groceryshop.activities.fragment.FrmProductDetails;
 import com.example.groceryshop.activities.fragment.FrmResetPassword;
 import com.example.groceryshop.activities.fragment.FrmSearchProduct;
 import com.example.groceryshop.activities.fragment.FrmSignUp;
@@ -32,13 +36,15 @@ import com.example.groceryshop.activities.network.Preferences;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActMain extends BaseActivity {
+public class ActMain extends BaseActivity implements View.OnClickListener {
     private final String TAG = "ActMain";
     private Fragment currentFragment;
     private boolean checkLogin;
     private SharedPreferences sharedPreferences;
     private View layoutMenuBar;
     private View bgMenu;
+    private TextView tvName;
+    private TextView tvEmail;
 
     public void addFragment(Fragment f) {
         try {
@@ -69,7 +75,7 @@ public class ActMain extends BaseActivity {
 
     private void navigationApp() {
         if (checkLogin) {
-            addFragment(new FrmHome());
+            addFragment(new FrmProductDetails());
         } else
             addFragment(new FrmWelcome());
     }
@@ -90,6 +96,10 @@ public class ActMain extends BaseActivity {
 
     public void showFrmHome() {
         addFragment(new FrmHome());
+    }
+
+    public void showFrmProductDetails(){
+        addFragment(new FrmProductDetails());
     }
     public void showFrmSearch() {
         addFragment(new FrmSearchProduct());
@@ -132,28 +142,7 @@ public class ActMain extends BaseActivity {
     };
 
     //TODO menu bar
-    private void customMenu() {
-        layoutMenuBar = findViewById(R.id.layoutMenuBar);
-        View clMenuBar = findViewById(R.id.clMenuBar);
-        clMenuBar.getLayoutParams().width = getSizeWithScale(318);
-        View imgBgMenuBar = findViewById(R.id.imgBgMenuBar);
-        imgBgMenuBar.getLayoutParams().width = getSizeWithScale(318);
-        imgBgMenuBar.getLayoutParams().height = getSizeWithScale(667);
-
-        View imgAvatar = findViewById(R.id.imgAvatar);
-        imgAvatar.getLayoutParams().width = getSizeWithScale(126);
-        imgAvatar.getLayoutParams().height = getSizeWithScale(126);
-
-        bgMenu = findViewById(R.id.imgMenu);
-        View clLogout = findViewById(R.id.clLogout);
-        clLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-                layoutMenuBar.setVisibility(View.GONE);
-            }
-        });
-
+    private void dataListMenu() {
         RecyclerView rcMenuBar;
         rcMenuBar = findViewById(R.id.rcMenu);
         List<MenuEntity> menuEntityList = new ArrayList<>();
@@ -177,8 +166,45 @@ public class ActMain extends BaseActivity {
         rcMenuBar.setLayoutManager(linearLayoutManager);
     }
 
-    private void showFragmentMenu(int position){
-        switch (position){
+    private void getSizeMenu() {
+        layoutMenuBar = findViewById(R.id.layoutMenuBar);
+        View clMenuBar = findViewById(R.id.clMenuBar);
+        clMenuBar.getLayoutParams().width = getSizeWithScale(318);
+        View imgBgMenuBar = findViewById(R.id.imgBgMenuBar);
+        imgBgMenuBar.getLayoutParams().width = getSizeWithScale(318);
+        imgBgMenuBar.getLayoutParams().height = getSizeWithScale(667);
+
+        View imgAvatar = findViewById(R.id.imgAvatar);
+        imgAvatar.getLayoutParams().width = getSizeWithScale(126);
+        imgAvatar.getLayoutParams().height = getSizeWithScale(126);
+
+        tvName = findViewById(R.id.tvName);
+        tvEmail = findViewById(R.id.tvEmail);
+        bgMenu = findViewById(R.id.imgMenu);
+
+    }
+
+    private void getInformationUser() {
+        UserEntity userEntity = new UserEntity();
+        String email = sharedPreferences.getString(PrefConstants.PREF_EMAIL_SAVE_USER, "");
+        userEntity = DatabaseHelper.getDatabaseHelper(this).getUserLogin(email);
+        Log.e(TAG, "customMenu: " + email);
+        Log.e(TAG, "customMenu: " + userEntity.email);
+
+        tvName.setText(userEntity.fullName);
+        tvEmail.setText(userEntity.email);
+    }
+
+    private void customMenu() {
+        getSizeMenu();
+        getInformationUser();
+        dataListMenu();
+        findViewById(R.id.clLogout).setOnClickListener(this);
+
+    }
+
+    private void showFragmentMenu(int position) {
+        switch (position) {
             case 0:
                 showFrmHome();
                 layoutMenuBar.setVisibility(View.GONE);
@@ -190,9 +216,19 @@ public class ActMain extends BaseActivity {
         }
     }
 
-    public void showMenu(){
+    public void showMenu() {
         layoutMenuBar.setVisibility(View.VISIBLE);
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.clLogout:
+                logout();
+                layoutMenuBar.setVisibility(View.GONE);
+                break;
+        }
     }
     //TODO size manager
     private float scaleValue = 0;

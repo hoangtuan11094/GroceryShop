@@ -154,28 +154,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return newRow;
     }
 
-    public void getAllUser() {
-        SQLiteDatabase dbUser = getReadableDatabase();
-        Cursor cursor = dbUser.rawQuery("SELECT * from user", null);
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                UserEntity userEntity = new UserEntity();
-                userEntity = dataUser(cursor);
-                cursor.moveToNext();
-            }
-            cursor.close();
-        }
-    }
 
     private UserEntity dataUser(Cursor cursor) {
         UserEntity userEntity1 = new UserEntity();
-        userEntity1.idUser = cursor.getInt(cursor.getColumnIndex("id"));
-        userEntity1.email = cursor.getString(cursor.getColumnIndex("email"));
-        userEntity1.passwordUser = cursor.getString(cursor.getColumnIndex("password"));
-        userEntity1.fullName = cursor.getString(cursor.getColumnIndex("name"));
+            userEntity1.idUser = cursor.getInt(cursor.getColumnIndex("id"));
+            userEntity1.email = cursor.getString(cursor.getColumnIndex("email"));
+            userEntity1.passwordUser = cursor.getString(cursor.getColumnIndex("password"));
+            userEntity1.fullName = cursor.getString(cursor.getColumnIndex("name"));
 
         return userEntity1;
+    }
+
+    public UserEntity getUserLogin(String email) {
+        SQLiteDatabase dbUser = getReadableDatabase();
+        Cursor cursor = dbUser.rawQuery(" SELECT * from user WHERE email= '" + email + "'", null);
+        UserEntity userEntity1 = new UserEntity();
+        if (cursor != null && cursor.moveToFirst()) {
+            userEntity1 = dataUser(cursor);
+            Log.e(TAG, "getUserLogin: " + userEntity1.email);
+        } return userEntity1;
     }
 
 
