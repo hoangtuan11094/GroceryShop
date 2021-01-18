@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.activities.ActMain;
+import com.example.groceryshop.activities.entity.CartEntity;
 import com.example.groceryshop.activities.entity.CategoryEntity;
 import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.entity.VegetableEntity;
@@ -234,6 +235,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
+
+    public long insertCart(CartEntity cartEntity) {
+        sqLiteDatabase = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
+        long newRow = 0;
+        ContentValues values = new ContentValues();
+        values.put("imgProduct", cartEntity.imgProduct);
+        values.put("nameProduct", cartEntity.nameProduct);
+        values.put("priceProduct", cartEntity.priceProduct);
+        values.put("quantityProduct", cartEntity.priceProduct);
+        newRow = sqLiteDatabase.insert("cart", null, values);
+        Log.e(TAG, "insertCart: " + newRow );
+        return newRow;
+    }
+
+    public List<CartEntity> getAllCart() {
+        List<CartEntity> cartEntityArrayList = new ArrayList<>();
+        SQLiteDatabase dbCategory = getReadableDatabase();
+        Cursor cursor = dbCategory.rawQuery("SELECT * from cart", null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                CartEntity cartEntity = new CartEntity();
+                cartEntity.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                cartEntity.setImgProduct(cursor.getString(cursor.getColumnIndex("imgProduct")));
+                cartEntity.setNameProduct(cursor.getString(cursor.getColumnIndex("nameProduct")));
+                cartEntity.setId(cursor.getInt(cursor.getColumnIndex("")));
+                cartEntity.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                cartEntityArrayList.add(cartEntity);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        return cartEntityArrayList;
+    }
     @Override
     public void onCreate(SQLiteDatabase db) {
 

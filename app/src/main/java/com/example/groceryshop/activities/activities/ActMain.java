@@ -18,6 +18,7 @@ import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.MenuAdapter;
 import com.example.groceryshop.activities.conetant.PrefConstants;
 import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.CartEntity;
 import com.example.groceryshop.activities.entity.MenuEntity;
 import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.fragment.FrmCart;
@@ -76,7 +77,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     private void navigationApp() {
         if (checkLogin) {
-            addFragment(new FrmCart());
+            addFragment(new FrmHome());
         } else
             addFragment(new FrmWelcome());
     }
@@ -99,9 +100,14 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         addFragment(new FrmHome());
     }
 
-    public void showFrmProductDetails(){
+    public void showFrmCart(){
+        addFragment(new FrmCart());
+    }
+
+    public void showFrmProductDetails() {
         addFragment(new FrmProductDetails());
     }
+
     public void showFrmSearch() {
         addFragment(new FrmSearchProduct());
     }
@@ -222,15 +228,40 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     }
 
+    //TODO data cart
+    public ArrayList<CartEntity> cartEntityArrayList;
+
+    public String getTvSizeCart() {
+        if (cartEntityArrayList == null)
+            return "0";
+        else
+            return String.valueOf(cartEntityArrayList.size());
+    }
+
+
+    public void addCart(String imgProduct, String nameProduct, int priceProduct, int quantity) {
+        if (cartEntityArrayList == null) {
+            cartEntityArrayList = new ArrayList<>();
+        }
+        cartEntityArrayList.add(new CartEntity(imgProduct, nameProduct, priceProduct, quantity));
+    }
+
+    public void deleteItemCart(int position){
+        if (cartEntityArrayList != null){
+            cartEntityArrayList.remove(position);
+        }
+    }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.clLogout:
                 logout();
                 layoutMenuBar.setVisibility(View.GONE);
                 break;
         }
     }
+
     //TODO size manager
     private float scaleValue = 0;
     private DisplayMetrics displayMetrics;

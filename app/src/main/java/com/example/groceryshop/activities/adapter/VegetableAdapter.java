@@ -22,14 +22,21 @@ public class VegetableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private int hclItem;
     private int wImgProduct;
     private int hImgProduct;
+    public interface OnClickItemListener {
+        void onClicked(int position);
+    }
 
-    public VegetableAdapter(ArrayList<VegetableEntity> vegetableEntityArrayList, Context context, int wclItem, int hclItem, int wImgProduct, int hImgProduct) {
+    private OnClickItemListener onClickItemListener;
+
+
+    public VegetableAdapter(ArrayList<VegetableEntity> vegetableEntityArrayList, Context context, int wclItem, int hclItem, int wImgProduct, int hImgProduct, OnClickItemListener onClickItemListener) {
         this.vegetableEntityArrayList = vegetableEntityArrayList;
         this.context = context;
         this.wclItem = wclItem;
         this.hclItem = hclItem;
         this.wImgProduct = wImgProduct;
         this.hImgProduct = hImgProduct;
+        this.onClickItemListener = onClickItemListener;
     }
 
     @NonNull
@@ -62,8 +69,26 @@ public class VegetableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     ((HolderVegetableEtity) holder).tvNameProduct.setText(vegetableEntityArrayList.get(position).getProductName());
                     ((HolderVegetableEtity) holder).tvWeight.setText(String.valueOf(vegetableEntityArrayList.get(position).getProductWeight() + " gm"));
                     ((HolderVegetableEtity) holder).tvPrice.setText(String.valueOf("$" + vegetableEntityArrayList.get(position).getProductPrice()));
+                    ((HolderVegetableEtity) holder).imgBtnAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (onClickItemListener != null){
+                                onClickItemListener.onClicked(position);
+                            }
+                        }
+                    });
                     break;
             }
+
+//            ((HolderVegetableEtity1) holder).imgBtnAdd.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (onClickItemListener != null){
+//                        onClickItemListener.onClicked(position);
+//                    }
+//                }
+//            });
+
         }
 
     }

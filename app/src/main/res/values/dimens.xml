@@ -18,4 +18,8 @@
     <dimen name="ts_12">12sp</dimen>
     <dimen name="ts_16">16sp</dimen>
     <dimen name="width_30">30dp</dimen>
+    <dimen name="ts_6">6sp</dimen>
+    <dimen name="width_8">8dp</dimen>
+    <dimen name="width_12">12sp</dimen>
+    <dimen name="margin_14">14dp</dimen>
 </resources>

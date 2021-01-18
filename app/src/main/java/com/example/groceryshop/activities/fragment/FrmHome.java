@@ -24,6 +24,7 @@ import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.SlideHomeAdapter;
 import com.example.groceryshop.activities.adapter.VegetableAdapter;
 import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.CartEntity;
 import com.example.groceryshop.activities.entity.VegetableEntity;
 import com.example.groceryshop.activities.listener.ListenerAPI;
 import com.example.groceryshop.activities.network.DummyApi;
@@ -38,6 +39,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private RecyclerView rcVegetable;
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private VegetableAdapter vegetableAdapter;
+    private TextView tvQuantityCart ;
 
     @Override
     protected int getLayoutResId() {
@@ -93,8 +95,13 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         rcVegetable = view.findViewById(R.id.rcVegetable);
         indicator = view.findViewById(R.id.indicator);
         vpHeaderHome = view.findViewById(R.id.vpHeaderHome);
+
+        tvQuantityCart = view.findViewById(R.id.tvQuantityCart);
+        tvQuantityCart.setText(activity.getTvSizeCart());
+
         imgMenu.setOnClickListener(this);
         imgSearch.setOnClickListener(this);
+        imgCart.setOnClickListener(this);
 
         view.findViewById(R.id.tvViewAllCategories).setOnClickListener(this);
     }
@@ -130,6 +137,26 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             }
         });
         super.onViewCreated(view, savedInstanceState);
+
+
+        if (vegetableEntityArrayList == null)
+        vegetableEntityArrayList = new ArrayList<>();
+        vegetableEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllProducts());
+        Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size());
+        for (int i = 0; i < vegetableEntityArrayList.size(); i++) {
+            Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct());
+        }
+        vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
+                activity.getSizeWithScale(167), activity.getSizeWithScale(134), activity.getSizeWithScale(78), new VegetableAdapter.OnClickItemListener() {
+            @Override
+            public void onClicked(int position) {
+                DatabaseHelper.getDatabaseHelper(getContext()).insertCart(new CartEntity(vegetableEntityArrayList.get(position).getImgProduct(), vegetableEntityArrayList.get(position).getProductName(), vegetableEntityArrayList.get(position).getProductPrice(), 1));
+//                activity.addCart(vegetableEntityArrayList.get(position).getImgProduct(), vegetableEntityArrayList.get(position).getProductName(), vegetableEntityArrayList.get(position).getProductPrice(), 1);
+                tvQuantityCart.setText(activity.getTvSizeCart());
+            }
+        });
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        rcVegetable.setLayoutManager(gridLayoutManager);
     }
 
     @Override
@@ -143,6 +170,9 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
                 break;
             case  R.id.imgSearch:
                 activity.showFrmSearch();
+                break;
+            case R.id.imgCart:
+                activity.showFrmCart();
                 break;
         }
     }
@@ -168,18 +198,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
 
         @Override
         public void onResult(boolean isSuccess) {
-            vegetableEntityArrayList = new ArrayList<>();
-
-            vegetableEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllProducts());
-            Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size());
-            for (int i = 0; i < vegetableEntityArrayList.size(); i++) {
-                Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct());
-            }
-            vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
-                    activity.getSizeWithScale(167), activity.getSizeWithScale(134), activity.getSizeWithScale(78));
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
             rcVegetable.setAdapter(vegetableAdapter);
-            rcVegetable.setLayoutManager(gridLayoutManager);
             activity.dismissDialog();
         }
     };

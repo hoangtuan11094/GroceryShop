@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.CategoryAdapter;
@@ -33,6 +34,7 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
     private List<CategoryEntity> categoryEntityList;
     private RecyclerView rcCategory;
     private CategoryAdapter categoryAdapter;
+    private TextView tvQuantityCart;
 
 
     @Override
@@ -67,6 +69,8 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
         clFooter.getLayoutParams().height = activity.getSizeWithScale(60);
 
         rcCategory = view.findViewById(R.id.rcCategory);
+        tvQuantityCart = view.findViewById(R.id.tvQuantityCart);
+        tvQuantityCart.setText(activity.getTvSizeCart());
         imgMenu.setOnClickListener(this);
     }
 
