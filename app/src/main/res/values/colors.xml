@@ -13,4 +13,5 @@
     <color name="colorBgMenuBar">#B3000000</color>
     <color name="colorBgSearch">#FFF0D0</color>
     <color name="colorBgClImgProduct">#CCCCCC</color>
+    <color name="colorRed">#FF0303</color>
 </resources>

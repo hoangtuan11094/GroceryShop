@@ -11,12 +11,13 @@ import android.view.ViewGroup;
 
 import com.example.groceryshop.R;
 
-public class FrmProductDetails extends BaseFragment implements View.OnClickListener {
+
+public class FrmCart extends BaseFragment implements View.OnClickListener {
 
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.frm_product_details;
+        return R.layout.frm_cart;
     }
 
     @Override
@@ -45,13 +46,14 @@ public class FrmProductDetails extends BaseFragment implements View.OnClickListe
         View clFooter = view.findViewById(R.id.clFooter);
         clFooter.getLayoutParams().height = activity.getSizeWithScale(60);
 
-        View clImgProductDetails = view.findViewById(R.id.clImgProductDetails);
-        clImgProductDetails.getLayoutParams().height = activity.getSizeWithScale(185);
+        View btnCheckout = view.findViewById(R.id.btnCheckout);
+        btnCheckout.getLayoutParams().width = activity.getSizeWithScale(284);
+        btnCheckout.getLayoutParams().height = activity.getSizeWithScale(37);
 
-        View clProductDescription = view.findViewById(R.id.clProductDescription);
-        clProductDescription.getLayoutParams().height = activity.getSizeWithScale(298);
+        View clTotal = view.findViewById(R.id.clTotal);
+        clTotal.getLayoutParams().width = activity.getSizeWithScale(302);
+        clTotal.getLayoutParams().height = activity.getSizeWithScale(137);
 
-        imgMenu.setOnClickListener(this);
     }
 
     @Override

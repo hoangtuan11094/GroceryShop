@@ -20,6 +20,7 @@ import com.example.groceryshop.activities.conetant.PrefConstants;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.MenuEntity;
 import com.example.groceryshop.activities.entity.UserEntity;
+import com.example.groceryshop.activities.fragment.FrmCart;
 import com.example.groceryshop.activities.fragment.FrmCategory;
 import com.example.groceryshop.activities.fragment.FrmForgotPassword;
 import com.example.groceryshop.activities.fragment.FrmHome;
@@ -75,7 +76,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     private void navigationApp() {
         if (checkLogin) {
-            addFragment(new FrmProductDetails());
+            addFragment(new FrmCart());
         } else
             addFragment(new FrmWelcome());
     }

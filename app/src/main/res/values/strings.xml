@@ -31,4 +31,12 @@
     <string name="lblPasswordWasSuccessfullyChanged">Password was successfully changed</string>
     <string name="lblEmailFormatIsIncorrect"> format is incorrect</string>
     <string name="lbl_LogOut">Log Out</string>
+    <string name="lbl_ProductDescription">Product Description</string>
+    <string name="lbl_Quantity">Quantity:</string>
+    <string name="lbl_checkout">Checkout</string>
+    <string name="lbl_Subtotal">Subtotal</string>
+    <string name="lbl_DeliveryFee">Delivery fee</string>
+    <string name="lbl_Discount">Discount</string>
+    <string name="lbl_Tax">Tax</string>
+    <string name="lbl_Total">Total</string>
 </resources>

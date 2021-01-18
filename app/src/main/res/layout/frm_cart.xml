@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.fragment.FrmCart">
+
+    <!--Header-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/clHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:paddingHorizontal="@dimen/padding_30">
+
+            <ImageView
+                android:id="@+id/imgMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_bars"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcCart"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginBottom="@dimen/margin_10"
+        app:layout_constraintBottom_toTopOf="@+id/clTotal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clHeader" />
+
+    <LinearLayout
+        android:id="@+id/btnCheckout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mtEdtLogin"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:background="@drawable/bg_btn_yellow"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/clFooter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/icKey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_shopping" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_5"
+            android:text="@string/lbl_checkout"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/clTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/width_30"
+        app:layout_constraintBottom_toTopOf="@+id/btnCheckout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_5"
+            android:shrinkColumns="2">
+
+            <TableRow android:layout_weight="1">
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="@string/lbl_Subtotal" />
+
+                <TextView
+                    android:id="@+id/tvSubtotal"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="$120" />
+            </TableRow>
+
+            <TableRow android:layout_weight="1">
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="@string/lbl_DeliveryFee" />
+
+                <TextView
+                    android:id="@+id/tvDeliveryFee"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="$10" />
+            </TableRow>
+
+            <TableRow android:layout_weight="1">
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="@string/lbl_Discount" />
+
+                <TextView
+                    android:id="@+id/tvDiscount"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="0" />
+            </TableRow>
+
+            <TableRow android:layout_weight="1">
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="@string/lbl_Tax" />
+
+                <TextView
+                    android:id="@+id/tvTax"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="10%" />
+            </TableRow>
+
+            <TableRow android:layout_weight="1">
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="@string/lbl_Total"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="10%"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <!--FOOTER-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/clFooter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <ImageView
+                android:id="@+id/imgHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/img_home" />
+
+            <ImageView
+                android:id="@+id/imgMyOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/img_myorder" />
+
+            <ImageView
+                android:id="@+id/imgChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/img_chat" />
+
+            <ImageView
+                android:id="@+id/imgAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/img_account" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
