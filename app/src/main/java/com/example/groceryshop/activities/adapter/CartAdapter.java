@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.CartEntity;
 
 import java.util.ArrayList;
@@ -25,11 +26,14 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int wImgDelete;
     private int hImgDelete;
 
-    public interface OnClickItemListener{
-        void onClickDelete(int position);
-        void onClickIncrease(int position);
-        void onClickReduction(int position);
+    public interface OnClickItemListener {
+        void onClickDelete(int total);
+
+        void onClickIncrease(int subtotal);
+
+        void onClickReduction(int subtotal);
     }
+
     private OnClickItemListener onClickItemListener;
 
     public CartAdapter(Context context, ArrayList<CartEntity> entityArrayList, int wclItemCart, int hclItemCart, int wImgMinus, int hImgMinus, int wImgDelete, int hImgDelete, OnClickItemListener onClickItemListener) {
@@ -48,40 +52,59 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart, parent, false);
-        return new HolderCartAdapter(view, wclItemCart,hclItemCart,wImgMinus,hImgMinus,wImgDelete,hImgDelete);
+        return new HolderCartAdapter(view, wclItemCart, hclItemCart, wImgMinus, hImgMinus, wImgDelete, hImgDelete);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((HolderCartAdapter)holder).imgProduct.setText(entityArrayList.get(position).imgProduct);
-        ((HolderCartAdapter)holder).tvNameProduct.setText(entityArrayList.get(position).nameProduct);
-        ((HolderCartAdapter)holder).tvPrice.setText(String.valueOf("$" + entityArrayList.get(position).priceProduct));
-        ((HolderCartAdapter)holder).tvQuantity.setText(String.valueOf(entityArrayList.get(position).quantity));
+        CartEntity cartEntity = entityArrayList.get(position);
+        if (cartEntity != null) {
+            ((HolderCartAdapter) holder).imgProduct.setText(entityArrayList.get(position).imgProduct);
+            ((HolderCartAdapter) holder).tvNameProduct.setText(entityArrayList.get(position).nameProduct);
+            ((HolderCartAdapter) holder).tvPrice.setText(String.valueOf("$" + entityArrayList.get(position).priceProduct));
+            ((HolderCartAdapter) holder).tvQuantity.setText(String.valueOf(entityArrayList.get(position).quantity));
 
-        ((HolderCartAdapter)holder).imgMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onClickItemListener != null){
-                    onClickItemListener.onClickReduction(position);
+            ((HolderCartAdapter) holder).imgMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (cartEntity.quantity > 0) {
+                        cartEntity.setQuantity(cartEntity.quantity - 1);
+                    }
+                    int subtotal = cartEntity.priceProduct;
+                    notifyDataSetChanged();
+                    if (onClickItemListener != null) {
+                        onClickItemListener.onClickReduction(subtotal);
+                    }
                 }
-            }
-        });
-        ((HolderCartAdapter)holder).imgPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onClickItemListener != null){
-                    onClickItemListener.onClickIncrease(position);
+            });
+            ((HolderCartAdapter) holder).imgPlus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cartEntity.setQuantity(cartEntity.quantity + 1);
+                    int subtotal = cartEntity.priceProduct;
+                    notifyDataSetChanged();
+
+                    if (onClickItemListener != null) {
+                        onClickItemListener.onClickIncrease(subtotal);
+                    }
                 }
-            }
-        });
-        ((HolderCartAdapter)holder).imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onClickItemListener != null){
-                    onClickItemListener.onClickDelete(position);
+            });
+            ((HolderCartAdapter) holder).imgDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (entityArrayList != null && entityArrayList.size() > position)
+                        entityArrayList.remove(position);
+                    DatabaseHelper.getDatabaseHelper(context).deleteCart(cartEntity);
+                    notifyDataSetChanged();
+                    if (onClickItemListener != null) {
+                        int total = cartEntity.priceProduct * cartEntity.quantity;
+                        onClickItemListener.onClickDelete(total);
+                    }
                 }
-            }
-        });
+            });
+        }
+
+
     }
 
     @Override
@@ -89,7 +112,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return entityArrayList == null ? 0 : entityArrayList.size();
     }
 
-    public class HolderCartAdapter extends RecyclerView.ViewHolder{
+    public class HolderCartAdapter extends RecyclerView.ViewHolder {
         private View clItemCart;
         private TextView imgProduct;
         private TextView tvNameProduct;
@@ -98,6 +121,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private ImageView imgMinus;
         private ImageView imgPlus;
         private ImageView imgDelete;
+
         public HolderCartAdapter(@NonNull View itemView, int wclItemCart, int hclItemCart, int wImgMinus, int hImgMinus, int wImgDelete, int hImgDelete) {
             super(itemView);
 

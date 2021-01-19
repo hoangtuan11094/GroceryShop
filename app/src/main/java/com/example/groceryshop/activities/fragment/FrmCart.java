@@ -14,19 +14,25 @@ import android.widget.TextView;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.CartAdapter;
+import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.CartEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FrmCart extends BaseFragment implements View.OnClickListener {
 
     private RecyclerView rcCart;
     private CartAdapter cartAdapter;
-    private int subtotal = 0;
+    private int subtotal1 = 0;
     private int total = 0;
     private TextView tvSubtotal;
     private TextView tvDeliveryFee;
     private TextView tvDiscount;
     private TextView tvTax;
     private TextView tvTotal;
+    private ArrayList<CartEntity> cartEntityArrayList;
 
     @Override
     protected int getLayoutResId() {
@@ -83,36 +89,29 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         setDataRcCart();
         setSubtotal();
-
     }
 
     private void setDataRcCart() {
-        cartAdapter = new CartAdapter(getContext(), activity.cartEntityArrayList, activity.getSizeWithScale(302), activity.getSizeWithScale(96), activity.getSizeWithScale(16),
+        if (cartEntityArrayList == null)cartEntityArrayList = new ArrayList<>();
+        cartEntityArrayList = DatabaseHelper.getDatabaseHelper(getContext()).getAllCart();
+        cartAdapter = new CartAdapter(getContext(), cartEntityArrayList, activity.getSizeWithScale(302), activity.getSizeWithScale(96), activity.getSizeWithScale(16),
                 activity.getSizeWithScale(16), activity.getSizeWithScale(13), activity.getSizeWithScale(19), new CartAdapter.OnClickItemListener() {
             @Override
-            public void onClickDelete(int position) {
-                subtotal = subtotal - activity.cartEntityArrayList.get(position).priceProduct * activity.cartEntityArrayList.get(position).quantity;
-                activity.deleteItemCart(position);
+            public void onClickDelete(int total) {
+                subtotal1 = subtotal1 - total;
                 setTotal();
-                cartAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onClickIncrease(int position) {
-                activity.cartEntityArrayList.get(position).setQuantity(activity.cartEntityArrayList.get(position).quantity + 1);
-                subtotal = subtotal + activity.cartEntityArrayList.get(position).priceProduct;
+            public void onClickIncrease(int subtotal) {
+                subtotal1  = subtotal1 + subtotal;
                 setTotal();
-                cartAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onClickReduction(int position) {
-                if (activity.cartEntityArrayList.get(position).quantity > 0) {
-                    activity.cartEntityArrayList.get(position).setQuantity(activity.cartEntityArrayList.get(position).quantity - 1);
-                    subtotal = subtotal - activity.cartEntityArrayList.get(position).priceProduct;
+            public void onClickReduction(int subtotal) {
+                    subtotal1 = subtotal1 - subtotal;
                     setTotal();
-                    cartAdapter.notifyDataSetChanged();
-                }
             }
         });
         rcCart.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -120,15 +119,15 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
     }
 
     private void setSubtotal() {
-        for (int i = 0; i < activity.cartEntityArrayList.size(); i++) {
-            subtotal = subtotal + activity.cartEntityArrayList.get(i).quantity * activity.cartEntityArrayList.get(i).priceProduct;
+        for (int i = 0; i < cartEntityArrayList.size(); i++) {
+            subtotal1 = subtotal1 + cartEntityArrayList.get(i).quantity * cartEntityArrayList.get(i).priceProduct;
         }
         setTotal();
     }
 
     private void setTotal() {
-        tvSubtotal.setText("$" + String.valueOf(subtotal));
-        total = subtotal + subtotal * 10 / 100;
+        tvSubtotal.setText("$" + String.valueOf(subtotal1));
+        total = subtotal1 + subtotal1 * 10 / 100;
         tvTotal.setText("$" + String.valueOf(total));
     }
 

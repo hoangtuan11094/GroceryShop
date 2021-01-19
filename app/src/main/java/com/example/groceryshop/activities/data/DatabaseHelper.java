@@ -243,14 +243,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("imgProduct", cartEntity.imgProduct);
         values.put("nameProduct", cartEntity.nameProduct);
         values.put("priceProduct", cartEntity.priceProduct);
-        values.put("quantityProduct", cartEntity.priceProduct);
+        values.put("quantityProduct", cartEntity.quantity);
         newRow = sqLiteDatabase.insert("cart", null, values);
         Log.e(TAG, "insertCart: " + newRow );
         return newRow;
     }
 
-    public List<CartEntity> getAllCart() {
-        List<CartEntity> cartEntityArrayList = new ArrayList<>();
+    public ArrayList<CartEntity> getAllCart() {
+        ArrayList<CartEntity> cartEntityArrayList = new ArrayList<>();
         SQLiteDatabase dbCategory = getReadableDatabase();
         Cursor cursor = dbCategory.rawQuery("SELECT * from cart", null);
         if (cursor != null && cursor.getCount() > 0) {
@@ -260,14 +260,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 cartEntity.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 cartEntity.setImgProduct(cursor.getString(cursor.getColumnIndex("imgProduct")));
                 cartEntity.setNameProduct(cursor.getString(cursor.getColumnIndex("nameProduct")));
-                cartEntity.setId(cursor.getInt(cursor.getColumnIndex("")));
-                cartEntity.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                cartEntity.setPriceProduct(cursor.getInt(cursor.getColumnIndex("priceProduct")));
+                cartEntity.setQuantity(cursor.getInt(cursor.getColumnIndex("quantityProduct")));
                 cartEntityArrayList.add(cartEntity);
                 cursor.moveToNext();
             }
             cursor.close();
         }
         return cartEntityArrayList;
+    }
+
+    public void deleteCart(CartEntity cartEntity) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("cart", "id=?", new String[]{String.valueOf(cartEntity.id).toString()});
     }
     @Override
     public void onCreate(SQLiteDatabase db) {

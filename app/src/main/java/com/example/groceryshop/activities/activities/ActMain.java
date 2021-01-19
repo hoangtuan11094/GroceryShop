@@ -229,27 +229,17 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
     }
 
     //TODO data cart
-    public ArrayList<CartEntity> cartEntityArrayList;
+
 
     public String getTvSizeCart() {
-        if (cartEntityArrayList == null)
+        if (DatabaseHelper.getDatabaseHelper(this).getAllCart() == null)
             return "0";
         else
-            return String.valueOf(cartEntityArrayList.size());
+            return String.valueOf(DatabaseHelper.getDatabaseHelper(this).getAllCart().size());
     }
 
-
-    public void addCart(String imgProduct, String nameProduct, int priceProduct, int quantity) {
-        if (cartEntityArrayList == null) {
-            cartEntityArrayList = new ArrayList<>();
-        }
-        cartEntityArrayList.add(new CartEntity(imgProduct, nameProduct, priceProduct, quantity));
-    }
 
     public void deleteItemCart(int position){
-        if (cartEntityArrayList != null){
-            cartEntityArrayList.remove(position);
-        }
     }
 
     @Override
