@@ -23,6 +23,7 @@ import com.example.groceryshop.activities.entity.MenuEntity;
 import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.fragment.FrmCart;
 import com.example.groceryshop.activities.fragment.FrmCategory;
+import com.example.groceryshop.activities.fragment.FrmCheckoutAddress;
 import com.example.groceryshop.activities.fragment.FrmForgotPassword;
 import com.example.groceryshop.activities.fragment.FrmHome;
 import com.example.groceryshop.activities.fragment.FrmLogin;
@@ -77,7 +78,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     private void navigationApp() {
         if (checkLogin) {
-            addFragment(new FrmHome());
+            addFragment(new FrmCheckoutAddress());
         } else
             addFragment(new FrmWelcome());
     }
@@ -114,6 +115,10 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     public void showFrmForgotPassword() {
         addFragment(new FrmForgotPassword());
+    }
+
+    public void showFrmCheckoutAddress(){
+        addFragment(new FrmCheckoutAddress());
     }
 
     public void showFrmResetPassword(String email) {

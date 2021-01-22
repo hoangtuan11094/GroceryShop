@@ -1,5 +1,6 @@
 package com.example.groceryshop.activities.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.groceryshop.R;
@@ -17,6 +19,7 @@ import com.example.groceryshop.activities.adapter.CartAdapter;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.CartEntity;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,7 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
     private TextView tvTax;
     private TextView tvTotal;
     private ArrayList<CartEntity> cartEntityArrayList;
+    private ViewGroup viewGroup;
 
     @Override
     protected int getLayoutResId() {
@@ -73,6 +77,8 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
         clTotal.getLayoutParams().width = activity.getSizeWithScale(302);
         clTotal.getLayoutParams().height = activity.getSizeWithScale(137);
 
+        viewGroup = view.findViewById(android.R.id.content);
+
         tvSubtotal = view.findViewById(R.id.tvSubtotal);
         tvDeliveryFee = view.findViewById(R.id.tvDeliveryFee);
         tvDiscount = view.findViewById(R.id.tvDiscount);
@@ -82,6 +88,7 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
         rcCart = view.findViewById(R.id.rcCart);
         imgMenu.setOnClickListener(this);
 
+        btnCheckout.setOnClickListener(this);
     }
 
     @Override
@@ -100,6 +107,7 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
             public void onClickDelete(int total) {
                 subtotal1 = subtotal1 - total;
                 setTotal();
+                showDialogDelete();
             }
 
             @Override
@@ -131,12 +139,50 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
         tvTotal.setText("$" + String.valueOf(total));
     }
 
+    private void showDialogDelete(){
+        Dialog dialog = new Dialog(getContext(), R.style.dialogNotice);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_delete_row_cart, viewGroup, false);
+        ImageView imgBtnDelete = view.findViewById(R.id.imgBtnDelete);
+        ImageView imgBtnCancel = view.findViewById(R.id.imgBtnCancel);
+        View clDialogDelete = view.findViewById(R.id.clDialogDelete);
+        View clHeaderDialog = view.findViewById(R.id.clHeaderDialog);
+        clHeaderDialog.getLayoutParams().height = activity.getSizeWithScale(48);
+        imgBtnCancel.getLayoutParams().width = activity.getSizeWithScale(76);
+        imgBtnCancel.getLayoutParams().height = activity.getSizeWithScale(27);
+        imgBtnDelete.getLayoutParams().width = activity.getSizeWithScale(76);
+        imgBtnDelete.getLayoutParams().height = activity.getSizeWithScale(27);
+        clDialogDelete.getLayoutParams().width = activity.getSizeWithScale(302);
+        clDialogDelete.getLayoutParams().height = activity.getSizeWithScale(170);
+
+        dialog.setContentView(view);
+        dialog.show();
+
+        imgBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        imgBtnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imgMenu:
                 activity.showMenu();
+                break;
+            case  R.id.btnCheckout:
+                activity.showFrmCheckoutAddress();
                 break;
         }
     }

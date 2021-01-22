@@ -39,4 +39,15 @@
     <string name="lbl_Discount">Discount</string>
     <string name="lbl_Tax">Tax</string>
     <string name="lbl_Total">Total</string>
+    <string name="lbl_confirm">CONFIRM</string>
+    <string name="lbl_address">Address</string>
+    <string name="lbl_shipping">Shipping</string>
+    <string name="lbl_payment">Payment</string>
+    <string name="lbl_hin_first_name">FirstName*</string>
+    <string name="lbl_hin_last_name">Last Name*</string>
+    <string name="lbl_hin_address">Address*</string>
+    <string name="lbl_hin_city">City*</string>
+    <string name="lbl_hin_state">State*</string>
+    <string name="lblEmailIsRequired">*Email is required</string>
+    <string name="lbl_hin_phone">Enter Phone Number</string>
 </resources>
