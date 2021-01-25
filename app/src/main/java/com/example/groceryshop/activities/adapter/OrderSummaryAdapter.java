@@ -11,12 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groceryshop.R;
-import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.CartEntity;
 
 import java.util.ArrayList;
 
-public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OrderSummaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private Context context;
     private ArrayList<CartEntity> entityArrayList;
     private int wclItemCart;
@@ -27,7 +27,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int hImgDelete;
 
     public interface OnClickItemListener {
-        void onClickDelete(int position);
+        void onClickDelete(int total);
 
         void onClickIncrease(int subtotal);
 
@@ -36,7 +36,8 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private OnClickItemListener onClickItemListener;
 
-    public CartAdapter(Context context, ArrayList<CartEntity> entityArrayList, int wclItemCart, int hclItemCart, int wImgMinus, int hImgMinus, int wImgDelete, int hImgDelete, OnClickItemListener onClickItemListener) {
+
+    public OrderSummaryAdapter(Context context, ArrayList<CartEntity> entityArrayList, int wclItemCart, int hclItemCart, int wImgMinus, int hImgMinus, int wImgDelete, int hImgDelete, OnClickItemListener onClickItemListener) {
         this.context = context;
         this.entityArrayList = entityArrayList;
         this.wclItemCart = wclItemCart;
@@ -52,64 +53,20 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart, parent, false);
-        return new HolderCartAdapter(view, wclItemCart, hclItemCart, wImgMinus, hImgMinus, wImgDelete, hImgDelete);
+        return new HolderOrderSummary(view, wclItemCart, hclItemCart, wImgMinus, hImgMinus, wImgDelete, hImgDelete);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        CartEntity cartEntity = entityArrayList.get(position);
-        if (cartEntity != null) {
-            ((HolderCartAdapter) holder).imgProduct.setText(entityArrayList.get(position).imgProduct);
-            ((HolderCartAdapter) holder).tvNameProduct.setText(entityArrayList.get(position).nameProduct);
-            ((HolderCartAdapter) holder).tvPrice.setText(String.valueOf("$" + entityArrayList.get(position).priceProduct));
-            ((HolderCartAdapter) holder).tvQuantity.setText(String.valueOf(entityArrayList.get(position).quantity));
-
-            ((HolderCartAdapter) holder).imgMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int subtotal = 0;
-                    if (cartEntity.quantity > 0) {
-                        cartEntity.setQuantity(cartEntity.quantity - 1);
-                        subtotal = cartEntity.priceProduct;
-                    }
-                    notifyDataSetChanged();
-                    if (onClickItemListener != null) {
-                        onClickItemListener.onClickReduction(subtotal);
-                    }
-                }
-            });
-            ((HolderCartAdapter) holder).imgPlus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cartEntity.setQuantity(cartEntity.quantity + 1);
-                    int subtotal = cartEntity.priceProduct;
-                    notifyDataSetChanged();
-
-                    if (onClickItemListener != null) {
-                        onClickItemListener.onClickIncrease(subtotal);
-                    }
-                }
-            });
-            ((HolderCartAdapter) holder).imgDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (onClickItemListener != null) {
-                        onClickItemListener.onClickDelete(position);
-                    }
-                }
-            });
-        }
-
 
     }
 
     @Override
     public int getItemCount() {
-        return entityArrayList == null ? 0 : entityArrayList.size();
+        return 0;
     }
 
-    public class HolderCartAdapter extends RecyclerView.ViewHolder {
+    public class HolderOrderSummary extends RecyclerView.ViewHolder{
         private View clItemCart;
         private TextView imgProduct;
         private TextView tvNameProduct;
@@ -119,9 +76,8 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private ImageView imgPlus;
         private ImageView imgDelete;
 
-        public HolderCartAdapter(@NonNull View itemView, int wclItemCart, int hclItemCart, int wImgMinus, int hImgMinus, int wImgDelete, int hImgDelete) {
+        public HolderOrderSummary(@NonNull View itemView, int wclItemCart, int hclItemCart, int wImgMinus, int hImgMinus, int wImgDelete, int hImgDelete) {
             super(itemView);
-
             clItemCart = itemView.findViewById(R.id.clItemCart);
             imgProduct = itemView.findViewById(R.id.imgProduct);
             tvNameProduct = itemView.findViewById(R.id.tvNameProduct);
@@ -130,7 +86,6 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             imgMinus = itemView.findViewById(R.id.imgMinus);
             imgPlus = itemView.findViewById(R.id.imgPlus);
             imgDelete = itemView.findViewById(R.id.imgDelete);
-
 
             clItemCart.getLayoutParams().width = wclItemCart;
             clItemCart.getLayoutParams().height = hclItemCart;

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.PhoneSpinnerAdapter;
@@ -118,6 +119,11 @@ public class FrmCheckoutAddress extends BaseFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnCheckout:
+                activity.showFrmCheckoutShipping();
+                break;
+        }
 
     }
 

@@ -24,9 +24,11 @@ import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.fragment.FrmCart;
 import com.example.groceryshop.activities.fragment.FrmCategory;
 import com.example.groceryshop.activities.fragment.FrmCheckoutAddress;
+import com.example.groceryshop.activities.fragment.FrmCheckoutShipping;
 import com.example.groceryshop.activities.fragment.FrmForgotPassword;
 import com.example.groceryshop.activities.fragment.FrmHome;
 import com.example.groceryshop.activities.fragment.FrmLogin;
+import com.example.groceryshop.activities.fragment.FrmOrderSummary;
 import com.example.groceryshop.activities.fragment.FrmProductDetails;
 import com.example.groceryshop.activities.fragment.FrmResetPassword;
 import com.example.groceryshop.activities.fragment.FrmSearchProduct;
@@ -78,7 +80,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     private void navigationApp() {
         if (checkLogin) {
-            addFragment(new FrmCheckoutAddress());
+            addFragment(new FrmHome());
         } else
             addFragment(new FrmWelcome());
     }
@@ -113,12 +115,20 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         addFragment(new FrmSearchProduct());
     }
 
+    public void showFrmOrderSummary() {
+        addFragment(new FrmOrderSummary());
+    }
+
     public void showFrmForgotPassword() {
         addFragment(new FrmForgotPassword());
     }
 
     public void showFrmCheckoutAddress(){
         addFragment(new FrmCheckoutAddress());
+    }
+
+    public void showFrmCheckoutShipping(){
+        addFragment(new FrmCheckoutShipping());
     }
 
     public void showFrmResetPassword(String email) {

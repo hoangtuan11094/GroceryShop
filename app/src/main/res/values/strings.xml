@@ -50,4 +50,13 @@
     <string name="lbl_hin_state">State*</string>
     <string name="lblEmailIsRequired">*Email is required</string>
     <string name="lbl_hin_phone">Enter Phone Number</string>
+    <string name="lbl_Flat_Shipping">Flat Shipping</string>
+    <string name="lblLocalPickup">Local Pickup</string>
+    <string name="lbl_free_hipping">Free Shipping</string>
+    <string name="lbl_ShippingMethod">Shipping Method</string>
+    <string name="lblTitleFlatShipping">Let’s you charge a fixed rate for shipping.</string>
+    <string name="lblTitleLocalPickup">Allow customers to pickup orders themselves. By  default, when using local pickup store base taxes will apply regardless of customer address.</string>
+    <string name="lblTitleFreeShipping">Free shipping is a special method which can be  triggered with coupons and minimum spends.</string>
+    <string name="lbl_DelivereTo">Delivere To:</string>
+    <string name="lbl_TotalAmount">Total Amount:</string>
 </resources>
