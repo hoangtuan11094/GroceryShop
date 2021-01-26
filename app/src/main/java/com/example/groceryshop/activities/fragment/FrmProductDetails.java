@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.CartEntity;
 import com.example.groceryshop.activities.entity.VegetableEntity;
 
 public class FrmProductDetails extends BaseFragment implements View.OnClickListener {
@@ -59,6 +60,10 @@ public class FrmProductDetails extends BaseFragment implements View.OnClickListe
         View clProductDescription = view.findViewById(R.id.clProductDescription);
         clProductDescription.getLayoutParams().height = activity.getSizeWithScale(298);
 
+        View imgBtnAdd = view.findViewById(R.id.imgBtnAdd);
+        imgBtnAdd.getLayoutParams().width = activity.getSizeWithScale(89);
+        imgBtnAdd.getLayoutParams().height = activity.getSizeWithScale(26);
+
         tvNameProduct = view.findViewById(R.id.tvNameProduct);
         tvPriceSale = view.findViewById(R.id.tvPriceSale);
         tvPrice = view.findViewById(R.id.tvPrice);
@@ -68,6 +73,9 @@ public class FrmProductDetails extends BaseFragment implements View.OnClickListe
         tvQuantityCart.setText(activity.getTvSizeCart());
 
         imgMenu.setOnClickListener(this);
+        imgBtnAdd.setOnClickListener(this);
+        imgCart.setOnClickListener(this);
+
     }
 
     @Override
@@ -84,15 +92,32 @@ public class FrmProductDetails extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
 
+            case R.id.imgMenu:
+                activity.showMenu();
+                break;
+            case  R.id.imgBtnAdd:
+                DatabaseHelper.getDatabaseHelper(getContext()).insertCart(new CartEntity(product.getImgProduct(), product.getProductName(), product.getProductPrice(), 1));
+                tvQuantityCart.setText(activity.getTvSizeCart());
+                break;
+            case R.id.imgCart:
+                activity.showFrmCart();
+                break;
+        }
     }
 
     private void showProductDetails() {
-        if (product == null)
-            product = new VegetableEntity();
-        product = DatabaseHelper.getDatabaseHelper(getContext()).getInformationProduct(idProduct);
-        tvNameProduct.setText(product.getProductName());
-        tvPrice.setText(String.valueOf(product.getProductPrice()));
-        tvProductDescription.setText(product.getProductDescription());
+        try {
+            if (product == null)
+                product = new VegetableEntity();
+            product = DatabaseHelper.getDatabaseHelper(getContext()).getInformationProduct(idProduct);
+            tvNameProduct.setText(product.getProductName());
+            tvPrice.setText(String.valueOf(product.getProductPrice()));
+            tvProductDescription.setText(product.getProductDescription());
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
     }
 }

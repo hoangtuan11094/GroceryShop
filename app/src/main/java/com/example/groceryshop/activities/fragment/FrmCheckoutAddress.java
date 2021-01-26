@@ -89,6 +89,7 @@ public class FrmCheckoutAddress extends BaseFragment implements View.OnClickList
 
         spAreaCodePhone = view.findViewById(R.id.spAreaCodePhone);
         edtEmail = view.findViewById(R.id.edtEmail);
+        btnCheckout.setOnClickListener(this);
     }
 
     @Override

@@ -139,12 +139,9 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
 
-        if (vegetableEntityArrayList == null)
+        if (vegetableEntityArrayList == null){
         vegetableEntityArrayList = new ArrayList<>();
         vegetableEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllProducts());
-        Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size());
-        for (int i = 0; i < vegetableEntityArrayList.size(); i++) {
-            Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.get(i).getIdProduct());
         }
         vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
                 activity.getSizeWithScale(167), activity.getSizeWithScale(134), activity.getSizeWithScale(78), new VegetableAdapter.OnClickItemListener() {
@@ -203,12 +200,21 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
 
         @Override
         public void onResult(boolean isSuccess) {
-            rcVegetable.setAdapter(vegetableAdapter);
-            activity.dismissDialog();
+            try {
+                rcVegetable.setAdapter(vegetableAdapter);
+                activity.dismissDialog();
+            }catch (Throwable e){
+                e.printStackTrace();
+            }
         }
     };
 
     private void showDataVegetable() {
-        DummyApi.getDummyApi().start(listenerAPI);
+        try {
+            DummyApi.getDummyApi().start(listenerAPI);
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
     }
 }

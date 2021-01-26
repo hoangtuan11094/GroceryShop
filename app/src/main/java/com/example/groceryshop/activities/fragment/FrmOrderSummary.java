@@ -73,27 +73,38 @@ public class FrmOrderSummary extends BaseFragment implements View.OnClickListene
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (cartEntityArrayList == null)cartEntityArrayList = new ArrayList<>();
-        cartEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllCart());
-        cartAdapter = new CartAdapter(getContext(), cartEntityArrayList, activity.getSizeWithScale(302), activity.getSizeWithScale(96), activity.getSizeWithScale(16),
-                activity.getSizeWithScale(16), activity.getSizeWithScale(13), activity.getSizeWithScale(19), new CartAdapter.OnClickItemListener() {
-            @Override
-            public void onClickDelete(int total) {
-
+        try {
+            if (cartEntityArrayList == null)cartEntityArrayList = new ArrayList<>();
+            ArrayList<CartEntity> cartEntityArrayList1 = new ArrayList<>();
+            cartEntityArrayList1.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllCart());
+            for (int i = 0; i < cartEntityArrayList1.size(); i++) {
+                if (cartEntityArrayList1.get(i).quantity > 0){
+                    cartEntityArrayList.add(cartEntityArrayList1.get(i));
+                }
             }
+            cartAdapter = new CartAdapter(getContext(), cartEntityArrayList, activity.getSizeWithScale(302), activity.getSizeWithScale(96), activity.getSizeWithScale(16),
+                    activity.getSizeWithScale(16), activity.getSizeWithScale(13), activity.getSizeWithScale(19), new CartAdapter.OnClickItemListener() {
+                @Override
+                public void onClickDelete(int total) {
 
-            @Override
-            public void onClickIncrease(int subtotal) {
+                }
 
-            }
+                @Override
+                public void onClickIncrease(int subtotal) {
 
-            @Override
-            public void onClickReduction(int subtotal) {
+                }
 
-            }
-        });
-        rcOrderSummary.setAdapter(cartAdapter);
-        rcOrderSummary.setLayoutManager(new LinearLayoutManager(getContext()));
+                @Override
+                public void onClickReduction(int subtotal) {
+
+                }
+            });
+            rcOrderSummary.setAdapter(cartAdapter);
+            rcOrderSummary.setLayoutManager(new LinearLayoutManager(getContext()));
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
     }
 
 

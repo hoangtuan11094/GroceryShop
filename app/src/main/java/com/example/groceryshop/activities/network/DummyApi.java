@@ -36,7 +36,7 @@ public class DummyApi {
         if (mListenerAPI != null) {
             mListenerAPI.onStarts();
         }
-        handler.postDelayed(runnable, 3000L);
+        handler.postDelayed(runnable, 1000L);
     }
 
     private boolean getRandomBoolean() {

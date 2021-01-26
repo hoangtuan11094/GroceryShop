@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,7 +45,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
     private Fragment currentFragment;
     private boolean checkLogin;
     private SharedPreferences sharedPreferences;
-    private  FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
     private View layoutMenuBar;
     private View bgMenu;
     private TextView tvName;
@@ -61,6 +60,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
                         .remove(currentFragment)
                         .commitAllowingStateLoss();
             }
+
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -81,7 +81,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     private void navigationApp() {
         if (checkLogin) {
-            addFragment(new FrmHome());
+            addFragment(new FrmOrderSummary());
         } else
             addFragment(new FrmWelcome());
     }
@@ -104,7 +104,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         addFragment(new FrmHome());
     }
 
-    public void showFrmCart(){
+    public void showFrmCart() {
         addFragment(new FrmCart());
     }
 
@@ -129,11 +129,11 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         addFragment(new FrmForgotPassword());
     }
 
-    public void showFrmCheckoutAddress(){
+    public void showFrmCheckoutAddress() {
         addFragment(new FrmCheckoutAddress());
     }
 
-    public void showFrmCheckoutShipping(){
+    public void showFrmCheckoutShipping() {
         addFragment(new FrmCheckoutShipping());
     }
 
@@ -164,6 +164,9 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
             dismissDialog();
         }
     };
+
+//TODO back Fragment
+
 
     //TODO menu bar
     private void dataListMenu() {
@@ -247,16 +250,11 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     //TODO data cart
 
-
     public String getTvSizeCart() {
         if (DatabaseHelper.getDatabaseHelper(this).getAllCart() == null)
             return "0";
         else
             return String.valueOf(DatabaseHelper.getDatabaseHelper(this).getAllCart().size());
-    }
-
-
-    public void deleteItemCart(int position){
     }
 
     @Override

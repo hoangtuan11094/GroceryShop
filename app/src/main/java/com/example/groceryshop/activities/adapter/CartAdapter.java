@@ -70,6 +70,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     int subtotal = 0;
                     if (cartEntity.quantity > 0) {
                         cartEntity.setQuantity(cartEntity.quantity - 1);
+                        DatabaseHelper.getDatabaseHelper(context).updateCart(cartEntity.id, cartEntity.quantity);
                         subtotal = cartEntity.priceProduct;
                     }
                     notifyDataSetChanged();
@@ -82,6 +83,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     cartEntity.setQuantity(cartEntity.quantity + 1);
+                    DatabaseHelper.getDatabaseHelper(context).updateCart(cartEntity.id, cartEntity.quantity);
                     int subtotal = cartEntity.priceProduct;
                     notifyDataSetChanged();
 
@@ -93,7 +95,6 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((HolderCartAdapter) holder).imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if (onClickItemListener != null) {
                         onClickItemListener.onClickDelete(position);
                     }

@@ -293,6 +293,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.delete("cart", "id=?", new String[]{String.valueOf(cartEntity.id).toString()});
     }
+
+    public int updateCart(int id, int quantity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("quantityProduct", quantity);
+
+        int count = db.update("cart", values, "id" + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return count;
+    }
     @Override
     public void onCreate(SQLiteDatabase db) {
 

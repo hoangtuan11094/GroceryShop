@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.CartEntity;
 import com.example.groceryshop.activities.entity.VegetableEntity;
 
 import java.util.ArrayList;
@@ -26,7 +28,12 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private int wImgBtnAdd;
     private int hImgBtnAdd;
 
-    public SearchAdapter(ArrayList<VegetableEntity> vegetableEntityList, Context context, int wClItemSearch, int hClItemSearch, int wImgBtnAdd, int hImgBtnAdd) {
+    public interface OnClickItemListener{
+        void onClickAdd(int position);
+    }
+
+    private OnClickItemListener onClickItemListener;
+    public SearchAdapter(ArrayList<VegetableEntity> vegetableEntityList, Context context, int wClItemSearch, int hClItemSearch, int wImgBtnAdd, int hImgBtnAdd, OnClickItemListener onClickItemListener) {
         this.vegetableEntityList = vegetableEntityList;
         this.vegetableEntityListFilter = vegetableEntityList;
         this.context = context;
@@ -34,6 +41,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.hClItemSearch = hClItemSearch;
         this.wImgBtnAdd = wImgBtnAdd;
         this.hImgBtnAdd = hImgBtnAdd;
+        this.onClickItemListener = onClickItemListener;
     }
 
     @NonNull
@@ -52,6 +60,16 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((HolderSearchItem) holder).tvWeight.setText(String.valueOf(vegetableEntity.getProductWeight() + " gm"));
             ((HolderSearchItem) holder).tvPrice.setText(String.valueOf("$" + vegetableEntity.getProductPrice()));
         }
+        ((HolderSearchItem) holder).imgBtnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseHelper.getDatabaseHelper(context).insertCart( new CartEntity(vegetableEntity.getImgProduct(), vegetableEntity.getProductName(), vegetableEntity.getProductPrice(), 1));
+                if (vegetableEntityListFilter != null) vegetableEntityListFilter.remove(position);
+                notifyDataSetChanged();
+                if (onClickItemListener != null) onClickItemListener.onClickAdd(position);
+            }
+        });
+
     }
 
     @Override

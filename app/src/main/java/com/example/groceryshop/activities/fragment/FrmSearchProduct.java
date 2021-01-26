@@ -1,32 +1,24 @@
 package com.example.groceryshop.activities.fragment;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.SearchAdapter;
-import com.example.groceryshop.activities.adapter.VegetableAdapter;
 import com.example.groceryshop.activities.data.DatabaseHelper;
 import com.example.groceryshop.activities.entity.VegetableEntity;
 import com.example.groceryshop.activities.listener.ListenerAPI;
 import com.example.groceryshop.activities.network.DummyApi;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FrmSearchProduct extends BaseFragment implements View.OnClickListener {
     private RecyclerView rcSearch;
@@ -37,7 +29,14 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.imgMenu:
+                activity.showMenu();
+                break;
+            case R.id.imgCart:
+                activity.showFrmCart();
+                break;
+        }
     }
 
     @Override
@@ -51,8 +50,18 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    protected void finish() {
+    public boolean isBackPreviousEnable() {
+        return true;
+    }
 
+    @Override
+    public void backToPrevious() {
+        finish();
+    }
+
+    @Override
+    protected void finish() {
+        activity.showFrmHome();
     }
 
     @Override
@@ -79,6 +88,8 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
         edtSearch = view.findViewById(R.id.edtSearch);
         tvQuantityCart = view.findViewById(R.id.tvQuantityCart);
         tvQuantityCart.setText(activity.getTvSizeCart());
+        imgCart.setOnClickListener(this);
+        imgMenu.setOnClickListener(this);
 
     }
 
@@ -103,12 +114,16 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
                 searchAdapter.getFilter().filter(tvSearch);
             }
         });
+        if (vegetableEntityArrayList == null)
+            vegetableEntityArrayList = new ArrayList<>();
 
-        vegetableEntityArrayList = new ArrayList<>();
-
-        Log.e(TAG, "showDataVegetable: " + vegetableEntityArrayList.size());
         searchAdapter = new SearchAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(302),
-                activity.getSizeWithScale(72), activity.getSizeWithScale(89), activity.getSizeWithScale(26));
+                activity.getSizeWithScale(72), activity.getSizeWithScale(89), activity.getSizeWithScale(26), new SearchAdapter.OnClickItemListener() {
+            @Override
+            public void onClickAdd(int position) {
+                tvQuantityCart.setText(activity.getTvSizeCart());
+            }
+        });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rcSearch.setAdapter(searchAdapter);
         rcSearch.setLayoutManager(linearLayoutManager);
@@ -122,12 +137,15 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
 
         @Override
         public void onResult(boolean isSuccess) {
-            if (vegetableEntityArrayList != null) vegetableEntityArrayList.clear();
-            else vegetableEntityArrayList = new ArrayList<>();
-            vegetableEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllProducts());
-            searchAdapter.notifyDataSetChanged();
-            activity.dismissDialog();
-
+            try {
+                if (vegetableEntityArrayList != null) vegetableEntityArrayList.clear();
+                else vegetableEntityArrayList = new ArrayList<>();
+                vegetableEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllProducts());
+                searchAdapter.notifyDataSetChanged();
+                activity.dismissDialog();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         }
     };
 

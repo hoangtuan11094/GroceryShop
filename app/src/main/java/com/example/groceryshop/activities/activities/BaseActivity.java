@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.fragment.FrmHome;
 
 public class BaseActivity extends AppCompatActivity {
     private Dialog mProgressDialog;
@@ -19,8 +20,11 @@ public class BaseActivity extends AppCompatActivity {
             if(currentFragment!=null){
                 fragmentManager.beginTransaction()
                         .replace(idContent, f)
+                        .addToBackStack(null)
                         .commitAllowingStateLoss();
-            }else {
+
+            }
+            else {
                 fragmentManager.beginTransaction()
                         .add(idContent, f)
                         .commitAllowingStateLoss();
