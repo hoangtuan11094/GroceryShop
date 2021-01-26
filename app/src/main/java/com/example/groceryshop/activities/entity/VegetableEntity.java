@@ -8,6 +8,7 @@ public class VegetableEntity {
     private float productWeight;
     private int productPrice;
     private int productIdCategory;
+    private String productDescription;
 
     public VegetableEntity() {
     }
@@ -17,6 +18,14 @@ public class VegetableEntity {
         this.productName = productName;
         this.productWeight = productWeight;
         this.productPrice = productPrice;
+    }
+
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
 
     public String getImgProduct() {

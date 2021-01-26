@@ -46,6 +46,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
     private Fragment currentFragment;
     private boolean checkLogin;
     private SharedPreferences sharedPreferences;
+    private  FragmentManager fragmentManager;
     private View layoutMenuBar;
     private View bgMenu;
     private TextView tvName;
@@ -53,7 +54,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     public void addFragment(Fragment f) {
         try {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager = getSupportFragmentManager();
             currentFragment = fragmentManager.findFragmentById(R.id.frameMenuContainer);
             if (currentFragment != null) {
                 fragmentManager.beginTransaction()
@@ -107,8 +108,13 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         addFragment(new FrmCart());
     }
 
-    public void showFrmProductDetails() {
-        addFragment(new FrmProductDetails());
+    public void showFrmProductDetails(int id) {
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
+        FrmProductDetails frmProductDetails = new FrmProductDetails();
+        frmProductDetails.setArguments(bundle);
+        addFragment(frmProductDetails);
     }
 
     public void showFrmSearch() {
@@ -136,11 +142,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         bundle.putString("email", email);
         FrmResetPassword frmResetPassword = new FrmResetPassword();
         frmResetPassword.setArguments(bundle);
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft_add = fm.beginTransaction();
-        ft_add.add(R.id.frameParent, frmResetPassword);
-        ft_add.commit();
-
+        addFragment(frmResetPassword);
     }
 
     public void logout() {

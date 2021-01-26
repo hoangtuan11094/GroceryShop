@@ -24,6 +24,7 @@ public class VegetableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private int hImgProduct;
     public interface OnClickItemListener {
         void onClicked(int position);
+        void onClickedItem(int position);
     }
 
     private OnClickItemListener onClickItemListener;
@@ -57,6 +58,14 @@ public class VegetableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         if (vegetableEntityArrayList != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onClickItemListener != null){
+                        onClickItemListener.onClickedItem(position);
+                    }
+                }
+            });
             switch (getItemViewType(position)){
                 case 1:
                     ((HolderVegetableEtity1) holder).imgProduct.setText(vegetableEntityArrayList.get(position).getImgProduct());

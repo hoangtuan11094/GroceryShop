@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.SearchAdapter;
@@ -32,6 +33,7 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private SearchAdapter searchAdapter;
     private EditText edtSearch;
+    private TextView tvQuantityCart;
 
     @Override
     public void onClick(View v) {
@@ -75,6 +77,9 @@ public class FrmSearchProduct extends BaseFragment implements View.OnClickListen
 
         rcSearch = view.findViewById(R.id.rcSearch);
         edtSearch = view.findViewById(R.id.edtSearch);
+        tvQuantityCart = view.findViewById(R.id.tvQuantityCart);
+        tvQuantityCart.setText(activity.getTvSizeCart());
+
     }
 
     @Override

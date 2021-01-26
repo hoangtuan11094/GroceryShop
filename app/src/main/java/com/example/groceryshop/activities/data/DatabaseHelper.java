@@ -39,6 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String WEIGTH_PRODUCT = "productWeigth";
     private String PRICE_PRODUCT = "productPrice";
     private String ID_CATEGORY_PRODUCT = "productIdCategory";
+    private String PRODUCT_DESCRIPTION = "productDescription";
     private static DatabaseHelper databaseHelper;
 
     public static DatabaseHelper getDatabaseHelper(Context context) {
@@ -118,6 +119,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return productList;
+    }
+
+    public VegetableEntity getInformationProduct(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * from product WHERE id= " + id, null);
+        VegetableEntity product = new VegetableEntity();
+        if (cursor != null && cursor.moveToNext()) {
+            product.setIdProduct(cursor.getInt(cursor.getColumnIndex(ID)));
+            product.setImgProduct(cursor.getString(cursor.getColumnIndex(IMG_PRODUCT)));
+            product.setProductName(cursor.getString(cursor.getColumnIndex(NAME_PRODUCT)));
+            product.setProductWeight(cursor.getInt(cursor.getColumnIndex(WEIGTH_PRODUCT)));
+            product.setProductPrice(cursor.getInt(cursor.getColumnIndex(PRICE_PRODUCT)));
+            product.setProductIdCategory(cursor.getInt(cursor.getColumnIndex(ID_CATEGORY_PRODUCT)));
+            product.setProductDescription(cursor.getString(cursor.getColumnIndex(PRODUCT_DESCRIPTION)));
+            Log.e(TAG, "getInformationProduct: " + product.getProductName());
+
+        }
+        return product;
     }
 
     public List<CategoryEntity> getAllCategory() {

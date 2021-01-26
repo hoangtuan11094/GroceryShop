@@ -29,7 +29,7 @@
     <string name="lblEmailIsIncorrect">Email is incorrect</string>
     <string name="lblPasswordsAreNotTheSame">Passwords are not the same</string>
     <string name="lblPasswordWasSuccessfullyChanged">Password was successfully changed</string>
-    <string name="lblEmailFormatIsIncorrect"> format is incorrect</string>
+    <string name="lblEmailFormatIsIncorrect"> Format is incorrect</string>
     <string name="lbl_LogOut">Log Out</string>
     <string name="lbl_ProductDescription">Product Description</string>
     <string name="lbl_Quantity">Quantity:</string>

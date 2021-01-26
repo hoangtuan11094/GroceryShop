@@ -39,7 +39,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private RecyclerView rcVegetable;
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private VegetableAdapter vegetableAdapter;
-    private TextView tvQuantityCart ;
+    private TextView tvQuantityCart;
 
     @Override
     protected int getLayoutResId() {
@@ -153,6 +153,12 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
                 DatabaseHelper.getDatabaseHelper(getContext()).insertCart(new CartEntity(vegetableEntityArrayList.get(position).getImgProduct(), vegetableEntityArrayList.get(position).getProductName(), vegetableEntityArrayList.get(position).getProductPrice(), 1));
                 tvQuantityCart.setText(activity.getTvSizeCart());
             }
+
+            @Override
+            public void onClickedItem(int position) {
+                activity.showFrmProductDetails(vegetableEntityArrayList.get(position).getIdProduct());
+            }
+
         });
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         rcVegetable.setLayoutManager(gridLayoutManager);

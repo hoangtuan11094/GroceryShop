@@ -54,6 +54,7 @@
                     />
             </LinearLayout>
             <ImageView
+                android:layout_marginEnd="@dimen/margin_5"
                 android:id="@+id/imgCart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,6 +62,17 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvQuantityCart"
+                android:layout_width="18dp"
+                android:layout_height="16dp"
+                android:background="@drawable/bg_btn_yellow"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/ts_10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/imgCart"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

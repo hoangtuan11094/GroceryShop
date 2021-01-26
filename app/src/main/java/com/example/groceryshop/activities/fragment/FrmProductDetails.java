@@ -1,18 +1,26 @@
 package com.example.groceryshop.activities.fragment;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.VegetableEntity;
 
 public class FrmProductDetails extends BaseFragment implements View.OnClickListener {
 
+    private TextView tvQuantityCart;
+    private int idProduct;
+    private VegetableEntity product;
+    private TextView tvNameProduct;
+    private TextView tvPriceSale;
+    private TextView tvPrice;
+    private TextView tvProductDescription;
 
     @Override
     protected int getLayoutResId() {
@@ -51,16 +59,40 @@ public class FrmProductDetails extends BaseFragment implements View.OnClickListe
         View clProductDescription = view.findViewById(R.id.clProductDescription);
         clProductDescription.getLayoutParams().height = activity.getSizeWithScale(298);
 
+        tvNameProduct = view.findViewById(R.id.tvNameProduct);
+        tvPriceSale = view.findViewById(R.id.tvPriceSale);
+        tvPrice = view.findViewById(R.id.tvPrice);
+        tvProductDescription = view.findViewById(R.id.tvProductDescription);
+        tvProductDescription.setMovementMethod(new ScrollingMovementMethod());
+        tvQuantityCart = view.findViewById(R.id.tvQuantityCart);
+        tvQuantityCart.setText(activity.getTvSizeCart());
+
         imgMenu.setOnClickListener(this);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            idProduct = bundle.getInt("id");
+        }
+        showProductDetails();
+
     }
 
     @Override
     public void onClick(View v) {
 
+    }
+
+    private void showProductDetails() {
+        if (product == null)
+            product = new VegetableEntity();
+        product = DatabaseHelper.getDatabaseHelper(getContext()).getInformationProduct(idProduct);
+        tvNameProduct.setText(product.getProductName());
+        tvPrice.setText(String.valueOf(product.getProductPrice()));
+        tvProductDescription.setText(product.getProductDescription());
     }
 }

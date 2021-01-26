@@ -29,8 +29,6 @@ import static com.example.groceryshop.activities.network.DummyApi.getDummyApi;
 
 public class FrmCategory extends BaseFragment implements View.OnClickListener {
 
-    //    private int[] intImg = {R.drawable.item_category1, R.drawable.item_category2, R.drawable.item_category3, R.drawable.item_category4, R.drawable.item_category5, R.drawable.item_category6,
-//            R.drawable.item_category7, R.drawable.item_category8, R.drawable.item_category9,R.drawable.item_category10 };
     private List<CategoryEntity> categoryEntityList;
     private RecyclerView rcCategory;
     private CategoryAdapter categoryAdapter;

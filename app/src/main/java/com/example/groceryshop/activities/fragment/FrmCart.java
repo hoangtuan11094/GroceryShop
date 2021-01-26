@@ -33,6 +33,8 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
     private TextView tvTotal;
     private ArrayList<CartEntity> cartEntityArrayList;
     private ViewGroup viewGroup;
+    private TextView tvQuantityCart;
+
 
     @Override
     protected int getLayoutResId() {
@@ -80,6 +82,9 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
         tvDiscount = view.findViewById(R.id.tvDiscount);
         tvTax = view.findViewById(R.id.tvTax);
         tvTotal = view.findViewById(R.id.tvTotal);
+
+        tvQuantityCart = view.findViewById(R.id.tvQuantityCart);
+        tvQuantityCart.setText(activity.getTvSizeCart());
 
         rcCart = view.findViewById(R.id.rcCart);
         imgMenu.setOnClickListener(this);
@@ -167,6 +172,7 @@ public class FrmCart extends BaseFragment implements View.OnClickListener {
                     total = cartEntityArrayList.get(position).priceProduct * cartEntityArrayList.get(position).quantity;
                     DatabaseHelper.getDatabaseHelper(getContext()).deleteCart(cartEntityArrayList.get(position));
                     cartEntityArrayList.remove(position);
+                    tvQuantityCart.setText(activity.getTvSizeCart());
                 }
                 subtotal1 = subtotal1 - total;
                 cartAdapter.notifyDataSetChanged();
