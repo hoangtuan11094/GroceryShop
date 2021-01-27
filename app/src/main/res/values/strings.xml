@@ -59,4 +59,7 @@
     <string name="lblTitleFreeShipping">Free shipping is a special method which can be  triggered with coupons and minimum spends.</string>
     <string name="lbl_DelivereTo">Delivere To:</string>
     <string name="lbl_TotalAmount">Total Amount:</string>
+    <string name="title_dialog_warning_internet">Looks like you don\'t have an Internet connection</string>
+    <string name="tv_dialog_warning_internet">Please check your internet connection!</string>
+    <string name="lblClose">Close</string>
 </resources>

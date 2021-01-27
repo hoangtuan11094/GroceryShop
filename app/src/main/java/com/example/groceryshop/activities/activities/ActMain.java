@@ -1,6 +1,7 @@
 package com.example.groceryshop.activities.activities;
 
 import android.content.SharedPreferences;
+import android.net.wifi.hotspot2.pps.HomeSp;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -81,7 +82,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
 
     private void navigationApp() {
         if (checkLogin) {
-            addFragment(new FrmOrderSummary());
+            addFragment(new FrmHome());
         } else
             addFragment(new FrmWelcome());
     }

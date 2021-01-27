@@ -124,23 +124,25 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
 
     private void insertUser() {
         try {
-            if (userEntity == null) userEntity = new UserEntity();
-            userEntity.email = edtEmail.getText().toString().trim();
-            userEntity.passwordUser = edtPass.getText().toString().trim();
-            userEntity.fullName = edtName.getText().toString().trim();
-            boolean checkEmail = DatabaseHelper.getDatabaseHelper(getContext()).checkEmail(userEntity.email);
-            if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()) {
-                showToast(R.string.lblMustNotBeLeftBlank);
-            } else if (!isValidEmail(userEntity.email)) {
-                showToast(getActivity().getResources().getString(R.string.lblEmailFormatIsIncorrect));
-            } else if (checkEmail) {
-                showToast(R.string.lbl_EmailAlreadyExists);
-            } else {
-                DummyApi.getDummyApi().start(listenerAPI);
+            if (activity.isConnected()) {
+                if (userEntity == null) userEntity = new UserEntity();
+                userEntity.email = edtEmail.getText().toString().trim();
+                userEntity.passwordUser = edtPass.getText().toString().trim();
+                userEntity.fullName = edtName.getText().toString().trim();
+                boolean checkEmail = DatabaseHelper.getDatabaseHelper(getContext()).checkEmail(userEntity.email);
+                if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()) {
+                    showToast(R.string.lblMustNotBeLeftBlank);
+                } else if (!isValidEmail(userEntity.email)) {
+                    showToast(getActivity().getResources().getString(R.string.lblEmailFormatIsIncorrect));
+                } else if (checkEmail) {
+                    showToast(R.string.lbl_EmailAlreadyExists);
+                } else {
+                    DummyApi.getDummyApi().start(listenerAPI);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            } catch(Exception e){
+                e.printStackTrace();
+            }
 
     }
 

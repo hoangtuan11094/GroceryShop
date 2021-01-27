@@ -14,4 +14,6 @@
     <color name="colorBgSearch">#FFF0D0</color>
     <color name="colorBgClImgProduct">#CCCCCC</color>
     <color name="colorRed">#FF0303</color>
+    <color name="colorTvDialogNoInternet">#5C5F63</color>
+    <color name="colorBtnClose">#2A7DE9</color>
 </resources>

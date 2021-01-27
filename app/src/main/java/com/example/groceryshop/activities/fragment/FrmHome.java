@@ -6,6 +6,10 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -13,12 +17,6 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.SlideHomeAdapter;
@@ -139,9 +137,9 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
 
-        if (vegetableEntityArrayList == null){
-        vegetableEntityArrayList = new ArrayList<>();
-        vegetableEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllProducts());
+        if (vegetableEntityArrayList == null) {
+            vegetableEntityArrayList = new ArrayList<>();
+            vegetableEntityArrayList.addAll(DatabaseHelper.getDatabaseHelper(getContext()).getAllProducts());
         }
         vegetableAdapter = new VegetableAdapter(vegetableEntityArrayList, getContext(), activity.getSizeWithScale(146),
                 activity.getSizeWithScale(167), activity.getSizeWithScale(134), activity.getSizeWithScale(78), new VegetableAdapter.OnClickItemListener() {
@@ -170,7 +168,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             case R.id.imgMenu:
                 activity.showMenu();
                 break;
-            case  R.id.imgSearch:
+            case R.id.imgSearch:
                 activity.showFrmSearch();
                 break;
             case R.id.imgCart:
@@ -203,7 +201,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             try {
                 rcVegetable.setAdapter(vegetableAdapter);
                 activity.dismissDialog();
-            }catch (Throwable e){
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
@@ -211,8 +209,10 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
 
     private void showDataVegetable() {
         try {
-            DummyApi.getDummyApi().start(listenerAPI);
-        }catch (Throwable e){
+            if (activity.isConnected()) {
+                DummyApi.getDummyApi().start(listenerAPI);
+            }
+        } catch (Throwable e) {
             e.printStackTrace();
         }
 

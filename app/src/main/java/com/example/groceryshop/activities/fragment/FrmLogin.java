@@ -155,15 +155,15 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener {
     };
 
     private void loginUser() {
-
-        email = edtEmailLogin.getText().toString().trim();
-        pass = edtPassLogin.getText().toString().trim();
-        if (email.isEmpty() || pass.isEmpty()) {
-            showToast(R.string.lblMustNotBeLeftBlank);
-        } else {
-            getDummyApi().start( listenerAPI);
+        if (activity.isConnected()) {
+            email = edtEmailLogin.getText().toString().trim();
+            pass = edtPassLogin.getText().toString().trim();
+            if (email.isEmpty() || pass.isEmpty()) {
+                showToast(R.string.lblMustNotBeLeftBlank);
+            } else {
+                getDummyApi().start(listenerAPI);
+            }
         }
-
 
     }
 }

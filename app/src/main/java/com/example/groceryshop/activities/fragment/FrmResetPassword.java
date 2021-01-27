@@ -119,13 +119,14 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
         newPass = edtNewPass.getText().toString().trim();
         reNewPass = edtReNewPass.getText().toString().trim();
         try {
+            if (activity.isConnected()){
             if (newPass.isEmpty() || newPass.isEmpty()) {
                 showToast(R.string.lblMustNotBeLeftBlank);
             } else if (!newPass.equals(reNewPass)) {
                 showToast(R.string.lblPasswordsAreNotTheSame);
             } else {
                 DummyApi.getDummyApi().start(listenerAPI);
-            }
+            }}
         } catch (Exception e) {
             e.printStackTrace();
         }

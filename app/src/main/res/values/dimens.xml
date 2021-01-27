@@ -22,4 +22,8 @@
     <dimen name="width_8">8dp</dimen>
     <dimen name="width_12">12sp</dimen>
     <dimen name="margin_14">14dp</dimen>
+    <dimen name="padding_50">50dp</dimen>
+    <dimen name="width_25">25dp</dimen>
+    <dimen name="ts_17">17sp</dimen>
+    <dimen name="ts_15">15sp</dimen>
 </resources>

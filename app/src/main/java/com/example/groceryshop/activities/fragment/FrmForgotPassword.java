@@ -105,10 +105,12 @@ public class FrmForgotPassword extends BaseFragment implements View.OnClickListe
 
     private void sendLinkEmail() {
         email = edtEmail.getText().toString().trim();
+        if (activity.isConnected()){
         if (email.isEmpty()) {
             showToast(R.string.lblMustNotBeLeftBlank);
         } else {
            DummyApi.getDummyApi().start(listenerAPI);
+        }
         }
     }
 }

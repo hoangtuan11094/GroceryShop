@@ -102,7 +102,9 @@ public class FrmCategory extends BaseFragment implements View.OnClickListener {
     };
 
     private void setImgItemCategory() {
-        getDummyApi().start(listenerAPI);
+        if (activity.isConnected()) {
+            getDummyApi().start(listenerAPI);
+        }
     }
 
     @Override
