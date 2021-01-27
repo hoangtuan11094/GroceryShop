@@ -3,8 +3,11 @@ package com.example.groceryshop.activities.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -21,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.fragment.FrmCart;
 import com.example.groceryshop.activities.fragment.FrmHome;
 import com.google.android.material.circularreveal.CircularRevealHelper;
 
@@ -35,7 +39,6 @@ public class BaseActivity extends AppCompatActivity {
                         .replace(idContent, f)
                         .addToBackStack(null)
                         .commitAllowingStateLoss();
-
             }
             else {
                 fragmentManager.beginTransaction()
@@ -106,6 +109,20 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     //TODO Notification
-    public void showNotification(String title, String message){
+    public void showNotification(String title, String message, int icon){
+
+
+        Intent intent = new Intent(this, ActMain.class);
+        PendingIntent pIntent = PendingIntent
+                .getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1")
+                .setSmallIcon(icon)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setFullScreenIntent(pIntent, false)
+                .setPriority(NotificationCompat.PRIORITY_LOW);
+               NotificationManager notificationManager = (NotificationManager) getSystemService(
+               Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0, builder.build());
     }
 }
