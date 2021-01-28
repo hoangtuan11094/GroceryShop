@@ -1,8 +1,11 @@
 package com.example.groceryshop.activities.activities;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.wifi.hotspot2.pps.HomeSp;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -10,6 +13,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.RemoteInput;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +26,6 @@ import com.example.groceryshop.R;
 import com.example.groceryshop.activities.adapter.MenuAdapter;
 import com.example.groceryshop.activities.conetant.PrefConstants;
 import com.example.groceryshop.activities.data.DatabaseHelper;
-import com.example.groceryshop.activities.entity.CartEntity;
 import com.example.groceryshop.activities.entity.MenuEntity;
 import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.fragment.FrmCart;
@@ -39,8 +45,10 @@ import com.example.groceryshop.activities.listener.ListenerAPI;
 import com.example.groceryshop.activities.network.DummyApi;
 import com.example.groceryshop.activities.network.Preferences;
 
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ActMain extends BaseActivity implements View.OnClickListener {
     private final String TAG = "ActMain";
@@ -69,6 +77,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         addOrReplaceFragment(R.id.frameParent, f);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -258,13 +267,122 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         else
             return String.valueOf(DatabaseHelper.getDatabaseHelper(this).getAllCart().size());
     }
-//
-@Override
-protected void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-    Log.e("TAG", "dataNotification: " + dataNotification(intent) );
 
-}
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+         dataNotification(intent);
+
+    }
+
+
+    //TODO Notification
+    public static final String KEY_TEXT_REPLY = "key_text_reply";
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
+
+    public void showNotification(String title, String message, int icon, int icClose) {
+
+//        Intent intent = new Intent(this, ActMain.class);
+//        PendingIntent pIntent = PendingIntent
+//                .getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1")
+//                .setSmallIcon(icon)
+//                .setContentTitle(title)
+//                .setContentText(message)
+//                .setFullScreenIntent(pIntent, false)
+//                .setPriority(NotificationCompat.PRIORITY_LOW);
+//               NotificationManager notificationManager = (NotificationManager) getSystemService(
+//               Context.NOTIFICATION_SERVICE);
+//        notificationManager.notify(0, builder.build());
+//
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(icon)
+                .setContentTitle(title)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentText(message);
+
+        String replyLabel = "Enter your reply here";
+
+        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+                .setLabel(replyLabel)
+                .build();
+
+        Intent resultIntent = new Intent(this, ActMain.class);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(R.drawable.ic_envelope, "REPLY", resultPendingIntent)
+                .addRemoteInput(remoteInput)
+                .setAllowGeneratedReplies(true)
+                .build();
+
+        builder.addAction(replyAction);
+
+        Intent intent = new Intent(this, ActMain.class);
+        intent.putExtra("notificationId", 1);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent dismissIntent = PendingIntent.getActivity(getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+
+        builder.addAction(icClose, "DISMISS", dismissIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, builder.build());
+
+        //Notification Download
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+                NotificationCompat.Builder builder1 = new NotificationCompat.Builder(getApplicationContext(), "ID");
+
+                int PROGRESS_MAX = 100;
+                for (int i = 0; i < 100; i++) {
+                    try {
+                        Thread.sleep(500L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    builder1.setSmallIcon(icon)
+                            .setContentTitle(title)
+                            .setContentText("Download( " + i + " %)")
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setProgress(PROGRESS_MAX, i, false)
+                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                    notificationManagerCompat.notify(3, builder1.build());
+                }
+
+                builder1.setContentText("Download Complete")
+                        .setProgress(0,0,false)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                notificationManagerCompat.notify(3, builder1.build());
+            }
+        }).start();
+    }
+
+    public void dataNotification(Intent intent) {
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+
+        if (remoteInput != null) {
+            CharSequence charSequence = remoteInput.getCharSequence(KEY_TEXT_REPLY);
+            if (charSequence != null) {
+                String reply = charSequence.toString();
+
+                Log.e(TAG, "dataNotification: " + reply);
+
+                NotificationCompat.Builder repliedNotification =
+                        new NotificationCompat.Builder(this)
+                                .setSmallIcon(R.drawable.ic_envelope)
+                                .setContentText("Inline Reply received");
+
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(1, repliedNotification.build());
+            }
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

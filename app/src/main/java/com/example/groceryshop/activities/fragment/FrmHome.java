@@ -1,11 +1,13 @@
 package com.example.groceryshop.activities.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -218,4 +220,5 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         }
 
     }
+
 }
