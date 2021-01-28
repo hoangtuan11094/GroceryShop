@@ -147,7 +147,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             public void onClicked(int position) {
                 DatabaseHelper.getDatabaseHelper(getContext()).insertCart(new CartEntity(vegetableEntityArrayList.get(position).getImgProduct(), vegetableEntityArrayList.get(position).getProductName(), vegetableEntityArrayList.get(position).getProductPrice(), 1));
                 tvQuantityCart.setText(activity.getTvSizeCart());
-                activity.showNotification(TAG, "Add to cart successfully", R.drawable.icon_send);
+                activity.showNotification(TAG, "Add to cart successfully", R.drawable.icon_send, R.drawable.ic_close);
             }
 
             @Override

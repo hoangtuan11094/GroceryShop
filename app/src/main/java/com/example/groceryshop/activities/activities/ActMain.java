@@ -1,5 +1,6 @@
 package com.example.groceryshop.activities.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.hotspot2.pps.HomeSp;
 import android.os.Bundle;
@@ -257,7 +258,13 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         else
             return String.valueOf(DatabaseHelper.getDatabaseHelper(this).getAllCart().size());
     }
+//
+@Override
+protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    Log.e("TAG", "dataNotification: " + dataNotification(intent) );
 
+}
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

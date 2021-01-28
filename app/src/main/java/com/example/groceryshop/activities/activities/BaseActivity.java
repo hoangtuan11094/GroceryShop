@@ -8,25 +8,30 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.app.Notification.Action;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.RemoteInput;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.groceryshop.R;
-import com.example.groceryshop.activities.fragment.FrmCart;
-import com.example.groceryshop.activities.fragment.FrmHome;
-import com.google.android.material.circularreveal.CircularRevealHelper;
 
 public class BaseActivity extends AppCompatActivity {
     private Dialog mProgressDialog;
@@ -109,20 +114,66 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     //TODO Notification
-    public void showNotification(String title, String message, int icon){
-
+    public static final String KEY_TEXT_REPLY = "key_text_reply";
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
+    public void showNotification(String title, String message, int icon, int icClose){
 
         Intent intent = new Intent(this, ActMain.class);
-        PendingIntent pIntent = PendingIntent
-                .getActivity(this, (int) System.currentTimeMillis(), intent, 0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1")
-                .setSmallIcon(icon)
+//        PendingIntent pIntent = PendingIntent
+//                .getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1")
+//                .setSmallIcon(icon)
+//                .setContentTitle(title)
+//                .setContentText(message)
+//                .setFullScreenIntent(pIntent, false)
+//                .setPriority(NotificationCompat.PRIORITY_LOW);
+//               NotificationManager notificationManager = (NotificationManager) getSystemService(
+//               Context.NOTIFICATION_SERVICE);
+//        notificationManager.notify(0, builder.build());
+
+        String replyLabel = "Enter your reply here";
+        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+                .setLabel(replyLabel)
+                .build();
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent dismissIntent = PendingIntent.getActivity(getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
+                icon, "REPLY", resultPendingIntent)
+                .addRemoteInput(remoteInput)
+                .setAllowGeneratedReplies(true)
+                .build();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_envelope)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setFullScreenIntent(pIntent, false)
-                .setPriority(NotificationCompat.PRIORITY_LOW);
-               NotificationManager notificationManager = (NotificationManager) getSystemService(
-               Context.NOTIFICATION_SERVICE);
+                .addAction(replyAction)
+                .addAction(icClose, "DISMISS", dismissIntent);
+
+        intent.putExtra("notificationId", 1);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());
     }
+
+    public String dataNotification(Intent intent) {
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+        String reply = null;
+        if (remoteInput != null) {
+            reply = remoteInput.getCharSequence(KEY_TEXT_REPLY).toString();
+            NotificationCompat.Builder repliedNotification = new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.ic_envelope)
+                            .setContentText("OK");
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(2, repliedNotification.build());
+
+        }
+        return reply;
+    }
+
 }
