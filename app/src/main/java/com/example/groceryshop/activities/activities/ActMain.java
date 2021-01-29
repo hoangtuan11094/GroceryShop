@@ -1,10 +1,12 @@
 package com.example.groceryshop.activities.activities;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -45,10 +47,8 @@ import com.example.groceryshop.activities.listener.ListenerAPI;
 import com.example.groceryshop.activities.network.DummyApi;
 import com.example.groceryshop.activities.network.Preferences;
 
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ActMain extends BaseActivity implements View.OnClickListener {
     private final String TAG = "ActMain";
@@ -271,7 +271,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-         dataNotification(intent);
+        dataNotification(intent);
 
     }
 
@@ -325,7 +325,6 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent dismissIntent = PendingIntent.getActivity(getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-
         builder.addAction(icClose, "DISMISS", dismissIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -355,11 +354,44 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
                 }
 
                 builder1.setContentText("Download Complete")
-                        .setProgress(0,0,false)
+                        .setProgress(0, 0, false)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
                 notificationManagerCompat.notify(3, builder1.build());
             }
         }).start();
+
+        //Notification Show IMG.
+        NotificationCompat.Builder builderImg = new NotificationCompat.Builder(this, "ID_IMAGE")
+                .setSmallIcon(icon)
+                .setContentTitle("Image")
+                .setContentText(message)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.img_category1))
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(BitmapFactory.decodeResource(this.getResources(), R.drawable.img_category1)));
+
+        NotificationManager notificationManagerImage = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManagerImage.notify(4, builderImg.build());
+
+        //Notification Show TEXT
+        NotificationCompat.Builder builderText = new NotificationCompat.Builder(this, "ID_TEXT")
+                .setSmallIcon(R.drawable.ic_envelope)
+                .setContentTitle("Email")
+                .setContentText(message)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.drawable.img_avatar))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("Email Detail\n" +
+                        "Email Detail\n" +
+                        "Email Detail\n" +
+                        "Email Detail\n" +
+                        "Email Detail\n" +
+                        "Email Detail\n" +
+                        "Email Detail\n" +
+                        "Email Detail"));
+
+        NotificationManager notificationManagerText = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManagerText.notify(5, builderText.build());
+
+        //Notification Media
+
     }
 
     public void dataNotification(Intent intent) {
