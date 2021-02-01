@@ -1,5 +1,6 @@
 package com.example.groceryshop.activities.activities;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -46,9 +47,14 @@ import com.example.groceryshop.activities.fragment.FrmWelcome;
 import com.example.groceryshop.activities.listener.ListenerAPI;
 import com.example.groceryshop.activities.network.DummyApi;
 import com.example.groceryshop.activities.network.Preferences;
+import com.example.groceryshop.activities.service.TimerService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import static com.example.groceryshop.activities.service.TimerService.KEY_TYPE;
+
 
 public class ActMain extends BaseActivity implements View.OnClickListener {
     private final String TAG = "ActMain";
@@ -88,6 +94,19 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         checkLogin = sharedPreferences.getBoolean(PrefConstants.PREF_CHECK_LOGIN, false);
         navigationApp();
         customMenu();
+
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, TimerService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, 10);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+        }
     }
 
     private void navigationApp() {
@@ -410,7 +429,6 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
                         .setContentText("0866654199")
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_CALL)
-
                         .setFullScreenIntent(fullScreenPendingIntent, true);
 
 //      NotificationManager notificationManagerCall = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -473,6 +491,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
             }
         }
     }
+
 
     @Override
     public void onClick(View v) {
