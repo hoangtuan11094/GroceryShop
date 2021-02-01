@@ -238,7 +238,6 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         getInformationUser();
         dataListMenu();
         findViewById(R.id.clLogout).setOnClickListener(this);
-
     }
 
     private void showFragmentMenu(int position) {
@@ -377,20 +376,80 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
                 .setSmallIcon(R.drawable.ic_envelope)
                 .setContentTitle("Email")
                 .setContentText(message)
-                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.drawable.img_avatar))
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.img_avatar))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText("Email Detail\n" +
-                        "Email Detail\n" +
-                        "Email Detail\n" +
-                        "Email Detail\n" +
-                        "Email Detail\n" +
-                        "Email Detail\n" +
-                        "Email Detail\n" +
-                        "Email Detail"));
+                        "Email Detail\n Email Detail\n Email Detail\n Email Detail\n Email Detail\n Email Detail\n Email Detail"));
 
         NotificationManager notificationManagerText = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManagerText.notify(5, builderText.build());
 
         //Notification Media
+        NotificationCompat.Builder builderMedia = new NotificationCompat.Builder(this, "ID_MEDIA")
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setSmallIcon(R.drawable.ic_cart)
+                .addAction(R.drawable.ic_previous, "Previous", null)
+                .addAction(R.drawable.ic_pause, "Pause", null)
+                .addAction(R.drawable.ic_next, "Next", null)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(1)
+                        .setMediaSession(null))
+                .setContentTitle("Music")
+                .setContentText("Chúng Ta Của Hiện Tại");
+        NotificationManager notificationManagerMedia = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManagerMedia.notify(6, builderMedia.build());
+
+        //Notification call
+        Intent fullScreenIntent = new Intent(this, ActMain.class);
+        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0,
+                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builderCall =
+                new NotificationCompat.Builder(this, "ID_CALL")
+                        .setSmallIcon(R.drawable.ic_contuct_us_white)
+                        .setContentTitle("Đang gọi")
+                        .setContentText("0866654199")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_CALL)
+
+                        .setFullScreenIntent(fullScreenPendingIntent, true);
+
+//      NotificationManager notificationManagerCall = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//      notificationManagerCall.notify(7, builderCall.build());
+
+//Notification group
+        String GROUP_KEY_WORK_EMAIL = "com.android.example.WORK_EMAIL";
+
+        NotificationCompat.Builder builderMessage = new NotificationCompat.Builder(this, "ID_GROUP")
+                .setSmallIcon(R.drawable.ic_envelope)
+                .setContentTitle("Email")
+                .setContentText("Gmail")
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.img_avatar))
+                .setStyle(new NotificationCompat.InboxStyle()
+                        .setSummaryText("cuongnguyen05092000@gmail.com"))
+                .setGroup(GROUP_KEY_WORK_EMAIL)
+                .setGroupSummary(true);
+
+        Notification newMessageNotification1 =
+                new NotificationCompat.Builder(this, "ID_GROUP")
+                        .setSmallIcon(R.drawable.ic_envelope)
+                        .setContentTitle("Email1")
+                        .setContentText("Email detail")
+                        .setGroup(GROUP_KEY_WORK_EMAIL)
+                        .build();
+
+        Notification newMessageNotification2 =
+                new NotificationCompat.Builder(this, "ID_GROUP")
+                        .setSmallIcon(R.drawable.ic_envelope)
+                        .setContentTitle("Email2")
+                        .setContentText("Email detail")
+                        .setGroup(GROUP_KEY_WORK_EMAIL)
+                        .build();
+
+        NotificationManagerCompat notificationManagerMess = NotificationManagerCompat.from(this);
+        notificationManagerMess.notify(8, newMessageNotification1);
+        notificationManagerMess.notify(9, newMessageNotification2);
+        notificationManagerMess.notify(0, builderMessage.build());
+
 
     }
 
@@ -434,7 +493,6 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
             displayMetrics = getResources().getDisplayMetrics();
         return displayMetrics;
     }
-
 
     private int screenWidth = 0;
 
