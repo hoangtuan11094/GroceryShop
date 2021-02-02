@@ -38,18 +38,31 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imgCart"
             app:layout_constraintTop_toTopOf="parent" />
-        <TextClock
+        <TextView
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/time_picker"
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:text="hhhh"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="@dimen/ts_12"/>
+
+        <Button
+            app:layout_constraintStart_toEndOf="@+id/tvTime"
+            android:text="Hẹn giờ"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/btnHenGio"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="Hẹn giờ"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_red_dark"
+            android:textColor="@color/colorTvDialogNoInternet"
             android:textSize="@dimen/ts_12"/>
 
             <ImageView

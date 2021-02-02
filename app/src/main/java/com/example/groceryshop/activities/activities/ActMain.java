@@ -49,8 +49,11 @@ import com.example.groceryshop.activities.network.DummyApi;
 import com.example.groceryshop.activities.network.Preferences;
 import com.example.groceryshop.activities.service.TimerService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.groceryshop.activities.service.TimerService.KEY_TYPE;
@@ -94,19 +97,6 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         checkLogin = sharedPreferences.getBoolean(PrefConstants.PREF_CHECK_LOGIN, false);
         navigationApp();
         customMenu();
-
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, TimerService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, 10);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
-        }
     }
 
     private void navigationApp() {
@@ -195,9 +185,7 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         }
     };
 
-//TODO back Fragment
-
-
+//TODO back Fragment`
     //TODO menu bar
     private void dataListMenu() {
         RecyclerView rcMenuBar;
@@ -292,7 +280,6 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         dataNotification(intent);
 
     }
-
 
     //TODO Notification
     public static final String KEY_TEXT_REPLY = "key_text_reply";
@@ -492,6 +479,27 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    public void showNotificationAlarm(String dateTime)  {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date1 = null;
+        Date date = null;
+        try {
+            date1 = format.parse(dateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Log.e(TAG, "showNotificationAlarm: " +date1);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, TimerService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Calendar calendar = Calendar.getInstance();
+        date = calendar.getTime();
+        Log.e(TAG, "showNotificationAlarm: " +date);
+        calendar.set(Calendar.SECOND, 0);
+        long timer = date1.getTime() - date.getTime();
+        calendar.add(Calendar.MINUTE, (int) (timer / (60 * 1000)));
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+    }
 
     @Override
     public void onClick(View v) {

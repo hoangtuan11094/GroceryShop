@@ -1,7 +1,8 @@
 package com.example.groceryshop.activities.fragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -10,8 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -29,7 +32,9 @@ import com.example.groceryshop.activities.entity.VegetableEntity;
 import com.example.groceryshop.activities.listener.ListenerAPI;
 import com.example.groceryshop.activities.network.DummyApi;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class FrmHome extends BaseFragment implements View.OnClickListener {
 
@@ -40,6 +45,14 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private ArrayList<VegetableEntity> vegetableEntityArrayList;
     private VegetableAdapter vegetableAdapter;
     private TextView tvQuantityCart;
+    private TextView tvTime;
+    private int hour;
+    private int mMinute;
+    private int second;
+    private int mDay;
+    private int mMonth;
+    private int mYear;
+    private String dateTime;
 
     @Override
     protected int getLayoutResId() {
@@ -99,9 +112,14 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         tvQuantityCart = view.findViewById(R.id.tvQuantityCart);
         tvQuantityCart.setText(activity.getTvSizeCart());
 
+        tvTime = view.findViewById(R.id.tvTime);
+        View btnHenGio = view.findViewById(R.id.btnHenGio);
+
         imgMenu.setOnClickListener(this);
         imgSearch.setOnClickListener(this);
         imgCart.setOnClickListener(this);
+        tvTime.setOnClickListener(this);
+        btnHenGio.setOnClickListener(this);
 
         view.findViewById(R.id.tvViewAllCategories).setOnClickListener(this);
     }
@@ -109,6 +127,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        showDatePicker(true);
         showDataVegetable();
         SlideHomeAdapter slideHomeAdapter = new SlideHomeAdapter(intsImg);
         vpHeaderHome.setAdapter(slideHomeAdapter);
@@ -177,6 +196,13 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             case R.id.imgCart:
                 activity.showFrmCart();
                 break;
+            case R.id.tvTime:
+                showDatePicker(false);
+                break;
+            case R.id.btnHenGio:
+                Log.e(TAG, "onClick: " + dateTime );
+                    activity.showNotificationAlarm(dateTime);
+                break;
         }
     }
 
@@ -209,6 +235,65 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
             }
         }
     };
+
+    private void showDatePicker(boolean isShow) {
+        try {
+            if (isShow) {
+                Calendar calendar = Calendar.getInstance();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                mMinute = calendar.get(Calendar.MINUTE);
+                second = calendar.get(Calendar.SECOND);
+                mDay = calendar.get(Calendar.DATE);
+                mMonth = calendar.get(Calendar.MONTH) + 1;
+                mYear = calendar.get(Calendar.YEAR);
+                tvTime.setText(String.valueOf(hour + " : " + mMinute));
+                dateTime = mYear+"-"+mMonth+"-"+mDay+" "+hour+":"+mMinute;
+            } else {
+                try {
+                    new DatePickerDialog(activity, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            try {
+                                if (year != mYear
+                                        || month + 1 != mMonth
+                                        || dayOfMonth != mDay) {
+                                    mYear = year;
+                                    mMonth = month + 1;
+                                    mDay = dayOfMonth;
+                                    dateTime = mYear+"-"+mMonth+"-"+mDay+" "+hour+":"+mMinute;
+                                }
+                    new TimePickerDialog(activity, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            try {
+                                if (hourOfDay != hour
+                                        || minute != mMinute) {
+                                    hour = hourOfDay;
+                                    mMinute = minute;
+                                    tvTime.setText(String.valueOf(hour +":" + mMinute));
+                                    dateTime = mYear+"-"+mMonth+"-"+mDay+" "+hour+":"+mMinute;
+                                }
+                            } catch (Throwable e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, hour, mMinute, true).show();
+                            } catch (Throwable e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }, mYear, mMonth - 1, mDay).show();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private void showDataVegetable() {
         try {
