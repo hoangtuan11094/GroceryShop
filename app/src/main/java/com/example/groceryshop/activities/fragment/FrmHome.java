@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     private int mMonth;
     private int mYear;
     private String dateTime;
+    private Button btnHenGio;
 
     @Override
     protected int getLayoutResId() {
@@ -113,7 +115,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         tvQuantityCart.setText(activity.getTvSizeCart());
 
         tvTime = view.findViewById(R.id.tvTime);
-        View btnHenGio = view.findViewById(R.id.btnHenGio);
+         btnHenGio = view.findViewById(R.id.btnHenGio);
 
         imgMenu.setOnClickListener(this);
         imgSearch.setOnClickListener(this);
@@ -127,7 +129,6 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        showDatePicker(true);
         showDataVegetable();
         SlideHomeAdapter slideHomeAdapter = new SlideHomeAdapter(intsImg);
         vpHeaderHome.setAdapter(slideHomeAdapter);
@@ -197,11 +198,11 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
                 activity.showFrmCart();
                 break;
             case R.id.tvTime:
-                showDatePicker(false);
+
                 break;
             case R.id.btnHenGio:
                 Log.e(TAG, "onClick: " + dateTime );
-                    activity.showNotificationAlarm(dateTime);
+                showDatePicker();
                 break;
         }
     }
@@ -236,9 +237,8 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
         }
     };
 
-    private void showDatePicker(boolean isShow) {
+    private void showDatePicker() {
         try {
-            if (isShow) {
                 Calendar calendar = Calendar.getInstance();
                 hour = calendar.get(Calendar.HOUR_OF_DAY);
                 mMinute = calendar.get(Calendar.MINUTE);
@@ -246,9 +246,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
                 mDay = calendar.get(Calendar.DATE);
                 mMonth = calendar.get(Calendar.MONTH) + 1;
                 mYear = calendar.get(Calendar.YEAR);
-                tvTime.setText(String.valueOf(hour + " : " + mMinute));
                 dateTime = mYear+"-"+mMonth+"-"+mDay+" "+hour+":"+mMinute;
-            } else {
                 try {
                     new DatePickerDialog(activity, new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -270,8 +268,10 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
                                         || minute != mMinute) {
                                     hour = hourOfDay;
                                     mMinute = minute;
-                                    tvTime.setText(String.valueOf(hour +":" + mMinute));
                                     dateTime = mYear+"-"+mMonth+"-"+mDay+" "+hour+":"+mMinute;
+                                    activity.showNotificationAlarm(dateTime);
+                                    btnHenGio.setTextColor(getResources().getColor(R.color.colorRed));
+                                    btnHenGio.setBackgroundResource(R.drawable.bg_btn_yellow);
                                 }
                             } catch (Throwable e) {
                                 e.printStackTrace();
@@ -288,7 +288,7 @@ public class FrmHome extends BaseFragment implements View.OnClickListener {
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
-            }
+
         } catch (Throwable e) {
             e.printStackTrace();
         }

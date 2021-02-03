@@ -56,8 +56,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.groceryshop.activities.service.TimerService.KEY_TYPE;
-
 
 public class ActMain extends BaseActivity implements View.OnClickListener {
     private final String TAG = "ActMain";
@@ -488,16 +486,16 @@ public class ActMain extends BaseActivity implements View.OnClickListener {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.e(TAG, "showNotificationAlarm: " +date1);
+        Log.e(TAG, "showNotificationAlarm: " + date1);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, TimerService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar calendar = Calendar.getInstance();
         date = calendar.getTime();
-        Log.e(TAG, "showNotificationAlarm: " +date);
-        calendar.set(Calendar.SECOND, 0);
+        Log.e(TAG, "showNotificationAlarm: " + date);
         long timer = date1.getTime() - date.getTime();
-        calendar.add(Calendar.MINUTE, (int) (timer / (60 * 1000)));
+        calendar.add(Calendar.MILLISECOND, (int) (timer));
+        Log.e(TAG, "showNotificationAlarm: " + timer);
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
