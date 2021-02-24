@@ -6,10 +6,25 @@
     <FrameLayout
         android:id="@+id/frameParent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <FrameLayout
         android:id="@+id/frameMenuContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/frameMenuBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layoutMenuBar"
+            layout="@layout/layout_menu_bar"
+            android:visibility="gone"
+            >
+
+        </include>
+    </FrameLayout>
 </FrameLayout>

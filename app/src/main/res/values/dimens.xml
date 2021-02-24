@@ -7,4 +7,23 @@
     <dimen name="padding_10">10dp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="padding_30">30dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="ts_10">10sp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="height_70">70dp</dimen>
+    <dimen name="ts_18">18sp</dimen>
+    <dimen name="ts_14">14sp</dimen>
+    <dimen name="ts_12">12sp</dimen>
+    <dimen name="ts_16">16sp</dimen>
+    <dimen name="width_30">30dp</dimen>
+    <dimen name="ts_6">6sp</dimen>
+    <dimen name="width_8">8dp</dimen>
+    <dimen name="width_12">12sp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="padding_50">50dp</dimen>
+    <dimen name="width_25">25dp</dimen>
+    <dimen name="ts_17">17sp</dimen>
+    <dimen name="ts_15">15sp</dimen>
 </resources>

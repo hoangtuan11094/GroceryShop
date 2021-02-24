@@ -2,21 +2,34 @@ package com.example.groceryshop.activities.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.listener.ListenerAPI;
+import com.example.groceryshop.activities.network.DummyApi;
 
 
 public class FrmResetPassword extends BaseFragment implements View.OnClickListener {
 
 
+    private String email;
+    private EditText edtNewPass;
+    private EditText edtReNewPass;
+    private String newPass;
+    private String reNewPass;
+
     @Override
     protected int getLayoutResId() {
-        return R.layout.frm_reset_password ;
+        return R.layout.frm_reset_password;
     }
 
     @Override
@@ -54,10 +67,69 @@ public class FrmResetPassword extends BaseFragment implements View.OnClickListen
         View btnSubmit = view.findViewById(R.id.btnSubmit);
         btnSubmit.getLayoutParams().width = activity.getSizeWithScale(284);
         btnSubmit.getLayoutParams().height = activity.getSizeWithScale(37);
+
+        edtNewPass = view.findViewById(R.id.edtNewPass);
+        edtReNewPass = view.findViewById(R.id.edtReNewPass);
+
+        btnSubmit.setOnClickListener(this);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            email = bundle.getString("email");
+            Log.e(TAG, "onViewCreated: " + email);
+        }
     }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnSubmit:
+                resetPass();
+                break;
+        }
+    }
 
+    //TODO dummy API
+    private ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onStarts() {
+            activity.showDialogLoading();
+        }
+
+        @Override
+        public void onResult(boolean isSuccess) {
+            int count = DatabaseHelper.getDatabaseHelper(getContext()).resetPassword(email, newPass);
+            if (count > 0) {
+                showToast(R.string.lblPasswordWasSuccessfullyChanged);
+                edtReNewPass.setText("");
+                edtNewPass.setText("");
+                Log.e(TAG, "resetPass: " + count);
+                activity.showFrmLogin();
+            }
+
+            activity.dismissDialog();
+        }
+    };
+
+    private void resetPass() {
+        newPass = edtNewPass.getText().toString().trim();
+        reNewPass = edtReNewPass.getText().toString().trim();
+        try {
+            if (activity.isConnected()){
+            if (newPass.isEmpty() || newPass.isEmpty()) {
+                showToast(R.string.lblMustNotBeLeftBlank);
+            } else if (!newPass.equals(reNewPass)) {
+                showToast(R.string.lblPasswordsAreNotTheSame);
+            } else {
+                DummyApi.getDummyApi().start(listenerAPI);
+            }}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
     }
 }

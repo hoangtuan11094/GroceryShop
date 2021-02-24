@@ -1,6 +1,8 @@
 package com.example.groceryshop.activities.fragment;
 
+import android.accounts.NetworkErrorException;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +13,15 @@ import androidx.annotation.Nullable;
 
 import com.example.groceryshop.R;
 import com.example.groceryshop.activities.activities.ActMain;
+import com.example.groceryshop.activities.listener.ListenerAPI;
 
 
 public class FrmWelcome extends BaseFragment implements View.OnClickListener {
+
     public static FrmWelcome getInstance() {
         return new FrmWelcome();
     }
+
     @Override
     protected int getLayoutResId() {
         return R.layout.frm_welcome;
@@ -31,6 +36,7 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
     protected void finish() {
 
     }
+
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -71,10 +77,8 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
         icUser.getLayoutParams().width = activity.getSizeWithScale(14);
 
         btnLoginWelCome.setOnClickListener(this);
-
+        btnRegistrationWelCome.setOnClickListener(this);
     }
-
-
 
     @Override
     public void onDestroy() {
@@ -83,10 +87,15 @@ public class FrmWelcome extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnLoginWelCome:
                 activity.showFrmLogin();
                 break;
+            case R.id.btnRegistrationWelCome:
+                activity.showFrmSignUp();
+                break;
         }
     }
+
+
 }

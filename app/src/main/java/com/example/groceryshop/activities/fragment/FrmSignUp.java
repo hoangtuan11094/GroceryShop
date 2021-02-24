@@ -2,15 +2,24 @@ package com.example.groceryshop.activities.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.groceryshop.R;
+import com.example.groceryshop.activities.data.DatabaseHelper;
+import com.example.groceryshop.activities.entity.UserEntity;
 import com.example.groceryshop.activities.fragment.BaseFragment;
+import com.example.groceryshop.activities.listener.ListenerAPI;
+import com.example.groceryshop.activities.network.DummyApi;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FrmSignUp extends BaseFragment implements View.OnClickListener {
@@ -18,7 +27,6 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
     private EditText edtName;
     private EditText edtEmail;
     private EditText edtPass;
-
 
     @Override
     protected int getLayoutResId() {
@@ -65,10 +73,81 @@ public class FrmSignUp extends BaseFragment implements View.OnClickListener {
         clEdtPass.getLayoutParams().width = activity.getSizeWithScale(284);
         clEdtPass.getLayoutParams().height = activity.getSizeWithScale(37);
 
+        edtName = view.findViewById(R.id.edtName);
+        edtEmail = view.findViewById(R.id.edtEmail);
+        edtPass = view.findViewById(R.id.edtPass);
+
+        view.findViewById(R.id.btnSignUp).setOnClickListener(this);
+        view.findViewById(R.id.tvSignIn).setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnSignUp:
+                insertUser();
+                break;
+            case R.id.tvSignIn:
+                activity.showFrmLogin();
+                break;
+        }
+    }
+
+    //TODO dummy API
+    private UserEntity userEntity;
+    private ListenerAPI listenerAPI = new ListenerAPI() {
+        @Override
+        public void onStarts() {
+            activity.showDialogLoading();
+        }
+
+        @Override
+        public void onResult(boolean isSuccess) {
+            try {
+                DatabaseHelper.getDatabaseHelper(getContext()).insertUser(userEntity);
+                showToast(R.string.lbl_SignUpSuccess);
+                activity.showFrmLogin();
+                activity.dismissDialog();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
+    private void insertUser() {
+        try {
+            if (activity.isConnected()) {
+                if (userEntity == null) userEntity = new UserEntity();
+                userEntity.email = edtEmail.getText().toString().trim();
+                userEntity.passwordUser = edtPass.getText().toString().trim();
+                userEntity.fullName = edtName.getText().toString().trim();
+                boolean checkEmail = DatabaseHelper.getDatabaseHelper(getContext()).checkEmail(userEntity.email);
+                if (userEntity.email.isEmpty() || userEntity.passwordUser.isEmpty() || userEntity.fullName.isEmpty()) {
+                    showToast(R.string.lblMustNotBeLeftBlank);
+                } else if (!isValidEmail(userEntity.email)) {
+                    showToast(getActivity().getResources().getString(R.string.lblEmailFormatIsIncorrect));
+                } else if (checkEmail) {
+                    showToast(R.string.lbl_EmailAlreadyExists);
+                } else {
+                    DummyApi.getDummyApi().start(listenerAPI);
+                }
+            }
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+
+    }
+
+    static boolean isValidEmail(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
     }
 }

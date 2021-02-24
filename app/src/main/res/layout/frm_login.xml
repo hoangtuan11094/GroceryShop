@@ -69,7 +69,7 @@
                     android:id="@+id/edtEmailLogin"
                     android:background="@null"
                     android:textSize="@dimen/tsEdtLogin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/lbl_hin_email"
                     android:textStyle="bold"/>
@@ -93,12 +93,13 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_lock"/>
                 <EditText
+                    android:inputType="textPassword"
                     android:layout_marginStart="@dimen/margin_5"
                     android:gravity="center_vertical"
                     android:id="@+id/edtPassLogin"
                     android:background="@null"
                     android:textSize="@dimen/tsEdtLogin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/lbl_hin_password"
                     android:textStyle="bold"/>
@@ -136,6 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <CheckBox
+                    android:buttonTint="@color/colorYellow"
                     android:textSize="@dimen/tsEdtLogin"
                     android:layout_alignParentLeft="true"
                     android:id="@+id/ckbRemember"

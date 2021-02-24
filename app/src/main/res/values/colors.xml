@@ -10,4 +10,10 @@
     <color name="colorYellow">#FFBD2E</color>
     <color name="colorBlack">#000000</color>
     <color name="colorBtnWhite">#707070</color>
+    <color name="colorBgMenuBar">#B3000000</color>
+    <color name="colorBgSearch">#FFF0D0</color>
+    <color name="colorBgClImgProduct">#CCCCCC</color>
+    <color name="colorRed">#FF0303</color>
+    <color name="colorTvDialogNoInternet">#5C5F63</color>
+    <color name="colorBtnClose">#2A7DE9</color>
 </resources>
